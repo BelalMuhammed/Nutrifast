@@ -1,13 +1,12 @@
 import "./App.css";
-import SideFilter from "./Components/shop/SideFilter/SideFilter";
+import React from "react";
+import AppRoutes from "./routes/AppRoutes/AppRoutes";
 
 function App() {
   return (
-
-<SideFilter/>
-
-  
-  
+    <>
+      <AppRoutes />
+    </> 
   );
 }
 
