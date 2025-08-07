@@ -3,7 +3,11 @@ import SideFilter from "./Components/shop/SideFilter/SideFilter";
 
 function App() {
   return (
+
 <SideFilter/>
+
+  
+  
   );
 }
 
