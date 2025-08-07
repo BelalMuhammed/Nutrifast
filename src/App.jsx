@@ -27,6 +27,11 @@ function App() {
           element: <Shop />,
         },
         {
+          path: "product/:id",
+          element: <ProductDetails />,
+        },
+
+        {
           path: "checkout",
           element: <Checkout />,
         },
@@ -43,14 +48,8 @@ function App() {
           element: <AdminDashboard />,
         },
         {
-          path:"cart",
-          element: (
-              <Cart/>
-          ),
-        },
-        {
-          path: "productDetails/:id",
-          element: <ProductDetails />,
+          path: "cart",
+          element: <Cart />,
         },
         {
           path: "auth",
