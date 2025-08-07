@@ -11,11 +11,13 @@ import Checkout from "../../Pages/Checkout/Checkout";
 import VendorDashboard from "../../Pages/VendorDashboard/VendorDashboard";
 import MyOrders from "../../Pages/MyOrders/MyOrders";
 import AdminDashboard from "../../Pages/AdminDashboard/AdminDashboard";
+import NotFound from "../../Pages/NotFound/NotFound";
 export default function AppRoutes() {
   const routes = createBrowserRouter([
     {
       path: "",
       element: <Layout />,
+      errorElement: <NotFound />,
       children: [
         {
           index: true,
