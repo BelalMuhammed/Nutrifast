@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosInstance } from "../assets/Network/interceptors";
+import { axiosInstance } from "../../Network/interceptors";
 
 // Get all product
 export const fetchProducts = createAsyncThunk("products/fetchAll", async () => {
