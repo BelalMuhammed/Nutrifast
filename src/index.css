@@ -1,3 +1,87 @@
 @import "tailwindcss";
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
+
+/*  global styles */
+
+* {
+  @apply box-border;
+}
+
+body {
+  @apply font-sans;
+}
+
+a {
+  @apply no-underline hover:no-underline;
+  color: var(--color-secondary);
+}
+
+/* Css Variables */
+:root {
+  --color-primary: #54d12b;
+  --color-secondary: #121712;
+  --color-tertiary: #5e964f;
+  --color-quaternary: #ebf2e8;
+  --color-muted: #fafcf7;
+  --color-white: #fff;
+}
+
+/* Text colors */
+.text-app-primary {
+  color: var(--color-primary);
+}
+
+.text-app-secondary {
+  color: var(--color-secondary);
+}
+
+.text-app-tertiary {
+  color: var(--color-tertiary);
+}
+
+/* Background colors */
+.bg-app-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-app-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-app-tertiary {
+  background-color: var(--color-tertiary);
+}
+
+.bg-app-quaternary {
+  background-color: var(--color-quaternary);
+}
+
+.bg-app-muted {
+  background-color: var(--color-muted);
+}
+
+/* Buttons */
+.btn-app {
+  @apply px-4 py-2 font-medium rounded cursor-pointer;
+  color: var(--color-secondary);
+  background-color: var(--color-primary);
+}
+
+.btn-app-secondary {
+  @apply px-4 py-2 font-medium rounded cursor-pointer;
+  color: var(--color-white);
+  background-color: var(--color-secondary);
+}
+
+.btn-app-tertiary {
+  @apply px-4 py-2 font-medium rounded cursor-pointer;
+  color: var(--color-white);
+  background-color: var(--color-tertiary);
+}
+
+.btn-app:hover,
+.btn-app-secondary:hover,
+.btn-app-tertiary:hover {
+  opacity: 0.9;
+}
