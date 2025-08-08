@@ -1,35 +1,92 @@
-// import React from "react";
-// import { Routes, Route } from "react-router-dom";
-// import LayOut from "../../Components/layout/LayOut";
-// import ProtectedRoute from "../protectedRoute/ProtectedRoute";
-// import Home from "../../Pages/Home/Home";
-// // import AdminDashboard from "../../Pages/AdminDashboard/AdminDashboard";
-// // import Auth from "../../Pages/Auth/Auth";
-// import Cart from "../../Pages/Cart/Cart";
-// import Checkout from "../../Pages/Checkout/Checkout";
-// import MyOrders from "../../Pages/MyOrders/MyOrders";
-// import NotFound from "../../Pages/NotFound/NotFound";
-// import ProductDetails from "../../Pages/ProductDetails/ProductDetails";
-// import Shop from "../../Pages/Shop/Shop";
-// import VendorDashboard from "../../Pages/VendorDashboard/VendorDashboard";
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import LoaderSpinner from "../../Components/shared/Loaders/Loader";
+import Layout from "../../Components/layout/LayOut";
+import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+import NotFound from "../../Pages/NotFound/NotFound";
 
-// export default function AppRoutes() {
-//   return (
-//     <Routes>
-//       <Route path="/" element={<LayOut />}>
-//         <Route index element={<Home />} />
-//         <Route path="shop" element={<Shop />} />
-//         <Route path="Auth" element={<Auth />} />
-//         <Route path="Cart" element={<Cart />} />
-//         <Route path="Checkout" element={<Checkout />} />
-//         <Route path="ProductDetails" element={<ProductDetails />} />
-//         {/* <Route path="Auth" element={<Auth />} /> */}
-//         <Route element={<ProtectedRoute />}>
-//           <Route path="MyOrders" element={<MyOrders />} />
-//           {/* <Route path="AdminDashboard" element={<AdminDashboard />} /> */}
-//           <Route path="VendorDashboard" element={<VendorDashboard />} />
-//         </Route>
-//         <Route path="*" element={<NotFound />} />
-//       </Route>
-//     </Routes>
-//   );
+const Home = lazy(() => import("../../Pages/Home/Home"));
+const Shop = lazy(() => import("../../Pages/Shop/Shop"));
+const ProductDetails = lazy(() =>
+  import("../../Pages/ProductDetails/ProductDetails")
+);
+const Auth = lazy(() => import("../../Pages/Auth/Auth"));
+const Cart = lazy(() => import("../../Pages/Cart/Cart"));
+const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
+const VendorDashboard = lazy(() =>
+  import("../../Pages/VendorDashboard/VendorDashboard")
+);
+const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
+const AdminDashboard = lazy(() =>
+  import("../../Pages/AdminDashboard/AdminDashboard")
+);
+
+const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
+
+export default function AppRoutes() {
+  const routes = createBrowserRouter([
+    {
+      path: "",
+      element: (
+        <Suspense fallback={<LoaderSpinner />}>
+          <Layout />
+        </Suspense>
+      ),
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "shop",
+          element: <Shop />,
+        },
+        {
+          path: "product/:id",
+          element: <ProductDetails />,
+        },
+
+        {
+          path: "checkout",
+          element: <Checkout />,
+        },
+
+        {
+          path: "cart",
+          element: <Cart />,
+        },
+        {
+          path: "auth",
+          element: <Auth />,
+        },
+        {
+          path: "wishList",
+          element: <WishList />,
+        },
+        {
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: "myOrders",
+              element: <MyOrders />,
+            },
+            {
+              path: "vendorDashboard",
+              element: <VendorDashboard />,
+            },
+            {
+              path: "adminDashboard",
+              element: <AdminDashboard />,
+            },
+          ],
+        },
+        {
+          path: "*",
+          element: <NotFound />,
+        },
+      ],
+    },
+  ]);
+  return <RouterProvider router={routes} />;
+}

@@ -1,16 +1,11 @@
 import "./App.css";
-import React from "react";
-// import AppRoutes from "./routes/AppRoutes/AppRoutes";
-// import Register from "./Pages/Auth/Register";
-import Login from "./Pages/Auth/Login";
+import AppRoutes from "./routes/AppRoutes/AppRoutes";
 
 function App() {
   return (
     <>
-      {/* <AppRoutes /> */}
-      {/* < Register /> */}
-      < Login/>
-    </> 
+      <AppRoutes />
+    </>
   );
 }
 

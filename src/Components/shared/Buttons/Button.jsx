@@ -1,8 +1,13 @@
 import React from "react";
+import { FaShoppingCart } from "react-icons/fa";
 
 export default function Button({
   onClick,
-  text = "Add to Cart",
+  text = (
+    <>
+      <FaShoppingCart size={16} className="inline-block mr-2" /> Add to Cart
+    </>
+  ),
   className = "",
 }) {
   return (
