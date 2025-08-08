@@ -2,14 +2,14 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from "react-icons/fi";
-import logoImg from "../../assets/logo.png";
+// import logoImg from "../../assets/logo.png";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <nav className="w-full bg-[#FFFFFF] shadow-md flex justify-between items-center px-[40px]">
       <Link to="/">
-        <img className="!max-w-none" src={logoImg} alt="logo" />
+        {/* <img className="!max-w-none" src={logoImg} alt="logo" /> */}
       </Link>
 
       <div className="w-[1086px] px-4 py-4 flex items-center justify-between relative">
