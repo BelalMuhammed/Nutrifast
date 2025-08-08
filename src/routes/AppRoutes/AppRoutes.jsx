@@ -1,23 +1,38 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "../../Pages/Home/Home";
-import Shop from "../../Pages/Shop/Shop";
-import ProductDetails from "../../Pages/ProductDetails/ProductDetails";
-import Auth from "../../Pages/Auth/Auth";
+import { Suspense, lazy } from "react";
+import LoaderSpinner from "../../Components/shared/Loaders/Loader";
 import Layout from "../../Components/layout/LayOut";
-import Cart from "../../Pages/Cart/Cart";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
-import Checkout from "../../Pages/Checkout/Checkout";
-import VendorDashboard from "../../Pages/VendorDashboard/VendorDashboard";
-import MyOrders from "../../Pages/MyOrders/MyOrders";
-import AdminDashboard from "../../Pages/AdminDashboard/AdminDashboard";
 import NotFound from "../../Pages/NotFound/NotFound";
+
+const Home = lazy(() => import("../../Pages/Home/Home"));
+const Shop = lazy(() => import("../../Pages/Shop/Shop"));
+const ProductDetails = lazy(() =>
+  import("../../Pages/ProductDetails/ProductDetails")
+);
+const Auth = lazy(() => import("../../Pages/Auth/Auth"));
+const Cart = lazy(() => import("../../Pages/Cart/Cart"));
+const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
+const VendorDashboard = lazy(() =>
+  import("../../Pages/VendorDashboard/VendorDashboard")
+);
+const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
+const AdminDashboard = lazy(() =>
+  import("../../Pages/AdminDashboard/AdminDashboard")
+);
+
+const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
+
 export default function AppRoutes() {
   const routes = createBrowserRouter([
     {
       path: "",
-      element: <Layout />,
-      errorElement: <NotFound />,
+      element: (
+        <Suspense fallback={<LoaderSpinner />}>
+          <Layout />
+        </Suspense>
+      ),
       children: [
         {
           index: true,
@@ -46,6 +61,10 @@ export default function AppRoutes() {
           element: <Auth />,
         },
         {
+          path: "wishList",
+          element: <WishList />,
+        },
+        {
           element: <ProtectedRoute />,
           children: [
             {
@@ -61,6 +80,10 @@ export default function AppRoutes() {
               element: <AdminDashboard />,
             },
           ],
+        },
+        {
+          path: "*",
+          element: <NotFound />,
         },
       ],
     },
