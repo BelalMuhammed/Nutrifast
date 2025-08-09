@@ -1,4 +1,4 @@
-import React from "react";
+import AddButton from "../../shared/Buttons/AddButton";
 
 function ProductDetailsCard({ selectedProduct }) {
   return (
@@ -129,9 +129,7 @@ function ProductDetailsCard({ selectedProduct }) {
           </div>
 
           <div className='pt-6'>
-            <button className='btn-app w-full md:w-1/2 text-base py-3 shadow-md hover:shadow-lg transition-all duration-300'>
-              Add to Cart
-            </button>
+            <AddButton product={selectedProduct} />
           </div>
         </div>
       </div>
