@@ -5,6 +5,8 @@ import LoaderSpinner from "../../Components/shared/Loaders/Loader";
 import Layout from "../../Components/layout/LayOut";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import NotFound from "../../Pages/NotFound/NotFound";
+import Login from "../../Pages/Auth/Login";
+import Register from "../../Pages/Auth/Register";
 
 const Home = lazy(() => import("../../Pages/Home/Home"));
 const Shop = lazy(() => import("../../Pages/Shop/Shop"));
@@ -63,6 +65,14 @@ export default function AppRoutes() {
         {
           path: "wishList",
           element: <WishList />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "register",
+          element: <Register />,
         },
         {
           element: <ProtectedRoute />,
