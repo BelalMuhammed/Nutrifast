@@ -51,7 +51,7 @@ function Shop() {
         </div>
 
         {/* Product Grid */}
-        <div className="flex flex-wrap gap-15 justify-center">
+        <div className="flex flex-wrap gap-5 justify-center">
           {loading ? (
             <div className="w-full flex justify-center pt-10">
               <Spinner size="xl" color="success" />
