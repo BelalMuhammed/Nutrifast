@@ -14,7 +14,7 @@ function Shop() {
   }, [dispatch]);
 
   return (
-    <div className="flex gap-6 px-6 py-8 bg-app-muted min-h-screen">
+    <div className="flex gap-6 px-6 py-8  min-h-screen">
       {/* Sidebar Filters */}
       <div className="w-[280px] shrink-0">
         <SideFilter />

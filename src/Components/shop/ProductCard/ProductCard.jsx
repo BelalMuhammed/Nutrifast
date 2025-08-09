@@ -5,13 +5,15 @@ function ProductCard({ product }) {
   const { name, price, id, image, description, tags = [] } = product;
 
   return (
-    <div className='bg-white rounded-2xl p-5 shadow-lg w-[300px] hover:scale-[1.02] transition'>
+    <div className= 'product bg-white rounded-2xl p-5 shadow-lg w-[300px] '>
       {/* Product Image */}
-      <img
-        src={image}
-        alt={name}
-        className=' w-full object-contain  mb-4  rounded-2xl'
-      />
+      <Link to={`/product/${id}`}>
+        <img
+          src={image}
+          alt={name}
+          className=' w-full object-contain  mb-4  rounded-2xl'
+        />
+      </Link>
 
       {/* Name */}
       <h3 className='text-lg font-semibold text-app-secondary mb-2'>{name}</h3>
@@ -38,18 +40,11 @@ function ProductCard({ product }) {
         </span>
       </div>
       {/* add tocar & product details */}
-      <div className="mb-3">
-        <Link
-          to={`/product/${id}`}
-          className=' btn-app-tertiary flex '>
-          View Details{" "}
-        </Link>
-      </div>
+
       <div>
-        <Link
-          to={`/product/${id}`}
-          className='btn-app flex items-center'>
-          <HiOutlineShoppingBag size={22} className="me-2" /> <span>Add to cart</span>
+        <Link to={`/product/${id}`} className='btn-app flex items-center'>
+          <HiOutlineShoppingBag size={22} className='me-2' />{" "}
+          <span>Add to cart</span>
         </Link>
       </div>
     </div>

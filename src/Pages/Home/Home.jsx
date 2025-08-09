@@ -5,7 +5,7 @@ function Home() {
   return (
     <>
       {/* Banner Section */}
-      <section className="relative overflow-hidden ">
+      <section className="relative overflow-hidden app-container rounded-xl ">
         <div className="absolute inset-0">
           <img
             src={banner}

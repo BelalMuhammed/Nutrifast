@@ -32,6 +32,9 @@ a {
 }
 
 /* Text colors */
+.placeholder-app-primary::placeholder {
+  color: var(--color-tertiary);
+}
 .text-app-primary {
   color: var(--color-primary);
 }
@@ -88,4 +91,13 @@ a {
 .btn-app-secondary:hover,
 .btn-app-tertiary:hover {
   opacity: 0.9;
+}
+.product .btn-app {
+  transition: transform 1s, opacity 1s;
+  transform: translateY(100%);
+  opacity: 0;
+}
+.product:hover .btn-app {
+  opacity: 1;
+  transform: translateY(0%);
 }

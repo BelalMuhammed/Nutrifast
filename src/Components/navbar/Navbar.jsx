@@ -37,6 +37,18 @@ function Navbar() {
           >
             Contact
           </Link>
+          <Link
+            to="/login"
+            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
+          >
+            Sign Up
+          </Link>
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
@@ -62,7 +74,7 @@ function Navbar() {
         <div className="md:hidden px-4 pb-4">
           <Link
             to="/shop"
-            className=" block py-2 text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125"
+            className="block py-2 text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125"
           >
             Shop
           </Link>
@@ -78,10 +90,16 @@ function Navbar() {
           >
             Contact
           </Link>
+          <Link
+            to="/login"
+            className="block py-2 text-gray-700 hover:text-blue-600"
+          >
+            Login
+          </Link>
+
           <div className="flex space-x-6 mt-4">
             <FiSearch className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600" />
             <Link to="/cart">
-              {" "}
               <FiShoppingCart className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600" />
             </Link>
           </div>
