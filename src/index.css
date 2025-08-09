@@ -17,6 +17,10 @@ a {
   color: var(--color-secondary);
 }
 
+.app-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
 /* Css Variables */
 :root {
   --color-primary: #54d12b;
