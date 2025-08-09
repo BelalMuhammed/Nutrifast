@@ -36,6 +36,7 @@ export default function AppRoutes() {
       children: [
         {
           index: true,
+          path: "/",
           element: <Home />,
         },
         {
