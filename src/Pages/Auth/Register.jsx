@@ -1,13 +1,38 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios"
+import { Link, useNavigate } from "react-router-dom";
+
 export default function Register() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+      const payload = {
+        username: data.firstName + data.lastName,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        role: "user",
+      };
+    try {
+      const response = await axios.post(
+        "https://nutrifast-data.up.railway.app/users",
+        payload
+      );
+      console.log("User registered:", response.data);
+         localStorage.setItem("user", JSON.stringify(response.data));
+      
+      navigate("/login");
+    } catch (error) {
+       console.error("Registration failed:", error);
+       alert("Error during registration");
+    }
+   
+  
   };
   return (
     <div className="h-screen flex items-center justify-center">
@@ -131,12 +156,13 @@ export default function Register() {
         </div>
         <button type="submit" className="btn-app w-full">
           Sign Up
+       
         </button>
         <p className="text-sm mt-4 text-center">
           Already have an account?{" "}
-          <a href="/login" className="text-app-tertiary font-medium">
+          <Link to="/login" className="text-app-tertiary font-medium">
             Login
-          </a>
+          </Link>
         </p>
       </form>
     </div>

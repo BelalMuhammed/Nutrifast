@@ -1,15 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+} from "../../Redux/slices/authSlice";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data); 
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    // فقط لو المستخدم مسجّل دخول وهو في صفحة غير /login
+    if (savedUser && location.pathname !== "/login") {
+      dispatch(loginSuccess(JSON.parse(savedUser)));
+      navigate("/");
+    }
+  }, [dispatch, navigate, location.pathname]);
+
+  const onSubmit = async (data) => {
+    try {
+      dispatch(loginStart());
+      const res = await axios.get(
+        "https://nutrifast-data.up.railway.app/users"
+      );
+      const adminsRes = await axios.get(
+        "https://nutrifast-data.up.railway.app/admins"
+      );
+      const allUsers = [...res.data, ...adminsRes.data];
+      const user = allUsers.find(
+        (u) => u.email === data.email && u.password === data.password
+      );
+      if (!user) throw new Error("Invalid email or password");
+      localStorage.setItem("user", JSON.stringify(user));
+      dispatch(loginSuccess(user));
+      navigate("/");
+    } catch (err) {
+      dispatch(loginFailure(err.message));
+    }
   };
 
   return (
