@@ -28,6 +28,9 @@ a {
 }
 
 /* Text colors */
+.placeholder-app-primary::placeholder {
+  color: var(--color-tertiary);
+}
 .text-app-primary {
   color: var(--color-primary);
 }
