@@ -1,17 +1,17 @@
-import { HiOutlineShoppingBag } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import AddButton from "../../shared/Buttons/AddButton";
 
 function ProductCard({ product }) {
   const { name, price, id, image, description, tags = [] } = product;
 
   return (
-    <div className= 'product bg-white rounded-2xl p-5 shadow-lg w-[300px] '>
+    <div className='product bg-white rounded-2xl p-5 shadow-lg w-[300px]'>
       {/* Product Image */}
       <Link to={`/product/${id}`}>
         <img
           src={image}
           alt={name}
-          className=' w-full object-contain  mb-4  rounded-2xl'
+          className='w-full object-contain mb-4 rounded-2xl'
         />
       </Link>
 
@@ -33,20 +33,14 @@ function ProductCard({ product }) {
       <p className='text-sm text-app-secondary mb-4 line-clamp-2'>
         {description}
       </p>
-      <div>
-        {/* Price & CTA */}
-        <span className='text-lg font-bold text-app-secondary'>
-          {price} EGP
-        </span>
-      </div>
-      {/* add tocar & product details */}
 
-      <div>
-        <Link to={`/product/${id}`} className='btn-app flex items-center'>
-          <HiOutlineShoppingBag size={22} className='me-2' />{" "}
-          <span>Add to cart</span>
-        </Link>
-      </div>
+      {/* Price */}
+      <span className='text-lg font-bold text-app-secondary mb-4 block'>
+        {price} EGP
+      </span>
+
+      {/* Add to Cart Button */}
+      <AddButton product={product} />
     </div>
   );
 }
