@@ -1,32 +1,46 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-export const fetchWishlist = createAsyncThunk('wishlist/fetchWishlist', async () => {
-  const res = await fetch('/api/wishlist');
-  return res.json();
-});
+const loadFromLocalStorage = () => {
+  try {
+    const data = localStorage.getItem("wishlist");
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveToLocalStorage = (items) => {
+  localStorage.setItem("wishlist", JSON.stringify(items));
+};
 
 const wishlistSlice = createSlice({
-  name: 'wishlist',
-  initialState: { items: [], status: 'idle' },
+  name: "wishlist",
+  initialState: {
+    items: loadFromLocalStorage(),
+  },
   reducers: {
-    addToWishlist: (state, action) => {
-      state.items.push(action.payload);
+    toggleWishlistItem: (state, action) => {
+      const item = action.payload;
+      const exists = state.items.find((i) => i.id === item.id);
+
+      if (exists) {
+        state.items = state.items.filter((i) => i.id !== item.id);
+      } else {
+        state.items.push(item);
+      }
+      saveToLocalStorage(state.items);
     },
     removeFromWishlist: (state, action) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
+      state.items = state.items.filter((i) => i.id !== action.payload);
+      saveToLocalStorage(state.items);
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchWishlist.fulfilled, (state, action) => {
-        state.items = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(fetchWishlist.pending, (state) => {
-        state.status = 'loading';
-      });
+    clearWishlist: (state) => {
+      state.items = [];
+      saveToLocalStorage(state.items);
+    },
   },
 });
 
-export const { addToWishlist, removeFromWishlist } = wishlistSlice.actions;
+export const { toggleWishlistItem, removeFromWishlist, clearWishlist } =
+  wishlistSlice.actions;
 export default wishlistSlice.reducer;
