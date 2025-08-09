@@ -3,108 +3,112 @@ import {
   SidebarCollapse,
   SidebarItemGroup,
   SidebarItems,
+  Checkbox,
 } from "flowbite-react";
-import { Checkbox } from "flowbite-react";
 
-const departments = [
-  "Bakery",
-  "Dry food",
-  "Meats",
+const Categories = [
+  "Healthy Bakery",
+  "Whole Grains & Cereals",
+  "Meats & Poultry",
   "Dairy Products",
-  "Vegetables",
-  "Fruits",
-  "Snacks",
-  "Meals",
+  "Fresh Vegetables",
+  "Fresh Fruits",
+  "Healthy Snacks",
+  "Prepared Diet Meals",
 ];
-
-const dietTypes = [
+const DietTypes = [
   "Plant-Based",
-  "Keto",
+  "Keto-Friendly",
   "Low FODMAP",
-  "Balanced low-carb",
+  "Balanced Low-Carb",
   "Paleo",
+  "Vegan",
+  "High-Protein",
+  "Gluten-Free",
+  "Dairy-Free",
 ];
-
-const medicalConditions = ["HTN", "Pregnant", "Diabetes", "Anemia", "Favism"];
-
-const allergens = [
+const MedicalConditions = [
+  "Hypertension",
+  "Pregnancy Nutrition",
+  "Diabetes",
+  "Iron-Deficiency Anemia",
+  "Favism",
+  "High Cholesterol",
+];
+const Allergens = [
   "Gluten",
   "Dairy",
   "Lactose",
   "Eggs",
-  "Fish",
   "Shellfish",
   "Tree Nuts",
   "Peanuts",
-  "Soya",
+  "Soy",
+  "Sesame",
 ];
 
 function SideFilter() {
   return (
     <Sidebar
-      className='bg-white  rounded-md  max-w-xs w-full p-4'
+      className='bg-white rounded-md max-w-xs w-full p-4'
       aria-label='Sidebar with filters'>
-      <SidebarItems className='bg-white '>
-        <SidebarItemGroup className='bg-white '>
-          {/* Departments Section */}
+      <SidebarItems className='bg-white'>
+        <SidebarItemGroup className='bg-white'>
+          {/* Categories */}
           <SidebarCollapse
-            label='Department'
+            label='Categories'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {departments.map((dept) => (
+              {Categories.map((dept) => (
                 <label
                   key={dept}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {dept}
+                  <Checkbox /> {dept}
                 </label>
               ))}
             </div>
           </SidebarCollapse>
 
-          {/* Diet Types Section */}
+          {/* Diet Types */}
           <SidebarCollapse
             label='Diet Types'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {dietTypes.map((type) => (
+              {DietTypes.map((type) => (
                 <label
                   key={type}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {type}
+                  <Checkbox /> {type}
                 </label>
               ))}
             </div>
           </SidebarCollapse>
 
-          {/* Medical Conditions Section */}
+          {/* Medical Conditions */}
           <SidebarCollapse
             label='Medical Conditions'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {medicalConditions.map((condition) => (
+              {MedicalConditions.map((condition) => (
                 <label
                   key={condition}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {condition}
+                  <Checkbox /> {condition}
                 </label>
               ))}
             </div>
           </SidebarCollapse>
 
-          {/* Allergens Section */}
+          {/* Allergens */}
           <SidebarCollapse
             label='Allergens'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {allergens.map((allergen) => (
+              {Allergens.map((allergen) => (
                 <label
                   key={allergen}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {allergen}
+                  <Checkbox /> {allergen}
                 </label>
               ))}
             </div>
