@@ -1,38 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaHeart, FaShoppingCart, FaTrashAlt } from "react-icons/fa";
 import Button from "../../Components/shared/Buttons/Button";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchWishlist,
+  removeFromWishlist,
+} from "../../Redux/slices/wishListSlice";
+import { addToCart } from "../../Redux/slices/cartSlice";
 
 export default function WishList() {
-  const wishlistItems = [
-    {
-      id: 1,
-      name: "Modern Wooden Chair",
-      price: 120,
-      image: "/images/chair.jpg",
-    },
-    {
-      id: 2,
-      name: "Cozy Fabric Sofa",
-      price: 450,
-      image: "/images/sofa.jpg",
-    },
-    {
-      id: 3,
-      name: "Cozy Fabric Sofa",
-      price: 450,
-      image: "/images/sofa.jpg",
-    },
-  ];
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+
+  useEffect(() => {
+    dispatch(fetchWishlist());
+  }, [dispatch]);
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <FaHeart className="text-pink-500 w-6 h-6" />
         <h1 className="text-2xl md:text-3xl font-bold">My Wishlist</h1>
       </div>
 
-      {/* Wishlist Items */}
       {wishlistItems.length === 0 ? (
         <div className="text-center py-16">
           <FaHeart className="mx-auto text-gray-400 w-12 h-12 mb-4" />
@@ -55,9 +45,14 @@ export default function WishList() {
                 ${item.price.toFixed(2)}
               </p>
               <div className="mt-auto flex items-center justify-between gap-2">
-                <Button />
-
-                <button className="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-500">
+                <Button
+                  text="Add to Cart"
+                  onClick={() => dispatch(addToCart(item))}
+                />
+                <button
+                  className="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-500"
+                  onClick={() => dispatch(removeFromWishlist(item.id))}
+                >
                   <FaTrashAlt size={18} />
                 </button>
               </div>
