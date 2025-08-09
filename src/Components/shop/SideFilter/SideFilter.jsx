@@ -6,37 +6,45 @@ import {
 } from "flowbite-react";
 import { Checkbox } from "flowbite-react";
 
-const departments = [
-  "Bakery",
-  "Dry food",
-  "Meats",
+let Categories = [
+  "Healthy Bakery",
+  "Whole Grains & Cereals",
+  "Meats & Poultry",
   "Dairy Products",
-  "Vegetables",
-  "Fruits",
-  "Snacks",
-  "Meals",
+  "Fresh Vegetables",
+  "Fresh Fruits",
+  "Healthy Snacks",
+  "Prepared Diet Meals",
 ];
-
-const dietTypes = [
+let DietTypes = [
   "Plant-Based",
-  "Keto",
+  "Keto-Friendly",
   "Low FODMAP",
-  "Balanced low-carb",
+  "Balanced Low-Carb",
   "Paleo",
+  "Vegan",
+  "High-Protein",
+  "Gluten-Free",
+  "Dairy-Free",
 ];
-
-const medicalConditions = ["HTN", "Pregnant", "Diabetes", "Anemia", "Favism"];
-
-const allergens = [
+let MedicalConditions = [
+  "Hypertension",
+  "Pregnancy Nutrition",
+  "Diabetes",
+  "Iron-Deficiency Anemia",
+  "Favism",
+  "High Cholesterol",
+];
+let Allergens = [
   "Gluten",
   "Dairy",
   "Lactose",
   "Eggs",
-  "Fish",
   "Shellfish",
   "Tree Nuts",
   "Peanuts",
-  "Soya",
+  "Soy",
+  "Sesame",
 ];
 
 function SideFilter() {
@@ -48,10 +56,10 @@ function SideFilter() {
         <SidebarItemGroup className='bg-white '>
           {/* Departments Section */}
           <SidebarCollapse
-            label='Department'
+            label='Categories'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {departments.map((dept) => (
+              {Categories.map((dept) => (
                 <label
                   key={dept}
                   className='flex items-center gap-2 text-sm text-gray-700'>
@@ -67,7 +75,7 @@ function SideFilter() {
             label='Diet Types'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {dietTypes.map((type) => (
+              {DietTypes.map((type) => (
                 <label
                   key={type}
                   className='flex items-center gap-2 text-sm text-gray-700'>
@@ -83,7 +91,7 @@ function SideFilter() {
             label='Medical Conditions'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {medicalConditions.map((condition) => (
+              {MedicalConditions.map((condition) => (
                 <label
                   key={condition}
                   className='flex items-center gap-2 text-sm text-gray-700'>
@@ -99,7 +107,7 @@ function SideFilter() {
             label='Allergens'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
             <div className='flex flex-col gap-3 px-3 py-2'>
-              {allergens.map((allergen) => (
+              {Allergens.map((allergen) => (
                 <label
                   key={allergen}
                   className='flex items-center gap-2 text-sm text-gray-700'>
