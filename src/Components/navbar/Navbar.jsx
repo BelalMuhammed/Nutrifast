@@ -8,11 +8,11 @@ function Navbar() {
   return (
     <nav className='w-full bg-[#FFFFFF] shadow-md flex justify-between items-center px-[40px]'>
       <Link to='/'>
-        <img className='!max-w-none w-30' src={logoImg} alt='logo' />
+        <img className='!max-w-none w-30 me-3' src={logoImg} alt='logo' />
       </Link>
 
-      <div className='w-[1086px] px-4 py-4 flex items-center justify-between relative'>
-        <div className='hidden md:flex flex-1  space-x-8'>
+      <div className='w-full px-4 py-4 flex items-center justify-between relative'>
+        <div className='hidden md:flex flex-1 me-auto  space-x-8'>
           <Link
             to='/shop'
             className='text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1'>
