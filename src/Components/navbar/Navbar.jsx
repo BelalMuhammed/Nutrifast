@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FiShoppingCart, FiSearch, FiMenu, FiX } from "react-icons/fi";
+import { FiShoppingCart, FiSearch, FiMenu, FiX, FiHeart } from "react-icons/fi";
 import logoImg from "../../assets/logo.png";
 
 function Navbar() {
@@ -12,7 +12,13 @@ function Navbar() {
       </Link>
 
       <div className="w-[1086px] px-4 py-4 flex items-center justify-between relative">
-        <div className="hidden md:flex flex-1 space-x-8">
+        <div className="hidden md:flex flex-1  space-x-8">
+          <Link
+            to="/"
+            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
+          >
+            Home
+          </Link>
           <Link
             to="/shop"
             className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
@@ -27,7 +33,7 @@ function Navbar() {
           </Link>
           <Link
             to="/contact"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
+            className="text-gray-700 hover:text-blue-600 transition  duration-300 hover:scale-125 hover:translate-y-1"
           >
             Contact
           </Link>
@@ -38,7 +44,7 @@ function Navbar() {
             Login
           </Link>
           <Link
-            to="/register"
+            to="/choose-role"
             className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
           >
             Sign Up
@@ -46,9 +52,19 @@ function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          <FiSearch className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
+          <div className="relative w-64">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="bg-[#EBF2EB] w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none hover:scale-105"
+            />
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl cursor-pointer " />
+          </div>
           <Link to="/cart">
-            <FiShoppingCart className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
+            <FiShoppingCart className=" bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
+          </Link>
+          <Link to="/wishList">
+            <FiHeart className="bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
           </Link>
         </div>
 

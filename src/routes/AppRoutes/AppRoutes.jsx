@@ -9,6 +9,8 @@ import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/Auth/VendorRegistration";
 
+const Role = lazy(() => import("../../Pages/role/Role"));
+
 const Home = lazy(() => import("../../Pages/Home/Home"));
 const Shop = lazy(() => import("../../Pages/Shop/Shop"));
 const ProductDetails = lazy(() =>
@@ -26,6 +28,9 @@ const AdminDashboard = lazy(() =>
 );
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
+const VendorRegisteration = lazy(() =>
+  import("../../Pages/vindorRegisteration/VendorRegisteration")
+);
 
 export default function AppRoutes() {
   const routes = createBrowserRouter([
@@ -39,6 +44,7 @@ export default function AppRoutes() {
       children: [
         {
           index: true,
+          path: "/",
           element: <Home />,
         },
         {
@@ -72,12 +78,16 @@ export default function AppRoutes() {
           element: <Login />,
         },
         {
+          path: "choose-role",
+          element: <Role />,
+        },
+        {
           path: "register",
           element: <Register />,
         },
         {
-          path: "vendorRegistration",
-          element: <VendorRegistration />,
+          path: "vendorRegisteration",
+          element: <VendorRegisteration />,
         },
         {
           element: <ProtectedRoute />,
