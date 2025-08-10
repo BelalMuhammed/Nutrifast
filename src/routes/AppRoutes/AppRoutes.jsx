@@ -7,6 +7,7 @@ import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
+import VendorRegistration from "../../Pages/Auth/VendorRegistration";
 
 const Home = lazy(() => import("../../Pages/Home/Home"));
 const Shop = lazy(() => import("../../Pages/Shop/Shop"));
@@ -73,6 +74,10 @@ export default function AppRoutes() {
         {
           path: "register",
           element: <Register />,
+        },
+        {
+          path: "vendorRegistration",
+          element: <VendorRegistration />,
         },
         {
           element: <ProtectedRoute />,

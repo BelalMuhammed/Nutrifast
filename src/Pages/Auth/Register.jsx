@@ -24,7 +24,7 @@ export default function Register() {
         payload
       );
       console.log("User registered:", response.data);
-         localStorage.setItem("user", JSON.stringify(response.data));
+         localStorage.setItem("currentUser", JSON.stringify(response.data));
       
       navigate("/login");
     } catch (error) {
