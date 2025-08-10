@@ -29,8 +29,8 @@ export default function VendorRegistration() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.vendor);
 
-    const onSubmit = async (data) => {
-      console.log(data)
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
       dispatch(vendorRegisterStart());
       const response = await axios.post(
