@@ -3,10 +3,10 @@ import {
   SidebarCollapse,
   SidebarItemGroup,
   SidebarItems,
+  Checkbox,
 } from "flowbite-react";
-import { Checkbox } from "flowbite-react";
 
-let Categories = [
+const Categories = [
   "Healthy Bakery",
   "Whole Grains & Cereals",
   "Meats & Poultry",
@@ -16,7 +16,7 @@ let Categories = [
   "Healthy Snacks",
   "Prepared Diet Meals",
 ];
-let DietTypes = [
+const DietTypes = [
   "Plant-Based",
   "Keto-Friendly",
   "Low FODMAP",
@@ -27,7 +27,7 @@ let DietTypes = [
   "Gluten-Free",
   "Dairy-Free",
 ];
-let MedicalConditions = [
+const MedicalConditions = [
   "Hypertension",
   "Pregnancy Nutrition",
   "Diabetes",
@@ -35,7 +35,7 @@ let MedicalConditions = [
   "Favism",
   "High Cholesterol",
 ];
-let Allergens = [
+const Allergens = [
   "Gluten",
   "Dairy",
   "Lactose",
@@ -50,11 +50,11 @@ let Allergens = [
 function SideFilter() {
   return (
     <Sidebar
-      className='bg-white  rounded-md  max-w-xs w-full p-4'
+      className='bg-white rounded-md max-w-xs w-full p-4'
       aria-label='Sidebar with filters'>
-      <SidebarItems className='bg-white '>
-        <SidebarItemGroup className='bg-white '>
-          {/* Departments Section */}
+      <SidebarItems className='bg-white'>
+        <SidebarItemGroup className='bg-white'>
+          {/* Categories */}
           <SidebarCollapse
             label='Categories'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
@@ -63,14 +63,13 @@ function SideFilter() {
                 <label
                   key={dept}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {dept}
+                  <Checkbox /> {dept}
                 </label>
               ))}
             </div>
           </SidebarCollapse>
 
-          {/* Diet Types Section */}
+          {/* Diet Types */}
           <SidebarCollapse
             label='Diet Types'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
@@ -79,14 +78,13 @@ function SideFilter() {
                 <label
                   key={type}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {type}
+                  <Checkbox /> {type}
                 </label>
               ))}
             </div>
           </SidebarCollapse>
 
-          {/* Medical Conditions Section */}
+          {/* Medical Conditions */}
           <SidebarCollapse
             label='Medical Conditions'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
@@ -95,14 +93,13 @@ function SideFilter() {
                 <label
                   key={condition}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {condition}
+                  <Checkbox /> {condition}
                 </label>
               ))}
             </div>
           </SidebarCollapse>
 
-          {/* Allergens Section */}
+          {/* Allergens */}
           <SidebarCollapse
             label='Allergens'
             className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
@@ -111,8 +108,7 @@ function SideFilter() {
                 <label
                   key={allergen}
                   className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {allergen}
+                  <Checkbox /> {allergen}
                 </label>
               ))}
             </div>
