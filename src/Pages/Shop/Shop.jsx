@@ -97,7 +97,10 @@ function Shop() {
 
         <SortSelect sortOption={sortOption} setSortOption={setSortOption} />
 
-        <div className='flex flex-wrap gap-6 justify-center'>
+
+        {/* Product Grid */}
+        <div className="flex flex-wrap gap-5 justify-center">
+
           {loading ? (
             <div className='w-full flex justify-center pt-10'>
               <Spinner size='xl' color='success' />
