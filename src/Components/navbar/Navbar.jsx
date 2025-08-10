@@ -44,7 +44,7 @@ function Navbar() {
             Login
           </Link>
           <Link
-            to="/register"
+            to="/choose-role"
             className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
           >
             Sign Up
