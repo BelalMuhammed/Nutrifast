@@ -15,32 +15,45 @@ import SortSelect from "../../Components/shop/SortSelect/SortSelect";
 function Shop() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
-const [sortOption, setSortOption] = useState("");
+
+  const [sortOption, setSortOption] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Fetch products
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  // Update filtered products when products change
+  useEffect(() => {
+    setFilteredProducts(products || []);
+  }, [products]);
+
+  // Handle screen resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1030);
     };
-    handleResize(); // check initially
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-const sortedProducts =
-  sortOption === ""
-    ? products
-    : [...products].sort((a, b) => {
-        if (sortOption === "price-high") return b.price - a.price;
-        if (sortOption === "price-low") return a.price - b.price;
-        if (sortOption === "rating-high") return b.rating - a.rating;
-        return 0;
-      });
+  // Sorting logic
+  const getSortedProducts = () => {
+    if (!sortOption) return filteredProducts;
+
+    const sorted = [...filteredProducts];
+    if (sortOption === "price-high")
+      return sorted.sort((a, b) => b.price - a.price);
+    if (sortOption === "price-low")
+      return sorted.sort((a, b) => a.price - b.price);
+    if (sortOption === "rating-high")
+      return sorted.sort((a, b) => b.rating - a.rating);
+    return sorted;
+  };
 
   return (
     <div className='flex gap-6 px-6 py-8 min-h-screen'>
@@ -50,17 +63,19 @@ const sortedProducts =
           <Button onClick={() => setDrawerOpen(true)} className='mb-4'>
             Filters
           </Button>
-          <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}
-              className="transition-all duration-500 ease-in-out">
+          <Drawer
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            className='transition-all duration-500 ease-in-out'>
             <DrawerHeader title='Filters' />
             <DrawerItems>
-              <SideFilter />
+              <SideFilter products={products} onFilter={setFilteredProducts} />
             </DrawerItems>
           </Drawer>
         </>
       ) : (
         <div className='w-[280px] shrink-0'>
-          <SideFilter />
+          <SideFilter products={products} onFilter={setFilteredProducts} />
         </div>
       )}
 
@@ -87,10 +102,14 @@ const sortedProducts =
             <div className='w-full flex justify-center pt-10'>
               <Spinner size='xl' color='success' />
             </div>
-          ) : (
-            sortedProducts.map((product) => (
+          ) : getSortedProducts().length > 0 ? (
+            getSortedProducts().map((product) => (
               <ProductCard key={product.id} product={product} />
             ))
+          ) : (
+            <p className='text-gray-500 pt-10'>
+              No products found matching your filters.
+            </p>
           )}
         </div>
       </div>
