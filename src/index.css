@@ -14,7 +14,6 @@ body {
 
 a {
   @apply no-underline hover:no-underline;
-  color: var(--color-secondary);
 }
 
 .app-container {
@@ -71,7 +70,7 @@ a {
 /* Buttons */
 .btn-app {
   @apply px-4 py-2 font-medium rounded cursor-pointer;
-  color: var(--color-secondary);
+  color: var(--color-white);
   background-color: var(--color-primary);
 }
 
