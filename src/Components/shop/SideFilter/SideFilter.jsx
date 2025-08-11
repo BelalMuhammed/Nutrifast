@@ -1,122 +1,90 @@
+import React, { useEffect, useState } from "react";
 import {
   Sidebar,
   SidebarCollapse,
   SidebarItemGroup,
   SidebarItems,
+  Checkbox,
 } from "flowbite-react";
-import { Checkbox } from "flowbite-react";
+import { axiosInstance } from "../../../Network/interceptors";
+import filterLogic from "../../../utlis/filterLogic";
 
-let Categories = [
-  "Healthy Bakery",
-  "Whole Grains & Cereals",
-  "Meats & Poultry",
-  "Dairy Products",
-  "Fresh Vegetables",
-  "Fresh Fruits",
-  "Healthy Snacks",
-  "Prepared Diet Meals",
-];
-let DietTypes = [
-  "Plant-Based",
-  "Keto-Friendly",
-  "Low FODMAP",
-  "Balanced Low-Carb",
-  "Paleo",
-  "Vegan",
-  "High-Protein",
-  "Gluten-Free",
-  "Dairy-Free",
-];
-let MedicalConditions = [
-  "Hypertension",
-  "Pregnancy Nutrition",
-  "Diabetes",
-  "Iron-Deficiency Anemia",
-  "Favism",
-  "High Cholesterol",
-];
-let Allergens = [
-  "Gluten",
-  "Dairy",
-  "Lactose",
-  "Eggs",
-  "Shellfish",
-  "Tree Nuts",
-  "Peanuts",
-  "Soy",
-  "Sesame",
-];
+function SideFilter({ products = [], onFilter }) {
+  const [filters, setFilters] = useState({
+    Categories: [],
+    DietTypes: [],
+    MedicalConditions: [],
+    Allergens: [],
+  });
 
-function SideFilter() {
+  const [selectedFilters, setSelectedFilters] = useState({
+    Categories: [],
+    DietTypes: [],
+    MedicalConditions: [],
+    Allergens: [],
+  });
+
+  // Fetch filters from API
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await axiosInstance.get("/filters");
+        setFilters((prev) => ({
+          ...prev,
+          ...res.data,
+        }));
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    };
+    fetchFilters();
+  }, []);
+
+  // Handle checkbox change
+  const handleCheckboxChange = (group, name) => {
+    setSelectedFilters((prev) => {
+      const isSelected = prev[group]?.includes(name);
+      const updatedGroup = isSelected
+        ? prev[group].filter((item) => item !== name)
+        : [...prev[group], name];
+
+      return { ...prev, [group]: updatedGroup };
+    });
+  };
+
+  // Run filter logic when selectedFilters changes
+  useEffect(() => {
+    if (products.length === 0) return;
+    const filteredProducts = filterLogic(products, selectedFilters);
+    onFilter(filteredProducts); // Send filtered products to Shop
+  }, [selectedFilters, products, onFilter]);
+
   return (
     <Sidebar
-      className='bg-white  rounded-md  max-w-xs w-full p-4'
+      className='bg-white rounded-md max-w-xs w-full p-4'
       aria-label='Sidebar with filters'>
-      <SidebarItems className='bg-white '>
-        <SidebarItemGroup className='bg-white '>
-          {/* Departments Section */}
-          <SidebarCollapse
-            label='Categories'
-            className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
-            <div className='flex flex-col gap-3 px-3 py-2'>
-              {Categories.map((dept) => (
-                <label
-                  key={dept}
-                  className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {dept}
-                </label>
-              ))}
-            </div>
-          </SidebarCollapse>
-
-          {/* Diet Types Section */}
-          <SidebarCollapse
-            label='Diet Types'
-            className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
-            <div className='flex flex-col gap-3 px-3 py-2'>
-              {DietTypes.map((type) => (
-                <label
-                  key={type}
-                  className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {type}
-                </label>
-              ))}
-            </div>
-          </SidebarCollapse>
-
-          {/* Medical Conditions Section */}
-          <SidebarCollapse
-            label='Medical Conditions'
-            className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
-            <div className='flex flex-col gap-3 px-3 py-2'>
-              {MedicalConditions.map((condition) => (
-                <label
-                  key={condition}
-                  className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {condition}
-                </label>
-              ))}
-            </div>
-          </SidebarCollapse>
-
-          {/* Allergens Section */}
-          <SidebarCollapse
-            label='Allergens'
-            className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
-            <div className='flex flex-col gap-3 px-3 py-2'>
-              {Allergens.map((allergen) => (
-                <label
-                  key={allergen}
-                  className='flex items-center gap-2 text-sm text-gray-700'>
-                  <Checkbox />
-                  {allergen}
-                </label>
-              ))}
-            </div>
-          </SidebarCollapse>
+      <SidebarItems className='bg-white'>
+        <SidebarItemGroup className='bg-white'>
+          {Object.keys(filters).map((group) => (
+            <SidebarCollapse
+              key={group}
+              label={group}
+              className='font-semibold text-gray-800 border border-gray-200 rounded-xl mb-4 bg-gray-50'>
+              <div className='flex flex-col gap-3 px-3 py-2'>
+                {(filters[group] ?? []).map(({ id, name }) => (
+                  <label
+                    key={id}
+                    className='flex items-center gap-2 text-sm text-gray-700'>
+                    <Checkbox
+                      checked={selectedFilters[group]?.includes(name) || false}
+                      onChange={() => handleCheckboxChange(group, name)}
+                    />
+                    {name}
+                  </label>
+                ))}
+              </div>
+            </SidebarCollapse>
+          ))}
         </SidebarItemGroup>
       </SidebarItems>
     </Sidebar>

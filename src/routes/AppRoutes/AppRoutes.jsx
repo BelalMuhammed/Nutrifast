@@ -8,6 +8,8 @@ import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 
+const Role = lazy(() => import("../../Pages/role/Role"));
+
 const Home = lazy(() => import("../../Pages/Home/Home"));
 const Shop = lazy(() => import("../../Pages/Shop/Shop"));
 const ProductDetails = lazy(() =>
@@ -25,6 +27,9 @@ const AdminDashboard = lazy(() =>
 );
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
+const VendorRegisteration = lazy(() =>
+  import("../../Pages/vindorRegisteration/VendorRegisteration")
+);
 
 export default function AppRoutes() {
   const routes = createBrowserRouter([
@@ -72,8 +77,16 @@ export default function AppRoutes() {
           element: <Login />,
         },
         {
+          path: "choose-role",
+          element: <Role />,
+        },
+        {
           path: "register",
           element: <Register />,
+        },
+        {
+          path: "vendorRegisteration",
+          element: <VendorRegisteration />,
         },
         {
           element: <ProtectedRoute />,
