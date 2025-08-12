@@ -1,16 +1,17 @@
 import Slider from "react-slick";
 import HomeCard from "../../categoryCard/CategoryCard";
-import { getCategories } from "../../../api/apiService";
+import { getCustomerFavorites } from "../../../api/apiService";
 import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import CustomerFavCard from "../../customerFavCard/CustomerFavCard";
 
-function Categories() {
-  const [categories, setCategories] = useState([]);
+function CustomerFavorites() {
+  const [CustomerFavorites, setCustomerFavorites] = useState([]);
 
   useEffect(() => {
-    getCategories()
-      .then((res) => setCategories(res.data.Categories))
+    getCustomerFavorites()
+      .then((res) => setCustomerFavorites(res.data))
       .catch((err) => console.error(err));
   }, []);
 
@@ -48,12 +49,12 @@ function Categories() {
   return (
     <section className="app-container mx-auto py-12">
       <h2 className="text-2xl font-bold mb-8 text-app-secondary">
-        Health Categories
+        Customer Favorites
       </h2>
       <Slider {...settings}>
-        {categories.map((category) => (
-          <div key={category.id} className="px-3">
-            <HomeCard category={category} />
+        {CustomerFavorites.map((fav) => (
+          <div key={fav.id} className="px-3">
+            <CustomerFavCard fav={fav} />
           </div>
         ))}
       </Slider>
@@ -61,4 +62,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default CustomerFavorites;

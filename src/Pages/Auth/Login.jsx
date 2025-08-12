@@ -43,7 +43,7 @@ export default function Login() {
         (u) => u.email === data.email && u.password === data.password
       );
       if (!user) throw new Error("Invalid email or password");
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("currentUser", JSON.stringify(user));
       dispatch(loginSuccess(user));
       navigate("/");
     } catch (err) {

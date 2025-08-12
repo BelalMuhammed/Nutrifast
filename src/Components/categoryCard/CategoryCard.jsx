@@ -1,6 +1,6 @@
 "use client";
 
-export function HomeCard({ category }) {
+export function CategoryCard({ category }) {
   return (
     <div className="min-w-[250px] rounded-xl overflow-hidden shadow-sm bg-white">
       <img
@@ -12,7 +12,7 @@ export function HomeCard({ category }) {
         <h5 className="text-lg font-semibold text-gray-900">{category.name}</h5>
         <a
           href={`/category/${category.slug || category.id}`}
-          className="text-green-600 hover:underline"
+          className="text-app-tertiary"
         >
           Shop {category.name}
         </a>
@@ -21,4 +21,4 @@ export function HomeCard({ category }) {
   );
 }
 
-export default HomeCard;
+export default CategoryCard;

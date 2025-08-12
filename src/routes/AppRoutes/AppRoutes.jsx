@@ -7,6 +7,7 @@ import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
+import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 
@@ -18,9 +19,6 @@ const ProductDetails = lazy(() =>
 const Auth = lazy(() => import("../../Pages/Auth/Auth"));
 const Cart = lazy(() => import("../../Pages/Cart/Cart"));
 const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
-const VendorDashboard = lazy(() =>
-  import("../../Pages/VendorDashboard/VendorDashboard")
-);
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
 const AdminDashboard = lazy(() =>
   import("../../Pages/AdminDashboard/AdminDashboard")
@@ -28,7 +26,7 @@ const AdminDashboard = lazy(() =>
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
 const VendorRegisteration = lazy(() =>
-  import("../../Pages/vindorRegisteration/VendorRegisteration")
+  import("../../Pages/vindorRegisteration/VendorRegistration")
 );
 
 export default function AppRoutes() {
@@ -95,10 +93,10 @@ export default function AppRoutes() {
               path: "myOrders",
               element: <MyOrders />,
             },
-            {
-              path: "vendorDashboard",
-              element: <VendorDashboard />,
-            },
+            // {
+            //   path: "vendorDashboard",
+            //   element: <VendorDashboard />,
+            // },
             {
               path: "adminDashboard",
               element: <AdminDashboard />,
