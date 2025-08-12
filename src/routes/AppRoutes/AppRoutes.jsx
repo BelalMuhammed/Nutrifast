@@ -22,14 +22,16 @@ const VendorDashboard = lazy(() =>
   import("../../Pages/VendorDashboard/VendorDashboard")
 );
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
-const AdminDashboard = lazy(() =>
-  import("../../Pages/AdminDashboard/AdminDashboard")
-);
+const AdminDashboard = lazy(() => {
+  import("../../Pages/AdminDashboard/AdminDashboard");
+});
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
 const VendorRegisteration = lazy(() =>
   import("../../Pages/vindorRegisteration/VendorRegisteration")
 );
+
+const SearchPage = lazy(() => import("../../Pages/search/SearchPage"));
 
 export default function AppRoutes() {
   const routes = createBrowserRouter([
@@ -49,6 +51,10 @@ export default function AppRoutes() {
         {
           path: "shop",
           element: <Shop />,
+        },
+        {
+          path: "search",
+          element: <SearchPage />,
         },
         {
           path: "product/:id",
