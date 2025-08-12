@@ -1,10 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
 import { increaseQty, decreaseQty, removeFromCart } from "../../Redux/slices/cartSlice";
 import Button from "../../Components/shared/Buttons/Button";
-
+  import { useNavigate } from "react-router-dom";
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const goToCheckout = () => {
+    navigate("/checkout");
+  };
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -87,7 +92,7 @@ function Cart() {
       </div>
 
       <div className="flex justify-center sm:justify-end">
-        <Button text="Proceed to Checkout" />
+        <Button text="Proceed to Checkout" onClick={goToCheckout} />
       </div>
     </div>
   );
