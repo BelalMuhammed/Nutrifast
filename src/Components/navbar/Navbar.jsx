@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiShoppingCart, FiSearch, FiMenu, FiX, FiHeart } from "react-icons/fi";
 import logoImg from "../../assets/logo.png";
+import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,14 +53,7 @@ function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          <div className="relative w-64">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-[#EBF2EB] w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none hover:scale-105"
-            />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl cursor-pointer " />
-          </div>
+          <NavBarSearch/>
           <Link to="/cart">
             <FiShoppingCart className=" bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
           </Link>
