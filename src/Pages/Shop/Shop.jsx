@@ -15,7 +15,6 @@ import SortSelect from "../../Components/shop/SortSelect/SortSelect";
 function Shop() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
-
   const [sortOption, setSortOption] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -56,61 +55,50 @@ function Shop() {
   };
 
   return (
-    <div className='flex gap-6 px-6 py-8 min-h-screen'>
+    <div className="flex gap-6 px-6 py-8 min-h-screen">
       {/* Sidebar or Drawer */}
       {isMobile ? (
         <>
-          <Button onClick={() => setDrawerOpen(true)} className='mb-4'>
+          <Button onClick={() => setDrawerOpen(true)} className="mb-4">
             Filters
           </Button>
           <Drawer
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            className='transition-all duration-500 ease-in-out'>
-            <DrawerHeader title='Filters' />
+            className="transition-all duration-500 ease-in-out"
+          >
+            <DrawerHeader title="Filters" />
             <DrawerItems>
               <SideFilter products={products} onFilter={setFilteredProducts} />
             </DrawerItems>
           </Drawer>
         </>
       ) : (
-        <div className='w-[280px] shrink-0'>
+        <div className="w-[280px] shrink-0">
           <SideFilter products={products} onFilter={setFilteredProducts} />
         </div>
       )}
 
       {/* Main Content */}
-      <div className='flex-1'>
-        <h1 className='text-2xl font-semibold text-app-primary mb-3'>
+      <div className="flex-1">
+        <h1 className="text-2xl font-semibold text-app-primary mb-3">
           Shop All Products
         </h1>
 
-        <div className='flex flex-wrap gap-2 mb-6'>
-          {["Plant-Based", "Free from Gluten", "0-200 Calories"].map((tag) => (
-            <span
-              key={tag}
-              className='bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium'>
-              {tag}
-            </span>
-          ))}
-        </div>
-
         <SortSelect sortOption={sortOption} setSortOption={setSortOption} />
-
 
         {/* Product Grid */}
         <div className="flex flex-wrap gap-5 justify-center">
-
           {loading ? (
-            <div className='w-full flex justify-center pt-10'>
-              <Spinner size='xl' color='success' />
+            <div className="w-full flex justify-center pt-10">
+              <Spinner size="xl" color="success" />
             </div>
           ) : getSortedProducts().length > 0 ? (
             getSortedProducts().map((product) => (
               <ProductCard key={product.id} product={product} />
             ))
           ) : (
-            <p className='text-gray-500 pt-10'>
+            <p className="text-gray-500 pt-10">
               No products found matching your filters.
             </p>
           )}
