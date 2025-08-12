@@ -6,111 +6,119 @@ import logoImg from "../../assets/logo.png";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <nav className="w-full bg-[#FFFFFF] shadow-md flex justify-between items-center px-[40px]">
-      <Link to="/">
-        <img className="!max-w-none w-30" src={logoImg} alt="logo" />
-      </Link>
-
-      <div className="w-[1086px] px-4 py-4 flex items-center justify-between relative">
-        <div className="hidden md:flex flex-1  space-x-8">
-          <Link
-            to="/"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Home
-          </Link>
-          <Link
-            to="/shop"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Shop
-          </Link>
-          <Link
-            to="/about"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="text-gray-700 hover:text-blue-600 transition  duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Contact
-          </Link>
-          <Link
-            to="/login"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Login
-          </Link>
-          <Link
-            to="/choose-role"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Sign Up
-          </Link>
-        </div>
-
-        <div className="hidden md:flex items-center space-x-6">
-          <div className="relative w-64">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-[#EBF2EB] w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none hover:scale-105"
-            />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl cursor-pointer " />
+    <nav className='w-full bg-white shadow-lg  sticky top-0 z-50'>
+      <div className='max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-2'>
+        {/* Logo */}
+        <Link to='/' className='flex items-center gap-2'>
+          <img className='w-35 h-20 object-contain' src={logoImg} alt='logo' />
+        </Link>
+        {/* Desktop Menu */}
+        <div className='hidden md:flex flex-1 items-center justify-between ml-8'>
+          <div className='flex space-x-6'>
+            <Link
+              to='/'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Home
+            </Link>
+            <Link
+              to='/shop'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Shop
+            </Link>
+            <Link
+              to='/about'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              About Us
+            </Link>
+            <Link
+              to='/contact'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Contact
+            </Link>
+            <Link
+              to='/login'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Login
+            </Link>
+            <Link
+              to='/choose-role'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Sign Up
+            </Link>
           </div>
-          <Link to="/cart">
-            <FiShoppingCart className=" bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
-          </Link>
-          <Link to="/wishList">
-            <FiHeart className="bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
-          </Link>
+          <div className='flex items-center space-x-4 ml-8'>
+            <div className='relative w-48'>
+              <input
+                type='text'
+                placeholder='Search...'
+                className='bg-app-quaternary/20 w-full pl-10 pr-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-app-primary text-app-tertiary'
+              />
+              <FiSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-app-primary text-xl cursor-pointer' />
+            </div>
+            <Link to='/cart' className='relative'>
+              <FiShoppingCart className='w-8 h-8 p-1 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
+            </Link>
+            <Link to='/wishList' className='relative'>
+              <FiHeart className='w-8 h-8 p-1 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
+            </Link>
+          </div>
         </div>
-
+        {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-2xl text-gray-700 absolute right-4 top-1"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? (
-            <FiX className="absolute right-[-120px] top-[-70px]" />
-          ) : (
-            <FiMenu />
-          )}
+          className='md:hidden text-3xl text-app-tertiary ml-2'
+          onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
-
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-4 pb-4">
-          <Link
-            to="/shop"
-            className="block py-2 text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125"
-          >
-            Shop
-          </Link>
-          <Link
-            to="/about"
-            className="block py-2 text-gray-700 hover:text-blue-600"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="block py-2 text-gray-700 hover:text-blue-600"
-          >
-            Contact
-          </Link>
-          <Link
-            to="/login"
-            className="block py-2 text-gray-700 hover:text-blue-600"
-          >
-            Login
-          </Link>
-
-          <div className="flex space-x-6 mt-4">
-            <FiSearch className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600" />
-            <Link to="/cart">
-              <FiShoppingCart className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600" />
+        <div className='md:hidden bg-white shadow-lg rounded-b-xl px-4 py-4 animate-slideDown'>
+          <div className='flex flex-col gap-2 mb-4'>
+            <Link
+              to='/'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Home
+            </Link>
+            <Link
+              to='/shop'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Shop
+            </Link>
+            <Link
+              to='/about'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              About Us
+            </Link>
+            <Link
+              to='/contact'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Contact
+            </Link>
+            <Link
+              to='/login'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Login
+            </Link>
+            <Link
+              to='/choose-role'
+              className='text-base font-semibold text-app-tertiary hover:text-app-primary transition'>
+              Sign Up
+            </Link>
+          </div>
+          <div className='flex items-center space-x-4'>
+            <div className='relative w-40'>
+              <input
+                type='text'
+                placeholder='Search...'
+                className='bg-app-quaternary/20 w-full pl-10 pr-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-app-primary text-app-tertiary'
+              />
+              <FiSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-app-primary text-xl cursor-pointer' />
+            </div>
+            <Link to='/cart' className='relative'>
+              <FiShoppingCart className='w-8 h-8 p-1 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
+            </Link>
+            <Link to='/wishList' className='relative'>
+              <FiHeart className='w-8 h-8 p-1 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
             </Link>
           </div>
         </div>
