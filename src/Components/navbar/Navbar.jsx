@@ -11,7 +11,7 @@ function Navbar() {
         <img className="!max-w-none w-30" src={logoImg} alt="logo" />
       </Link>
 
-      <div className="w-[1086px] px-4 py-4 flex items-center justify-between relative">
+      <div className="w-[1086px] px-4 py-4 flex items-center justify-between relative ">
         <div className="hidden md:flex flex-1  space-x-8">
           <Link
             to="/"
