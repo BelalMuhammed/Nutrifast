@@ -8,6 +8,8 @@ import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
+import AboutUs from "../../Pages/AboutUs/AboutUs";
+import ContactUs from "../../Pages/ContactUs/ContactUs";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 
@@ -45,6 +47,14 @@ export default function AppRoutes() {
           index: true,
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "about",
+          element: <AboutUs />,
+        },
+        {
+          path: "contact",
+          element: <ContactUs />,
         },
         {
           path: "shop",

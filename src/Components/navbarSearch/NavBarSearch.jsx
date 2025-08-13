@@ -32,33 +32,42 @@ export default function NavBarSearch() {
   };
 
   return (
-    <div className="relative w-64">
-      <div className="flex items-center border rounded-full px-3 py-1 bg-white shadow-sm transition-all duration-300 focus-within:shadow-md">
-        <FiSearch className="text-gray-500 mr-2" />
+    <div className='relative w-64'>
+      <div className='flex items-center border border-gray-200 rounded-full px-4 py-2 bg-white/80 backdrop-blur-md shadow-md transition-all duration-300 focus-within:ring-2 focus-within:ring-app-primary focus-within:shadow-xl'>
+        <FiSearch className='text-app-primary mr-3 text-lg' />
         <input
-          type="text"
-          className="flex-1 outline-none text-sm"
-          placeholder="Search products..."
+          type='text'
+          className='flex-1 outline-none text-base bg-transparent placeholder-app-primary text-app-tertiary px-1'
+          placeholder='Search products...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          aria-label='Search products'
         />
       </div>
 
       {suggestions.length > 0 && (
-        <ul className="absolute left-0 mt-1 w-full bg-white shadow-lg rounded-lg overflow-hidden z-50 animate-fadeIn">
+        <ul className='absolute left-0 mt-2 w-full bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl overflow-hidden z-50 animate-fadeIn border border-gray-100 transition-all duration-300'>
           {suggestionsLoading ? (
-            <li className="px-4 py-2 text-gray-500 text-sm">Loading...</li>
+            <li className='px-4 py-2 text-gray-400 text-base'>Loading...</li>
           ) : (
             suggestions.map((item) => (
               <li
                 key={item.id}
-                className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                className='px-4 py-2 text-base text-app-tertiary hover:bg-app-quaternary/80 hover:text-app-primary cursor-pointer transition-all duration-150'
+                tabIndex={0}
+                role='button'
+                aria-label={`Go to ${item.name}`}
                 onClick={() => {
                   navigate(`/product/${item.id}`);
                   dispatch(clearSuggestions());
                 }}
-              >
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    navigate(`/product/${item.id}`);
+                    dispatch(clearSuggestions());
+                  }
+                }}>
                 {item.name}
               </li>
             ))

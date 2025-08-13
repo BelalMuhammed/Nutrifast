@@ -11,7 +11,9 @@
 body {
   @apply font-sans;
 }
-
+li {
+  list-style: none;
+}
 a {
   @apply no-underline hover:no-underline;
 }
@@ -91,17 +93,7 @@ a {
 .btn-app-tertiary:hover {
   opacity: 0.9;
 }
-.product .btn-app {
-  transition: transform 1s, opacity 1s;
-  transform: translateY(100%);
-  opacity: 0;
-}
-.product:hover .btn-app {
-  opacity: 1;
-  transform: translateY(0%);
-}
 
-/*  */
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -5,6 +5,7 @@ import { fetchProductById } from "../../Redux/slices/productSlice";
 import RelatedProducts from "../../Components/productDetail/RelatedProducts/RelatedProducts";
 import ProductDetailsCard from "../../Components/productDetail/ProductDetailsCard/ProductDetailsCard";
 import LoaderSpinner from "../../Components/shared/Loaders/Loader";
+import ProductReview from "../../Components/productDetail/ProductReview/ProductReview";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -15,14 +16,15 @@ function ProductDetails() {
     dispatch(fetchProductById(id));
   }, [dispatch, id]);
 
-  if (loading || !selectedProduct)
-    return (
-     <LoaderSpinner />
-    );
+  if (loading || !selectedProduct) return <LoaderSpinner />;
 
   return (
     <>
       <ProductDetailsCard selectedProduct={selectedProduct} />
+      <ProductReview
+        productId={selectedProduct.id}
+        reviews={selectedProduct.reviews || []}
+      />
       <RelatedProducts
         category={selectedProduct.category}
         currentProductId={selectedProduct.id}

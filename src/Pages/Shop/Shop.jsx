@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/slices/productSlice";
 import SideFilter from "../../Components/shop/SideFilter/SideFilter";
 import ProductCard from "../../Components/shop/ProductCard/ProductCard";
+import sortingLogic from "../../utlis/sortingLogic";
+
 import {
   Spinner,
   Drawer,
@@ -11,11 +13,11 @@ import {
   Button,
 } from "flowbite-react";
 import SortSelect from "../../Components/shop/SortSelect/SortSelect";
+import { FiMenu } from "react-icons/fi";
 
 function Shop() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
-
   const [sortOption, setSortOption] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -41,32 +43,28 @@ function Shop() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Sorting logic
   const getSortedProducts = () => {
-    if (!sortOption) return filteredProducts;
-
-    const sorted = [...filteredProducts];
-    if (sortOption === "price-high")
-      return sorted.sort((a, b) => b.price - a.price);
-    if (sortOption === "price-low")
-      return sorted.sort((a, b) => a.price - b.price);
-    if (sortOption === "rating-high")
-      return sorted.sort((a, b) => b.rating - a.rating);
-    return sorted;
+    return sortingLogic(filteredProducts, sortOption);
   };
-
   return (
     <div className='flex gap-6 px-6 py-8 min-h-screen'>
       {/* Sidebar or Drawer */}
       {isMobile ? (
         <>
-          <Button onClick={() => setDrawerOpen(true)} className='mb-4'>
-            Filters
-          </Button>
+          <div className='fixed bottom-8 left-6 z-30'>
+            <Button
+              onClick={() => setDrawerOpen(true)}
+              color='success'
+              className='rounded-full shadow-lg px-6 py-2 font-medium flex items-center gap-2 bg-white cursor-pointer'>
+              <FiMenu size={20} />
+              Filters
+            </Button>
+          </div>
           <Drawer
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            className='transition-all duration-500 ease-in-out'>
+            className='transition-all duration-600 ease-in-out w-[370px]'
+            position='left'>
             <DrawerHeader title='Filters' />
             <DrawerItems>
               <SideFilter products={products} onFilter={setFilteredProducts} />
@@ -78,29 +76,15 @@ function Shop() {
           <SideFilter products={products} onFilter={setFilteredProducts} />
         </div>
       )}
-
-      {/* Main Content */}
       <div className='flex-1'>
-        <h1 className='text-2xl font-semibold text-app-primary mb-3'>
-          Shop All Products
-        </h1>
-
-        <div className='flex flex-wrap gap-2 mb-6'>
-          {["Plant-Based", "Free from Gluten", "0-200 Calories"].map((tag) => (
-            <span
-              key={tag}
-              className='bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium'>
-              {tag}
-            </span>
-          ))}
+        <div className='mb-8'>
+          <h1 className='text-3xl font-bold text-app-primary  tracking-tight text-center'>
+            Shop All Products
+          </h1>
         </div>
-
         <SortSelect sortOption={sortOption} setSortOption={setSortOption} />
-
-
         {/* Product Grid */}
-        <div className="flex flex-wrap gap-5 justify-center">
-
+        <div className='flex flex-wrap gap-5 justify-center '>
           {loading ? (
             <div className='w-full flex justify-center pt-10'>
               <Spinner size='xl' color='success' />

@@ -11,52 +11,50 @@ function ProductCard({ product }) {
   const isInWishlist = wishlistItems.some((item) => item.id === product.id);
 
   return (
-    <div className="product bg-white rounded-2xl p-5 shadow-lg w-[280px]">
-      {/* Product Image */}
-      <Link to={`/product/${id}`}>
-        <img
-          src={image}
-          alt={name}
-          className="w-full object-contain mb-4 rounded-2xl"
-        />
-      </Link>
-
-      {/* Name */}
-      <h3 className="text-lg font-semibold text-app-secondary mb-2">{name}</h3>
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-3">
+    <div className='product bg-white rounded-2xl p-5 shadow-md w-[320px] relative transition-transform duration-200  hover:shadow-lg group border border-gray-100 flex flex-col'>
+      {/* Image and heart button */}
+      <div className='relative h-[160px] rounded-xl overflow-hidden mb-4'>
+        <Link to={`/product/${id}`}>
+          <img
+            src={image}
+            alt={name}
+            className='w-full h-full object-cover rounded-xl border border-gray-100 hover:scale-105 transition-transform duration-200'
+          />
+        </Link>
+        <button
+          onClick={() => dispatch(toggleWishlistItem(product))}
+          className={`absolute top-3 right-3 flex items-center justify-center w-8 h-8 rounded-full bg-white/80 shadow-lg border border-gray-200 transition-colors duration-200 hover:bg-red-50 ${
+            isInWishlist ? "text-red-500" : "text-gray-400"
+          }`}
+          style={{ backdropFilter: "blur(8px)" }}
+          aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <FaHeart size={18} />
+        </button>
+      </div>
+      <h3 className='text-lg font-bold text-app-secondary mb-2'>{name}</h3>
+      <div className='flex flex-wrap gap-2 mb-3'>
         {tags.map((tag) => (
           <span
             key={tag}
-            className="px-2 py-1 text-xs rounded-full bg-app-quaternary text-app-secondary font-medium"
-          >
+            className='px-2 py-1 text-xs rounded-lg bg-gray-100 text-app-secondary font-medium border border-gray-200'>
             {tag}
           </span>
         ))}
       </div>
 
       {/* Short Description */}
-      <p className="text-sm text-app-secondary mb-4 line-clamp-2">
-        {description}
-      </p>
+      <p className='text-sm text-gray-600 mb-3 line-clamp-2'>{description}</p>
 
       {/* Price */}
-      <span className="text-lg font-bold text-app-secondary mb-4 block">
+      <span className='text-base font-bold text-green-700 mb-3 block'>
         {price} EGP
       </span>
 
+      <div className='flex-1'></div>
       {/* Add to Cart Button */}
-      <div className="flex justify-between ">
+      <div className='flex justify-end mt-auto'>
         <AddButton product={product} />
-        <button
-          onClick={() => dispatch(toggleWishlistItem(product))}
-          className={`text-xl ${
-            isInWishlist ? "text-red-500" : "text-gray-600"
-          }`}
-        >
-          <FaHeart />
-        </button>
       </div>
     </div>
   );
