@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiShoppingCart, FiSearch, FiMenu, FiX, FiHeart } from "react-icons/fi";
 import logoImg from "../../assets/logo.png";
+import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,6 +56,7 @@ function Navbar() {
               />
               <FiSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-app-primary text-xl cursor-pointer' />
             </div>
+                      <NavBarSearch/>
             <Link to='/cart' className='relative'>
               <FiShoppingCart className='w-8 h-8 p-1 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
             </Link>
