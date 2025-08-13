@@ -5,7 +5,7 @@ import { fetchProductById } from "../../Redux/slices/productSlice";
 import RelatedProducts from "../../Components/productDetail/RelatedProducts/RelatedProducts";
 import ProductDetailsCard from "../../Components/productDetail/ProductDetailsCard/ProductDetailsCard";
 import LoaderSpinner from "../../Components/shared/Loaders/Loader";
-import ProductReview from "../../Components/productDetail/ProductDetailsCard/ProductReview";
+import ProductReview from "../../Components/productDetail/ProductReview/ProductReview";
 
 function ProductDetails() {
   const { id } = useParams();
