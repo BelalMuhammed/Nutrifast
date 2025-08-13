@@ -101,14 +101,17 @@ function SideFilter({ products = [], onFilter }) {
             }
             className='border border-gray-100 rounded-xl mb-2 bg-white shadow-sm'>
             <div className='flex flex-col gap-2 px-2 py-2'>
-              {(filters[group] ?? []).map((item) => {
+              {(filters[group] ?? []).map((item, idx) => {
                 const value =
                   item.min !== undefined
                     ? { min: item.min, max: item.max }
                     : item.name;
+                // Use id if available, else name, else index+value string
+                const key =
+                  item.id || item.name || `${idx}-${JSON.stringify(value)}`;
                 return (
                   <label
-                    key={item.id || item.name}
+                    key={key}
                     className='flex items-center gap-2 text-base text-gray-700 bg-gray-50 rounded-lg px-3 py-2 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-100'>
                     <Checkbox
                       checked={selectedFilters[group]?.some(
