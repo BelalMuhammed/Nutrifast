@@ -73,46 +73,66 @@ const ProductReview = ({ productId }) => {
   };
 
   return (
-    <div className='bg-white rounded-lg shadow-md p-6 mt-8'>
-      <h2 className='text-2xl font-bold mb-4 text-green-700'>
+    <div className='bg-white rounded-2xl shadow-lg p-8 mt-10 max-w-6xl mx-auto border border-gray-100'>
+      <h2 className='text-3xl font-extrabold mb-6 text-app-tertiary tracking-tight'>
         Product Reviews
       </h2>
-      {loading && <p>Loading...</p>}
-      {error && <p className='text-red-500'>{error}</p>}
+      {loading && <p className='text-app-primary'>Loading...</p>}
+      {error && <p className='text-red-500 mb-2'>{error}</p>}
       {!loading && (!reviews || reviews.length === 0) && (
-        <p className='text-gray-500'>No reviews yet.</p>
+        <div className='flex flex-col items-center justify-center py-8'>
+          <img
+            src='https://cdn-icons-png.flaticon.com/512/747/747376.png'
+            alt='No reviews'
+            className='w-16 h-16 mb-2 opacity-60'
+          />
+          <p className='text-gray-400 text-lg'>No reviews yet.</p>
+        </div>
       )}
       {reviews && reviews.length > 0 && (
-        <ul className='mb-6'>
+        <ul className='mb-8'>
           {reviews.map((review, idx) => (
-            <li key={idx} className='border-b py-3'>
-              <div className='flex items-center mb-1'>
-                <span className='font-semibold mr-2'>{review.username}</span>
-                <span className='flex text-yellow-500'>
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar
-                      key={i}
-                      className={i < review.rating ? "" : "opacity-30"}
-                    />
-                  ))}
-                </span>
+            <li
+              key={idx}
+              className='flex gap-3 items-start py-5 border-b border-gray-100'>
+              <div className='flex-shrink-0 w-10 h-10 rounded-full bg-app-tertiary flex items-center justify-center text-white font-bold text-lg shadow'>
+                {review.username?.charAt(0).toUpperCase() || "U"}
               </div>
-              <p className='text-gray-700'>{review.comment}</p>
+              <div className='flex-1'>
+                <div className='flex items-center gap-2 mb-1'>
+                  <span className='font-semibold text-app-secondary text-base'>
+                    {review.username}
+                  </span>
+                  <span className='flex text-yellow-300'>
+                    {[...Array(5)].map((_, i) => (
+                      <FaStar
+                        key={i}
+                        className={i < review.rating ? "" : "opacity-30"}
+                      />
+                    ))}
+                  </span>
+                </div>
+                <p className='text-gray-700 text-sm leading-relaxed'>
+                  {review.comment}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
       )}
-      <div>
+      <div className='bg-gray-50 rounded-xl p-6 shadow-inner'>
         {user && typeof user === "object" && user.username ? (
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
             <div>
-              <label className='block font-medium mb-1'>Your Rating</label>
-              <div className='flex'>
+              <label className='block font-semibold mb-2 text-app-secondary'>
+                Your Rating
+              </label>
+              <div className='flex gap-1'>
                 {[...Array(5)].map((_, i) => (
                   <FaStar
                     key={i}
-                    className={`cursor-pointer text-2xl ${
-                      i < rating ? "text-yellow-500" : "text-gray-300"
+                    className={`cursor-pointer text-3xl transition-colors duration-150 ${
+                      i < rating ? "text-yellow-400" : "text-gray-300"
                     }`}
                     onClick={() => setRating(i + 1)}
                   />
@@ -125,11 +145,14 @@ const ProductReview = ({ productId }) => {
               )}
             </div>
             <div>
-              <label className='block font-medium mb-1'>Your Comment</label>
+              <label className='block font-semibold mb-2 text-app-secondary'>
+                Your Comment
+              </label>
               <textarea
                 {...register("comment", { required: "Comment is required" })}
-                className='w-full border rounded p-2'
+                className='w-full border border-app-secondary rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-app-tertiary text-gray-700'
                 rows={3}
+                placeholder='Write your review...'
               />
               {errors.comment && (
                 <span className='text-red-500 text-sm'>
@@ -139,13 +162,15 @@ const ProductReview = ({ productId }) => {
             </div>
             <button
               type='submit'
-              className='bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700'
+              className='bg-app-tertiary text-white font-semibold py-2 px-6 rounded-lg hover:bg-app-secondary transition'
               disabled={loading || rating === 0}>
               {loading ? "Submitting..." : "Add Review"}
             </button>
           </form>
         ) : (
-          <p className='text-gray-500'>Please log in to add a review.</p>
+          <p className='text-gray-400 text-base text-center'>
+            Please log in to add a review.
+          </p>
         )}
       </div>
     </div>
