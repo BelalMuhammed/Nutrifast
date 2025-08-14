@@ -1,3 +1,6 @@
+import React from "react";
+import { FaLeaf, FaCheck, FaHeart } from "react-icons/fa";
+
 const AboutUs = () => (
   <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
     {/* Hero Section */}
@@ -18,19 +21,7 @@ const AboutUs = () => (
       <div className='flex flex-wrap gap-4 justify-center mt-4'>
         <div className='flex flex-col items-center'>
           <span className='bg-app-primary text-white rounded-full p-3 mb-2 shadow'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M12 8c-1.657 0-3 1.343-3 3 0 1.657 1.343 3 3 3s3-1.343 3-3c0-1.657-1.343-3-3-3z'
-              />
-            </svg>
+            <FaLeaf className='h-6 w-6' />
           </span>
           <span className='text-app-tertiary font-semibold'>
             Quality Ingredients
@@ -38,19 +29,7 @@ const AboutUs = () => (
         </div>
         <div className='flex flex-col items-center'>
           <span className='bg-app-primary text-white rounded-full p-3 mb-2 shadow'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M5 13l4 4L19 7'
-              />
-            </svg>
+            <FaCheck className='h-6 w-6' />
           </span>
           <span className='text-app-tertiary font-semibold'>
             Healthy Recipes
@@ -58,19 +37,7 @@ const AboutUs = () => (
         </div>
         <div className='flex flex-col items-center'>
           <span className='bg-app-primary text-white rounded-full p-3 mb-2 shadow'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M12 4v16m8-8H4'
-              />
-            </svg>
+            <FaHeart className='h-6 w-6' />
           </span>
           <span className='text-app-tertiary font-semibold'>
             Community Support
@@ -82,7 +49,7 @@ const AboutUs = () => (
     <div className='max-w-4xl mx-auto px-4 py-10'>
       <div className='bg-white rounded-2xl shadow-xl p-8 flex flex-col md:flex-row gap-8 items-center'>
         <img
-          src='/src/assets/logo.png'
+          src='/logo.png'
           alt='NutriFast Logo'
           className='w-32 h-32 rounded-full object-cover border-2 border-app-primary shadow-md mb-4 md:mb-0'
         />

@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchProductById } from "../../Redux/slices/productSlice";
+import {
+  fetchProductById,
+  fetchProducts,
+} from "../../Redux/slices/productSlice";
 import RelatedProducts from "../../Components/productDetail/RelatedProducts/RelatedProducts";
 import ProductDetailsCard from "../../Components/productDetail/ProductDetailsCard/ProductDetailsCard";
 import LoaderSpinner from "../../Components/shared/Loaders/Loader";
@@ -10,11 +13,24 @@ import ProductReview from "../../Components/productDetail/ProductReview/ProductR
 function ProductDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { selectedProduct, loading } = useSelector((state) => state.products);
+  const { selectedProduct, loading, products } = useSelector(
+    (state) => state.products
+  );
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [id]);
 
   useEffect(() => {
     dispatch(fetchProductById(id));
   }, [dispatch, id]);
+
+  // Fetch all products if not loaded (for RelatedProducts)
+  useEffect(() => {
+    if (!products || products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products]);
 
   if (loading || !selectedProduct) return <LoaderSpinner />;
 
