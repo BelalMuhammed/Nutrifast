@@ -17,6 +17,9 @@ li {
 a {
   @apply no-underline hover:no-underline;
 }
+button {
+  @apply cursor-pointer;
+}
 
 .app-container {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
@@ -24,12 +27,14 @@ a {
 
 /* Css Variables */
 :root {
-  --color-primary: #54d12b;
-  --color-secondary: #121712;
-  --color-tertiary: #5e964f;
-  --color-quaternary: #ebf2e8;
-  --color-muted: #fafcf7;
+  --color-primary: #388e3c; /* Deep Leafy Green */
+  --color-secondary: #4caf50; /* Main Button/Check Green */
+  --color-tertiary: #0a472e; /* Deep Forest Green */
+  --color-light: #b6e388; /* Light Lettuce Green */
+  --color-muted: #e9f5dbeb; /* Soft Background Green */
+  /* --color-muted: #f8fafc; Misty White */
   --color-white: #fff;
+  --color-accent: #e65100; /* Deep Orange Accent */
 }
 
 /* Text colors */
@@ -47,7 +52,9 @@ a {
 .text-app-tertiary {
   color: var(--color-tertiary);
 }
-
+.text-app-accent {
+  color: var(--color-accent);
+}
 /* Background colors */
 .bg-app-primary {
   background-color: var(--color-primary);
@@ -67,6 +74,9 @@ a {
 
 .bg-app-muted {
   background-color: var(--color-muted);
+}
+.bg-app-light {
+  background-color: var(--color-light);
 }
 
 /* Buttons */
@@ -107,4 +117,41 @@ a {
 
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
+}
+button {
+  cursor: pointer;
+}
+/* Global checkbox style */
+.checkbox-app {
+  @apply w-5 h-5 rounded border-2  focus:ring-2  transition duration-150;
+  accent-color: var(--color-accent);
+}
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 1.8s ease-in-out infinite;
+}
+
+/* Unified Slider Dots Styling */
+.app-slider .slick-dots {
+  bottom: -60px !important;
+}
+
+.app-slider .slick-dots li button:before {
+  color: var(--color-accent) !important;
+  font-size: 12px !important;
+}
+
+.app-slider .slick-dots li.slick-active button:before {
+  color: var(--color-primary) !important;
 }
