@@ -17,13 +17,13 @@ const ContactUs = () => {
   };
 
   return (
-    <div className='w-full min-h-screen  py-0'>
+  <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
       {/* Hero Section */}
-      <div className='w-full flex flex-col items-center justify-center py-12 px-4'>
+      <div className='w-full flex flex-col items-center justify-center pt-12 px-4'>
         <span className='bg-app-primary text-white rounded-full p-4 mb-4 shadow-lg'>
           <FaEnvelope size={40} />
         </span>
-        <h1 className='text-4xl md:text-5xl font-extrabold text-app-tertiary mb-2 text-center'>
+        <h1 className='text-3xl md:text-4xl font-extrabold text-app-primary mb-2 text-center'>
           Contact Us
         </h1>
         <p className='text-lg md:text-xl text-gray-700 text-center max-w-xl mb-4'>
@@ -34,7 +34,7 @@ const ContactUs = () => {
       {/* Contact Form Section */}
       <div className='max-w-2xl mx-auto px-4 py-8'>
         <form
-          className='bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-6'
+          className='bg-white rounded-2xl shadow-sm p-8 flex flex-col gap-6'
           onSubmit={handleSubmit(onSubmit)}
           noValidate>
           <div className='flex flex-col gap-2'>
@@ -115,7 +115,7 @@ const ContactUs = () => {
             Send Message
           </button>
         </form>
-        <div className='mt-10 bg-app-quaternary/30 rounded-xl p-6 shadow flex flex-col gap-2'>
+        <div className='mt-10 bg-app-quaternary/30 rounded-xl p-6 shadow flex flex-col gap-2 mb-10'>
           <h2 className='text-xl font-bold text-app-tertiary mb-2 flex items-center gap-2'>
             <FaEnvelope className='text-app-primary' /> Contact Details
           </h2>

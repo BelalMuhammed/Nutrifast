@@ -6,12 +6,20 @@ import { toggleWishlistItem } from "../../../Redux/slices/wishListSlice";
 
 function ProductCard({ product }) {
   const dispatch = useDispatch();
-  const { name, price, id, image, description, tags = [] } = product;
+  const {
+    name,
+    price,
+    id,
+    image,
+    description,
+    tags = [],
+    calories = 0,
+  } = product;
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const isInWishlist = wishlistItems.some((item) => item.id === product.id);
 
   return (
-    <div className='product bg-white rounded-2xl p-5 shadow-md w-[320px] relative transition-transform duration-200  hover:shadow-lg group border border-gray-100 flex flex-col'>
+    <div className='product bg-white rounded-2xl p-5 shadow-md w-full max-w-[300px] md:max-w-[320px] md:w-[320px] min-w-0 relative transition-transform duration-200 hover:shadow-lg group border border-gray-100 flex flex-col'>
       {/* Image and heart button */}
       <div className='relative h-[160px] rounded-xl overflow-hidden mb-4'>
         <Link to={`/product/${id}`}>
@@ -27,8 +35,9 @@ function ProductCard({ product }) {
             isInWishlist ? "text-red-500" : "text-gray-400"
           }`}
           style={{ backdropFilter: "blur(8px)" }}
-          aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-        >
+          aria-label={
+            isInWishlist ? "Remove from wishlist" : "Add to wishlist"
+          }>
           <FaHeart size={18} />
         </button>
       </div>
@@ -46,14 +55,20 @@ function ProductCard({ product }) {
       {/* Short Description */}
       <p className='text-sm text-gray-600 mb-3 line-clamp-2'>{description}</p>
 
-      {/* Price */}
-      <span className='text-base font-bold text-green-700 mb-3 block'>
-        {price} EGP
-      </span>
+      {/* Calories */}
+      <div className='flex items-center gap-2 mb-3'>
+        <span className='text-sm font-medium text-app-accent'>
+          Calories:
+        </span>
+        <span className='text-base font-bold text-app-tertiary'>
+          {calories || "N/A"} kcal
+        </span>
+      </div>
 
       <div className='flex-1'></div>
-      {/* Add to Cart Button */}
-      <div className='flex justify-end mt-auto'>
+      {/* Price and Add to Cart Button */}
+      <div className='flex items-center justify-between mt-auto'>
+        <span className='text-lg font-bold text-green-700'>{price} EGP</span>
         <AddButton product={product} />
       </div>
     </div>
