@@ -17,27 +17,27 @@ function Categories() {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 600,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 3000,
     pauseOnHover: true,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1200,
         settings: {
           slidesToShow: 3,
         },
       },
       {
-        breakpoint: 768,
+        breakpoint: 880,
         settings: {
           slidesToShow: 2,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 600,
         settings: {
           slidesToShow: 1,
         },
@@ -46,17 +46,28 @@ function Categories() {
   };
 
   return (
-    <section className="app-container mx-auto py-12">
-      <h2 className="text-2xl font-bold mb-8 text-app-secondary">
-        Health Categories
-      </h2>
-      <Slider {...settings}>
-        {categories.map((category) => (
-          <div key={category.id} className="px-3">
-            <HomeCard category={category} />
-          </div>
-        ))}
-      </Slider>
+    <section className='mx-auto py-12 bg-app-muted'>
+      <div className='app-container '>
+        <div className=' flex flex-col items-center justify-center mb-8'>
+          <h2 className='text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight text-center mb-2 '>
+            Explore by Category
+          </h2>
+          <div className='w-16 h-1 rounded-full bg-app-accent mb-2' />
+          <p className='text-base md:text-lg text-app-secondary/80 text-center max-w-xl'>
+            Find the perfect healthy option for your lifestyle from our curated
+            categories.
+          </p>
+        </div>
+        <div className='app-slider pb-12'>
+          <Slider {...settings}>
+            {categories.map((category) => (
+              <div key={category.id} className='px-3'>
+                <HomeCard category={category} />
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </div>
     </section>
   );
 }
