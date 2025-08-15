@@ -8,6 +8,7 @@ import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
+import AddProducts from "../../Pages/AdminDashboard/addProducts/AddProducts";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 
@@ -44,6 +45,9 @@ export default function AppRoutes() {
           path: "/",
           element: <Home />,
         },
+        // by Belal
+        {   path: "addProduct",
+          element: <AddProducts />,},
         {
           path: "shop",
           element: <Shop />,
