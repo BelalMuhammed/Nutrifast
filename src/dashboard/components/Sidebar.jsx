@@ -34,12 +34,12 @@ export default function DashboardSidebar() {
           className="w-64 relative"
         >
           {/* Logo at the top, left-aligned */}
-          <div className="flex items-center h-20 border-b border-gray-200 px-4 absolute top-0 w-full md:relative">
+          <div className="flex items-center h-20  border-gray-200 px-4 absolute top-0 w-full md:relative">
             <h1 className="text-xl font-bold text-green-600">Nutrifast</h1>
             {/* Close button only visible on mobile */}
             <button
               onClick={() => setIsOpen(false)}
-              className="md:hidden ml-auto p-2 bg-gray-100 rounded-md shadow"
+              className="md:hidden ml-auto p-2 bg-gray-100 rounded-md shadow me-2"
             >
               <HiX size={20} />
             </button>
