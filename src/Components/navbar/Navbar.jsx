@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  FiShoppingCart,
-
-  FiMenu,
-  FiX,
-  FiHeart,
-  FiUser,
-} from "react-icons/fi";
+import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
 import { FaSignOutAlt, FaCog, FaList, FaUserShield } from "react-icons/fa";
-import logoImg from "../../../public/logo.png";
+import logoImg from "/logo.png";
 import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
@@ -30,118 +23,108 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full bg-white shadow-lg sticky top-0 z-50 ">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-2 sm:px-4 md:px-8 py-2">
+    <nav className='w-full bg-white shadow-lg sticky top-0 z-50'>
+      <div className='max-w-7xl mx-auto flex flex-wrap items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-3'>
         {/* Logo */}
         <Link
-          to="/"
-          className="flex items-center gap-2 min-w-[60px] flex-shrink-0"
-        >
-          <img className="w-32 h-16 object-contain" src={logoImg} alt="logo" />
+          to='/'
+          className='flex items-center gap-2 min-w-[50px] flex-shrink-0'>
+          <img
+            className='w-32 sm:w-36 md:w-40 lg:w-43 h-12 sm:h-14 md:h-15 lg:h-16 object-contain'
+            src={logoImg}
+            alt='logo'
+          />
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex flex-1 items-center justify-between ml-2 sm:ml-8 min-w-0">
-          <div className="flex flex-wrap space-x-3 sm:space-x-6 min-w-0">
+        <div className='hidden lg:flex flex-1 items-center justify-between ml-4 xl:ml-8 min-w-0'>
+          <div className='flex flex-wrap space-x-4 xl:space-x-6 min-w-0'>
             <Link
-              to="/"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/'
+              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
               Home
             </Link>
             <Link
-              to="/shop"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/shop'
+              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
               Shop
             </Link>
             <Link
-              to="/about"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/about'
+              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
               About Us
             </Link>
             <Link
-              to="/contact"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/contact'
+              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
               Contact
             </Link>
 
             {!user && (
               <>
                 <Link
-                  to="/login"
-                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-                >
+                  to='/login'
+                  className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
                   Login
                 </Link>
                 <Link
-                  to="/choose-role"
-                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-                >
+                  to='/choose-role'
+                  className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
                   Sign Up
                 </Link>
               </>
             )}
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-4 ml-2 sm:ml-8 min-w-0 flex-shrink-0">
+          <div className='flex items-center space-x-2 lg:space-x-4 ml-4 xl:ml-8 min-w-0 flex-shrink-0'>
             <NavBarSearch />
           </div>
 
           <div>
             {user && (
-              <div className="relative">
+              <div className='relative'>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2 focus:outline-none"
-                >
-                  <FiUser className="w-6 h-6 text-app-tertiary" />
-                  <span className="font-semibold text-base  text-app-tertiary hover:text-app-primary">
+                  className='flex items-center gap-1 lg:gap-2 focus:outline-none'>
+                  <FiUser className='w-5 h-5 lg:w-6 lg:h-6 text-app-tertiary' />
+                  <span className='font-semibold text-sm lg:text-base text-app-tertiary hover:text-app-primary whitespace-nowrap'>
                     {userName?.username || "account"}
                   </span>
                 </button>
                 {dropdownOpen && (
-                  <div className="absolute -right-10 mt-2 w-48 bg-white shadow-lg rounded-lg border z-50">
+                  <div className='absolute -right-10 mt-2 w-48 bg-white shadow-lg rounded-lg border z-50'>
                     <Link
-                      to="/cart"
-                      className="relative flex items-center gap-2 px-2 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
-                    >
-                      <FiShoppingCart className="w-8 h-7" />
+                      to='/cart'
+                      className='relative flex items-center gap-2 px-2 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
+                      <FiShoppingCart className='w-8 h-7' />
                       Cart
                     </Link>
                     <Link
-                      to="/wishList"
-                      className="relative flex items-center gap-2 px-2 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
-                    >
-                      <FiHeart className="w-8 h-7" />
+                      to='/wishList'
+                      className='relative flex items-center gap-2 px-2 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
+                      <FiHeart className='w-8 h-7' />
                       wishList
                     </Link>
                     <Link
-                      to="/myOrders"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
-                    >
+                      to='/myOrders'
+                      className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
                       <FaList /> My Orders
                     </Link>
                     <Link
-                      to="/settings"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
-                    >
+                      to='/settings'
+                      className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
                       <FaCog /> Settings
                     </Link>
                     {user.role === "admin" && (
                       <Link
-                        to="/adminDashboard"
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
-                      >
+                        to='/adminDashboard'
+                        className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
                         <FaUserShield /> Admin Dashboard
                       </Link>
                     )}
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
-                    >
+                      className='w-full text-left flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
                       <FaSignOutAlt /> Logout
                     </button>
                   </div>
@@ -153,55 +136,54 @@ function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden text-3xl text-app-tertiary ml-2 p-2 rounded focus:outline-none focus:ring-2 focus:ring-app-primary flex-shrink-0"
+          className='lg:hidden text-2xl sm:text-3xl text-app-tertiary ml-2 p-1 sm:p-2 rounded focus:outline-none focus:ring-2 focus:ring-app-primary flex-shrink-0'
           style={{ minWidth: 0 }}
-          onClick={() => setIsOpen(!isOpen)}
-        >
+          onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-white shadow-lg rounded-b-xl px-2 py-4 animate-slideDown overflow-x-hidden">
-          <div className="flex flex-col gap-2 mb-4">
+        <div className='lg:hidden bg-white shadow-lg rounded-b-xl px-3 sm:px-4 py-3 sm:py-4 animate-slideDown overflow-x-hidden'>
+          <div className='flex flex-col gap-2 sm:gap-3 mb-3 sm:mb-4'>
             <Link
-              to="/"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/'
+              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
+              onClick={() => setIsOpen(false)}>
               Home
             </Link>
             <Link
-              to="/shop"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/shop'
+              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
+              onClick={() => setIsOpen(false)}>
               Shop
             </Link>
             <Link
-              to="/about"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/about'
+              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
+              onClick={() => setIsOpen(false)}>
               About Us
             </Link>
             <Link
-              to="/contact"
-              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-            >
+              to='/contact'
+              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
+              onClick={() => setIsOpen(false)}>
               Contact
             </Link>
 
             {!user && (
               <>
                 <Link
-                  to="/login"
-                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-                >
+                  to='/login'
+                  className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
+                  onClick={() => setIsOpen(false)}>
                   Login
                 </Link>
                 <Link
-                  to="/choose-role"
-                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
-                >
+                  to='/choose-role'
+                  className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
+                  onClick={() => setIsOpen(false)}>
                   Sign Up
                 </Link>
               </>
@@ -210,41 +192,48 @@ function Navbar() {
             {user && (
               <>
                 <Link
-                  to="/myOrders"
-                  className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
-                >
-                  <FaList /> My Orders
+                  to='/myOrders'
+                  className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
+                  onClick={() => setIsOpen(false)}>
+                  <FaList className='w-4 h-4' /> My Orders
                 </Link>
                 <Link
-                  to="/settings"
-                  className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
-                >
-                  <FaCog /> Settings
+                  to='/settings'
+                  className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
+                  onClick={() => setIsOpen(false)}>
+                  <FaCog className='w-4 h-4' /> Settings
                 </Link>
                 {user.role === "admin" && (
                   <Link
-                    to="/adminDashboard"
-                    className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
-                  >
-                    <FaUserShield /> Admin Dashboard
+                    to='/adminDashboard'
+                    className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
+                    onClick={() => setIsOpen(false)}>
+                    <FaUserShield className='w-4 h-4' /> Admin Dashboard
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
-                >
-                  <FaSignOutAlt /> Logout
+                  className='w-full text-left flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'>
+                  <FaSignOutAlt className='w-4 h-4' /> Logout
                 </button>
               </>
             )}
           </div>
-          <div className="flex items-center space-x-2 mt-2">
-            <NavBarSearch />
-            <Link to="/cart" className="relative">
-              <FiShoppingCart className="w-8 h-8 p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition" />
+          <div className='flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4 mt-3 border-t pt-3'>
+            <div className='flex-1 max-w-xs'>
+              <NavBarSearch />
+            </div>
+            <Link
+              to='/cart'
+              className='relative'
+              onClick={() => setIsOpen(false)}>
+              <FiShoppingCart className='w-7 h-7 sm:w-8 sm:h-8 p-1.5 sm:p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
             </Link>
-            <Link to="/wishList" className="relative">
-              <FiHeart className="w-8 h-8 p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition" />
+            <Link
+              to='/wishList'
+              className='relative'
+              onClick={() => setIsOpen(false)}>
+              <FiHeart className='w-7 h-7 sm:w-8 sm:h-8 p-1.5 sm:p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
             </Link>
           </div>
         </div>

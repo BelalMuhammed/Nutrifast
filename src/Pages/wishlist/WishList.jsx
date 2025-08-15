@@ -8,7 +8,7 @@ export default function WishList() {
 
   if (items.length === 0) {
     return (
-      <div className='min-h-[60vh] flex flex-col items-center justify-center bg-gradient-to-b from-white to-app-quaternary/20 px-2 sm:px-4'>
+      <div className='min-h-[85vh] flex flex-col items-center justify-center bg-gradient-to-b from-white to-app-quaternary/20 px-2 sm:px-4'>
         <div className='bg-white rounded-2xl shadow border border-gray-100 flex flex-col items-center py-10 px-4 sm:py-12 sm:px-6 max-w-md w-full'>
           <FiHeart className='text-app-primary mb-4' size={48} />
           <h2 className='text-lg sm:text-xl font-bold text-app-secondary mb-2 text-center'>
