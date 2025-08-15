@@ -3,14 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   FiShoppingCart,
-  FiSearch,
+
   FiMenu,
   FiX,
   FiHeart,
   FiUser,
 } from "react-icons/fi";
 import { FaSignOutAlt, FaCog, FaList, FaUserShield } from "react-icons/fa";
-import logoImg from "../../assets/logo.png";
+import logoImg from "../../../public/logo.png";
 import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
@@ -98,7 +98,7 @@ function Navbar() {
                   className="flex items-center gap-2 focus:outline-none"
                 >
                   <FiUser className="w-6 h-6 text-app-tertiary" />
-                  <span className="font-semibold text-base font-semibold text-app-tertiary hover:text-app-primary">
+                  <span className="font-semibold text-base  text-app-tertiary hover:text-app-primary">
                     {userName?.username || "account"}
                   </span>
                 </button>
