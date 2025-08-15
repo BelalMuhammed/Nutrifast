@@ -1,12 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
 import Footer from "../Footer/Footer";
 
 export default function Layout() {
+  const { pathname } = useLocation();
+
+  // Hide navbar on dashboard and adminDashboard
+  const noNavbarRoutes = ["/dashboard"];
+  const hideNavbar = noNavbarRoutes.some((route) => pathname.startsWith(route));
+
   return (
-    <div className='min-h-screen flex flex-col'>
-      <Navbar />
-      <main className='flex-1'>
+    <div className="min-h-screen flex flex-col">
+      {!hideNavbar && <Navbar />}
+      <main className="flex-1">
         <Outlet />
       </main>
       <Footer />

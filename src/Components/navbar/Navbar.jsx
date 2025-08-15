@@ -10,7 +10,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { FaSignOutAlt, FaCog, FaList, FaUserShield } from "react-icons/fa";
-import logoImg from "../../assets/logo.png";
+// import logoImg from "../../assets/logo.png";
 import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
@@ -37,7 +37,7 @@ function Navbar() {
           to="/"
           className="flex items-center gap-2 min-w-[60px] flex-shrink-0"
         >
-          <img className="w-32 h-16 object-contain" src={logoImg} alt="logo" />
+          {/* <img className="w-32 h-16 object-contain" src={logoImg} alt="logo" /> */}
         </Link>
 
         {/* Desktop Menu */}

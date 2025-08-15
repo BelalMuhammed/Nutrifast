@@ -12,7 +12,6 @@ import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
-
 const Home = lazy(() => import("../../Pages/Home/Home"));
 const Shop = lazy(() => import("../../Pages/Shop/Shop"));
 const ProductDetails = lazy(() =>
@@ -22,16 +21,19 @@ const Auth = lazy(() => import("../../Pages/Auth/Auth"));
 const Cart = lazy(() => import("../../Pages/Cart/Cart"));
 const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
-const AdminDashboard = lazy(() => {
-  import("../../Pages/AdminDashboard/AdminDashboard");
-});
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
 const VendorRegisteration = lazy(() =>
   import("../../Pages/vindorRegisteration/VendorRegistration")
 );
-
 const SearchPage = lazy(() => import("../../Pages/search/SearchPage"));
+
+// New dashboard pages
+const DashboardLayout = lazy(() => import("../../dashboard/DashboardLayout"));
+const Dashboard = lazy(() => import("../../dashboard/pages/Dashboard"));
+// const Users = lazy(() => import("../../dashboard/pages/Users"));
+// const Orders = lazy(() => import("../../dashboard/pages/Orders"));
+// const Settings = lazy(() => import("../../dashboard/pages/Settings"));
 
 export default function AppRoutes() {
   const routes = createBrowserRouter([
@@ -68,12 +70,10 @@ export default function AppRoutes() {
           path: "product/:id",
           element: <ProductDetails />,
         },
-
         {
           path: "checkout",
           element: <Checkout />,
         },
-
         {
           path: "cart",
           element: <Cart />,
@@ -102,23 +102,42 @@ export default function AppRoutes() {
           path: "vendorRegisteration",
           element: <VendorRegisteration />,
         },
+        // {
+        //   element: <ProtectedRoute />,
+        //   children: [
+        //     {
+        //       path: "myOrders",
+        //       element: <MyOrders />,
+        //     },
+        //     // {
+        //     //   path: "vendorDashboard",
+        //     //   element: <VendorDashboard />,
+        //     // },
+
+        //     // ✅ New protected dashboard routes
+        //     {
+        //       path: "dashboard",
+        //       element: <DashboardLayout />,
+        //       children: [
+        //         { index: true, element: <Dashboard /> },
+        //         // { path: "users", element: <Users /> },
+        //         // { path: "orders", element: <Orders /> },
+        //         // { path: "settings", element: <Settings /> },
+        //       ],
+        //     },
+        //   ],
+        // },
         {
-          element: <ProtectedRoute />,
+          path: "dashboard",
+          element: <DashboardLayout />,
           children: [
-            {
-              path: "myOrders",
-              element: <MyOrders />,
-            },
-            // {
-            //   path: "vendorDashboard",
-            //   element: <VendorDashboard />,
-            // },
-            {
-              path: "adminDashboard",
-              element: <AdminDashboard />,
-            },
+            { index: true, element: <Dashboard /> },
+            // { path: "users", element: <Users /> },
+            // { path: "orders", element: <Orders /> },
+            // { path: "settings", element: <Settings /> },
           ],
         },
+
         {
           path: "*",
           element: <NotFound />,
