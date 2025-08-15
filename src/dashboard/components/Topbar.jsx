@@ -9,7 +9,7 @@ export default function DashboardTopbar({ onMenuClick }) {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow-md z-40">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4 py-3 md:ml-64">
+      <div className="max-w-screen-xl ms-auto mx-auto flex items-center  px-4 py-3 md:ml-64">
         {/* Left: Hamburger Menu */}
         <button
           onClick={onMenuClick}
@@ -19,7 +19,7 @@ export default function DashboardTopbar({ onMenuClick }) {
         </button>
 
         {/* Center: Search */}
-        <div className="flex-1 px-4 min-w-0">
+        {/* <div className="flex-1 px-4 min-w-0">
           <div className="relative">
             <input
               type="text"
@@ -28,7 +28,7 @@ export default function DashboardTopbar({ onMenuClick }) {
             />
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           </div>
-        </div>
+        </div> */}
 
         {/* Right: Icons + Profile */}
         <div className="flex items-center gap-3 md:gap-4">
