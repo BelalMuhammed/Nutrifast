@@ -1,116 +1,250 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FiShoppingCart, FiSearch, FiMenu, FiX, FiHeart } from "react-icons/fi";
-import logoImg from "../../assets/logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+  FiShoppingCart,
+
+  FiMenu,
+  FiX,
+  FiHeart,
+  FiUser,
+} from "react-icons/fi";
+import { FaSignOutAlt, FaCog, FaList, FaUserShield } from "react-icons/fa";
+import logoImg from "../../../public/logo.png";
+import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const storedUser = localStorage.getItem("currentUser");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  const userName = useSelector((state) => state.auth.user);
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
+    window.location.reload();
+  };
+
   return (
-    <nav className="w-full bg-[#FFFFFF] shadow-md flex justify-between items-center px-[40px]">
-      <Link to="/">
-        <img className="!max-w-none w-30" src={logoImg} alt="logo" />
-      </Link>
+    <nav className="w-full bg-white shadow-lg sticky top-0 z-50 ">
+      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-2 sm:px-4 md:px-8 py-2">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 min-w-[60px] flex-shrink-0"
+        >
+          <img className="w-32 h-16 object-contain" src={logoImg} alt="logo" />
+        </Link>
 
-      <div className="w-[1086px] px-4 py-4 flex items-center justify-between relative ">
-        <div className="hidden md:flex flex-1  space-x-8">
-          <Link
-            to="/"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Home
-          </Link>
-          <Link
-            to="/shop"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Shop
-          </Link>
-          <Link
-            to="/about"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="text-gray-700 hover:text-blue-600 transition  duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Contact
-          </Link>
-          <Link
-            to="/login"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Login
-          </Link>
-          <Link
-            to="/choose-role"
-            className="text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1"
-          >
-            Sign Up
-          </Link>
-        </div>
+        {/* Desktop Menu */}
+        <div className="hidden lg:flex flex-1 items-center justify-between ml-2 sm:ml-8 min-w-0">
+          <div className="flex flex-wrap space-x-3 sm:space-x-6 min-w-0">
+            <Link
+              to="/"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              Home
+            </Link>
+            <Link
+              to="/shop"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              Shop
+            </Link>
+            <Link
+              to="/about"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              About Us
+            </Link>
+            <Link
+              to="/contact"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              Contact
+            </Link>
 
-        <div className="hidden md:flex items-center space-x-6">
-          <div className="relative w-64">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-[#EBF2EB] w-full pl-10 pr-3 py-2 border rounded-lg focus:outline-none hover:scale-105"
-            />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl cursor-pointer " />
+            {!user && (
+              <>
+                <Link
+                  to="/login"
+                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/choose-role"
+                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
-          <Link to="/cart">
-            <FiShoppingCart className=" bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
-          </Link>
-          <Link to="/wishList">
-            <FiHeart className="bg-[#EBF2EB] w-10 h-8 p-1 rounded-md cursor-pointer hover:text-blue-600 transition duration-300 hover:scale-125 hover:translate-y-1" />
-          </Link>
+
+          <div className="flex items-center space-x-2 sm:space-x-4 ml-2 sm:ml-8 min-w-0 flex-shrink-0">
+            <NavBarSearch />
+          </div>
+
+          <div>
+            {user && (
+              <div className="relative">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center gap-2 focus:outline-none"
+                >
+                  <FiUser className="w-6 h-6 text-app-tertiary" />
+                  <span className="font-semibold text-base  text-app-tertiary hover:text-app-primary">
+                    {userName?.username || "account"}
+                  </span>
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute -right-10 mt-2 w-48 bg-white shadow-lg rounded-lg border z-50">
+                    <Link
+                      to="/cart"
+                      className="relative flex items-center gap-2 px-2 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
+                    >
+                      <FiShoppingCart className="w-8 h-7" />
+                      Cart
+                    </Link>
+                    <Link
+                      to="/wishList"
+                      className="relative flex items-center gap-2 px-2 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
+                    >
+                      <FiHeart className="w-8 h-7" />
+                      wishList
+                    </Link>
+                    <Link
+                      to="/myOrders"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
+                    >
+                      <FaList /> My Orders
+                    </Link>
+                    <Link
+                      to="/settings"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
+                    >
+                      <FaCog /> Settings
+                    </Link>
+                    {user.role === "admin" && (
+                      <Link
+                        to="/adminDashboard"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
+                      >
+                        <FaUserShield /> Admin Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary"
+                    >
+                      <FaSignOutAlt /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
+        {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-2xl text-gray-700 absolute right-4 top-1"
+          className="lg:hidden text-3xl text-app-tertiary ml-2 p-2 rounded focus:outline-none focus:ring-2 focus:ring-app-primary flex-shrink-0"
+          style={{ minWidth: 0 }}
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? (
-            <FiX className="absolute right-[-120px] top-[-70px]" />
-          ) : (
-            <FiMenu />
-          )}
+          {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
 
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-4 pb-4">
-          <Link
-            to="/shop"
-            className="block py-2 text-gray-700 hover:text-blue-600 transition duration-300 hover:scale-125"
-          >
-            Shop
-          </Link>
-          <Link
-            to="/about"
-            className="block py-2 text-gray-700 hover:text-blue-600"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="block py-2 text-gray-700 hover:text-blue-600"
-          >
-            Contact
-          </Link>
-          <Link
-            to="/login"
-            className="block py-2 text-gray-700 hover:text-blue-600"
-          >
-            Login
-          </Link>
+        <div className="lg:hidden bg-white shadow-lg rounded-b-xl px-2 py-4 animate-slideDown overflow-x-hidden">
+          <div className="flex flex-col gap-2 mb-4">
+            <Link
+              to="/"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              Home
+            </Link>
+            <Link
+              to="/shop"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              Shop
+            </Link>
+            <Link
+              to="/about"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              About Us
+            </Link>
+            <Link
+              to="/contact"
+              className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+            >
+              Contact
+            </Link>
 
-          <div className="flex space-x-6 mt-4">
-            <FiSearch className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600" />
-            <Link to="/cart">
-              <FiShoppingCart className="text-2xl text-gray-700 cursor-pointer hover:text-blue-600" />
+            {!user && (
+              <>
+                <Link
+                  to="/login"
+                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/choose-role"
+                  className="text-base font-semibold text-app-tertiary hover:text-app-primary transition"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+
+            {user && (
+              <>
+                <Link
+                  to="/myOrders"
+                  className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
+                >
+                  <FaList /> My Orders
+                </Link>
+                <Link
+                  to="/settings"
+                  className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
+                >
+                  <FaCog /> Settings
+                </Link>
+                {user.role === "admin" && (
+                  <Link
+                    to="/adminDashboard"
+                    className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
+                  >
+                    <FaUserShield /> Admin Dashboard
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left flex items-center gap-2 px-2 py-2 hover:bg-gray-100"
+                >
+                  <FaSignOutAlt /> Logout
+                </button>
+              </>
+            )}
+          </div>
+          <div className="flex items-center space-x-2 mt-2">
+            <NavBarSearch />
+            <Link to="/cart" className="relative">
+              <FiShoppingCart className="w-8 h-8 p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition" />
+            </Link>
+            <Link to="/wishList" className="relative">
+              <FiHeart className="w-8 h-8 p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition" />
             </Link>
           </div>
         </div>

@@ -8,7 +8,8 @@ import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
-import AddProducts from "../../Pages/AdminDashboard/addProducts/AddProducts";
+import AboutUs from "../../Pages/AboutUs/AboutUs";
+import ContactUs from "../../Pages/ContactUs/ContactUs";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 
@@ -21,14 +22,16 @@ const Auth = lazy(() => import("../../Pages/Auth/Auth"));
 const Cart = lazy(() => import("../../Pages/Cart/Cart"));
 const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
-const AdminDashboard = lazy(() =>
-  import("../../Pages/AdminDashboard/AdminDashboard")
-);
+const AdminDashboard = lazy(() => {
+  import("../../Pages/AdminDashboard/AdminDashboard");
+});
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
 const VendorRegisteration = lazy(() =>
   import("../../Pages/vindorRegisteration/VendorRegistration")
 );
+
+const SearchPage = lazy(() => import("../../Pages/search/SearchPage"));
 
 export default function AppRoutes() {
   const routes = createBrowserRouter([
@@ -45,12 +48,21 @@ export default function AppRoutes() {
           path: "/",
           element: <Home />,
         },
-        // by Belal
-        {   path: "addProduct",
-          element: <AddProducts />,},
+        {
+          path: "about",
+          element: <AboutUs />,
+        },
+        {
+          path: "contact",
+          element: <ContactUs />,
+        },
         {
           path: "shop",
           element: <Shop />,
+        },
+        {
+          path: "search",
+          element: <SearchPage />,
         },
         {
           path: "product/:id",

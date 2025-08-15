@@ -2,20 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../Redux/slices/productSlice";
 import SideFilter from "../../Components/shop/SideFilter/SideFilter";
-import ProductCard from "../../Components/shop/ProductCard/ProductCard";
-import {
-  Spinner,
-  Drawer,
-  DrawerHeader,
-  DrawerItems,
-  Button,
-} from "flowbite-react";
-import SortSelect from "../../Components/shop/SortSelect/SortSelect";
+import sortingLogic from "../../utlis/sortingLogic";
+import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
+import MobileFilterButton from "../../Components/shop/MobileFilterButton/MobileFilterButton";
+import ShopContent from "../../Components/shop/ShopContent/ShopContent";
 
 function Shop() {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
-
   const [sortOption, setSortOption] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -41,18 +35,8 @@ function Shop() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Sorting logic
   const getSortedProducts = () => {
-    if (!sortOption) return filteredProducts;
-
-    const sorted = [...filteredProducts];
-    if (sortOption === "price-high")
-      return sorted.sort((a, b) => b.price - a.price);
-    if (sortOption === "price-low")
-      return sorted.sort((a, b) => a.price - b.price);
-    if (sortOption === "rating-high")
-      return sorted.sort((a, b) => b.rating - a.rating);
-    return sorted;
+    return sortingLogic(filteredProducts, sortOption);
   };
 
   return (
@@ -60,13 +44,12 @@ function Shop() {
       {/* Sidebar or Drawer */}
       {isMobile ? (
         <>
-          <Button onClick={() => setDrawerOpen(true)} className='mb-4'>
-            Filters
-          </Button>
+          <MobileFilterButton onClick={() => setDrawerOpen(true)} />
           <Drawer
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            className='transition-all duration-500 ease-in-out'>
+            className='transition-all duration-600 ease-in-out w-[370px]'
+            position='left'>
             <DrawerHeader title='Filters' />
             <DrawerItems>
               <SideFilter products={products} onFilter={setFilteredProducts} />
@@ -79,43 +62,12 @@ function Shop() {
         </div>
       )}
 
-      {/* Main Content */}
-      <div className='flex-1'>
-        <h1 className='text-2xl font-semibold text-app-primary mb-3'>
-          Shop All Products
-        </h1>
-
-        <div className='flex flex-wrap gap-2 mb-6'>
-          {["Plant-Based", "Free from Gluten", "0-200 Calories"].map((tag) => (
-            <span
-              key={tag}
-              className='bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium'>
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <SortSelect sortOption={sortOption} setSortOption={setSortOption} />
-
-
-        {/* Product Grid */}
-        <div className="flex flex-wrap gap-5 justify-center">
-
-          {loading ? (
-            <div className='w-full flex justify-center pt-10'>
-              <Spinner size='xl' color='success' />
-            </div>
-          ) : getSortedProducts().length > 0 ? (
-            getSortedProducts().map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))
-          ) : (
-            <p className='text-gray-500 pt-10'>
-              No products found matching your filters.
-            </p>
-          )}
-        </div>
-      </div>
+      <ShopContent
+        sortOption={sortOption}
+        setSortOption={setSortOption}
+        sortedProducts={getSortedProducts()}
+        loading={loading}
+      />
     </div>
   );
 }

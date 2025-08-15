@@ -21,21 +21,29 @@ export default function filterLogic(products = [], selectedFilters = {}) {
     // MedicalConditions filter
     if (
       selectedFilters.MedicalConditions?.length > 0 &&
-      !selectedFilters.MedicalConditions.some((cond) =>
-        product.medicalConditions?.includes(cond)
+      !selectedFilters.MedicalConditions.some((condition) =>
+        product.medicalConditions?.includes(condition)
       )
     ) {
       return false;
     }
 
-    // Allergens filter (exclude if product contains selected allergen)
+    // Allergens filter (exclude products containing selected allergens)
     if (
       selectedFilters.Allergens?.length > 0 &&
       selectedFilters.Allergens.some((allergen) =>
         product.allergens?.includes(allergen)
       )
     ) {
-      return false;
+      return false; // exclude if product contains allergen
+    }
+
+    // Calories Range filter
+    if (selectedFilters.CaloriesRange?.length === 2) {
+      const [minCal, maxCal] = selectedFilters.CaloriesRange;
+      if (product.calories < minCal || product.calories > maxCal) {
+        return false;
+      }
     }
 
     return true;

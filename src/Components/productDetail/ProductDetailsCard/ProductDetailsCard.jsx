@@ -1,140 +1,228 @@
+import React from "react";
 import AddButton from "../../shared/Buttons/AddButton";
+import { Rating, RatingStar } from "flowbite-react";
+import { CiWarning } from "react-icons/ci";
 
-function ProductDetailsCard({ selectedProduct }) {
+const ProductDetailsCard = ({ selectedProduct }) => {
   return (
-    <div className=' min-h-screen py-12 px-4'>
-      <div className='max-w-6xl mx-auto bg-white rounded-3xl shadow-xl grid grid-cols-1 md:grid-cols-2 gap-12 p-10'>
-        {/* Image */}
-        <div className='relative w-full h-full'>
+    <div className='flex items-start justify-center bg-white px-1 pt-2 mb-10'>
+      <div className='w-full max-w-6xl xl:max-w-7xl mx-auto bg-white rounded-2xl shadow p-0 sm:p-4 md:p-6 flex flex-col md:flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8'>
+        {/* Product Image Section */}
+        <div className='flex-shrink-0 flex flex-col items-start justify-start w-full md:w-full lg:w-1/2 mb-0'>
           <img
             src={selectedProduct.image}
             alt={selectedProduct.name}
-            className='rounded-3xl w-full object-cover shadow-md max-h-[500px] transition-transform duration-500 hover:scale-105'
+            className='w-full h-40 sm:h-56 md:h-64 lg:h-80 object-cover rounded-none sm:rounded-2xl m-0 p-0'
+            style={{ padding: 0, margin: 0 }}
           />
+
+          {/* Additional Info under image */}
+          <div className='w-full mt-4 bg-gray-50/50 rounded-xl p-4 space-y-4'>
+            {/* Suitable For */}
+            {selectedProduct.medicalConditions?.length > 0 && (
+              <div className='bg-white rounded-lg p-3 border border-blue-100 shadow-sm'>
+                <div className='flex items-center gap-2 mb-3'>
+                  <div className='w-2 h-2 bg-blue-500 rounded-full'></div>
+                  <h4 className='font-bold text-app-tertiary text-sm md:text-base'>
+                    Suitable For
+                  </h4>
+                </div>
+                <div className='flex flex-wrap gap-2'>
+                  {selectedProduct.medicalConditions.map((cond, i) => (
+                    <span
+                      key={i}
+                      className='bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold border border-blue-200 hover:bg-blue-100 transition-colors duration-200'>
+                      ✓ {cond}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Allergens */}
+            {selectedProduct.allergens &&
+              selectedProduct.allergens.length > 0 && (
+                <div className='bg-white rounded-lg p-3 border border-red-100 shadow-sm'>
+                  <div className='flex items-center gap-2 mb-3'>
+                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                    <h4 className='font-bold text-app-tertiary text-sm md:text-base'>
+                      Allergens
+                    </h4>
+                  </div>
+                  <div className='flex flex-wrap gap-2'>
+                    {selectedProduct.allergens.map((allergen, i) => (
+                      <span
+                        key={i}
+                        className='bg-red-50 text-red-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold border border-red-200 hover:bg-red-100 transition-colors duration-200 flex items-center gap-1'>
+                        <CiWarning /> {allergen}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            {/* Tags */}
+            {selectedProduct.tags?.length > 0 && (
+              <div className='bg-white rounded-lg p-3 shadow-sm'>
+                <div className='flex items-center gap-2 mb-3'>
+                  <div className='w-2 h-2 bg-app-accent rounded-full'></div>
+                  <h4 className='font-bold text-app-tertiary text-sm md:text-base'>
+                    Product Tags
+                  </h4>
+                </div>
+                <div className='flex flex-wrap gap-2'>
+                  {selectedProduct.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className='bg-app-accent/5 text-app-accent px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-app-accent/10 transition-colors duration-200'>
+                      # {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Info */}
-        <div className='space-y-6 text-app-secondary'>
-          <h1 className='text-4xl font-extrabold text-app-tertiary leading-tight'>
-            {selectedProduct.name}
-          </h1>
-
-          <p className='text-gray-600 text-base leading-relaxed'>
-            {selectedProduct.description}
-          </p>
-
-          <div className='flex flex-wrap gap-4'>
-            <span className='bg-app-quaternary text-app-tertiary px-4 py-1.5 rounded-full text-sm font-medium'>
-              {selectedProduct.weight}
-            </span>
-            <span className='bg-app-quaternary text-app-tertiary px-4 py-1.5 rounded-full text-sm font-medium'>
-              {selectedProduct.calories} kcal
-            </span>
-            <span className='bg-app-primary text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm'>
-              {selectedProduct.price} EGP
-            </span>
+        {/* Details Section */}
+        <div className='flex-1 flex flex-col justify-between min-w-0 w-full md:w-full lg:w-1/2 px-4 py-4 sm:px-6 sm:py-6'>
+          <div>
+            {/* Title, Category, Description */}
+            <div className='mb-2'>
+              <div className='flex flex-col sm:flex-row sm:items-center sm:gap-3 mb-3'>
+                <h2 className='text-xl sm:text-2xl md:text-3xl font-bold text-app-tertiary'>
+                  {selectedProduct.name}
+                </h2>
+                <span className='text-app-accent text-sm sm:text-base font-bold tracking-wider  bg-app-accent/10 px-3 py-1 rounded-full mt-2 sm:mt-0 w-fit'>
+                 " {selectedProduct.brand || "NutriFast"} "
+                </span>
+              </div>
+              <div className='flex items-center justify-between mb-1'>
+                <div className='text-app-secondary text-xs sm:text-sm md:text-base font-medium '>
+                  {selectedProduct.category}
+                </div>
+                <div className='flex items-center'>
+                  <Rating size='sm'>
+                    {[...Array(5)].map((_, i) => (
+                      <RatingStar
+                        key={i}
+                        filled={i < Math.round(selectedProduct.rating)}
+                      />
+                    ))}
+                  </Rating>
+                  <p className='ml-2 text-xs sm:text-sm font-medium text-app-tertiary'>
+                    {selectedProduct.rating}
+                  </p>
+                </div>
+              </div>
+              <p className='text-gray-700 text-xs sm:text-sm md:text-base italic mb-2'>
+                {selectedProduct.description}
+              </p>
+            </div>
+            {/* ...existing code... */}
+            {/* Info block: price, stock, weight, calories with separators and tabular layout */}
+            <div className='w-full mb-4 md:mb-6 mt-4 bg-gray-50/50 rounded-xl p-4 border border-gray-100'>
+              {/* Price dominant with stock status on same line */}
+              <div className='flex flex-row items-center justify-between w-full mb-3'>
+                <div className='flex items-baseline'>
+                  <span className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-primary leading-none'>
+                    {selectedProduct.price}
+                  </span>
+                  <span className='text-sm sm:text-base md:text-lg font-bold text-app-tertiary ml-2'>
+                    EGP
+                  </span>
+                </div>
+                <div
+                  className={`px-3 py-1 rounded-full font-bold text-xs sm:text-sm md:text-base ${
+                    selectedProduct.stock === "in-stock"
+                      ? "bg-green-100 text-green-700 border border-green-200"
+                      : selectedProduct.stock === "low-stock"
+                      ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
+                      : "bg-red-100 text-red-700 border border-red-200"
+                  }`}>
+                  {selectedProduct.stock === "in-stock"
+                    ? "✓ In Stock"
+                    : selectedProduct.stock === "low-stock"
+                    ? "⚠ Low Stock"
+                    : "✗ Out of Stock"}
+                </div>
+              </div>
+              <hr className='w-full border-t border-app-accent/20 my-3' />
+              {/* Vertical info list: weight & calories */}
+              <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-3'>
+                <div className='flex items-center gap-2 p-2 bg-white rounded-lg'>
+                  <span className='font-bold text-app-accent text-xs sm:text-sm md:text-base'>
+                    Weight:
+                  </span>
+                  <span className='text-app-tertiary font-semibold text-xs sm:text-sm md:text-base'>
+                    {selectedProduct.weight}
+                  </span>
+                </div>
+                <div className='flex items-center gap-2 p-2 bg-white rounded-lg'>
+                  <span className='font-bold text-app-accent text-xs sm:text-sm md:text-base'>
+                    Calories:
+                  </span>
+                  <span className='text-app-tertiary font-semibold text-xs sm:text-sm md:text-base'>
+                    {selectedProduct.calories} kcal
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className='w-full bg-gray-50/50 rounded-xl p-4 mb-4'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                {selectedProduct.ingredients?.length > 0 && (
+                  <div className='bg-white rounded-lg p-4 shadow-sm'>
+                    <div className='flex items-center gap-2 mb-3'>
+                      <div className='w-2 h-2 bg-app-primary rounded-full'></div>
+                      <h4 className='font-bold text-app-tertiary text-sm md:text-base'>
+                        Ingredients
+                      </h4>
+                    </div>
+                    <div className='space-y-1'>
+                      {selectedProduct.ingredients.map((ing, i) => (
+                        <div
+                          key={i}
+                          className='flex items-center gap-2 p-2 bg-app-quaternary/5 rounded-md'>
+                          <span className='text-app-accent text-xs'>•</span>
+                          <span className='text-xs sm:text-sm text-app-tertiary font-medium'>
+                            {ing}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {selectedProduct.dietTypes?.length > 0 && (
+                  <div className='bg-white rounded-lg p-4 shadow-sm'>
+                    <div className='flex items-center gap-2 mb-3'>
+                      <div className='w-2 h-2 bg-app-secondary rounded-full'></div>
+                      <h4 className='font-bold text-app-tertiary text-sm md:text-base'>
+                        Diet Types
+                      </h4>
+                    </div>
+                    <div className='flex flex-wrap gap-2'>
+                      {selectedProduct.dietTypes.map((type, i) => (
+                        <span
+                          key={i}
+                          className='bg-app-secondary/10 text-app-secondary px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-app-secondary/20 transition-colors duration-200'>
+                          ✓ {type}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-
-          {selectedProduct.dietTypes?.length > 0 && (
-            <div>
-              <h4 className='font-semibold text-app-secondary mb-1'>
-                Diet Types:
-              </h4>
-              <div className='flex flex-wrap gap-2'>
-                {selectedProduct.dietTypes.map((type, i) => (
-                  <span
-                    key={i}
-                    className='bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm'>
-                    {type}
-                  </span>
-                ))}
-              </div>
+          {/* Add to Cart Button at the bottom */}
+          <div className='w-full flex justify-center mt-4'>
+            <div className='w-full sm:w-auto flex justify-center px-4 py-3 sm:px-0 sm:py-0'>
+              <AddButton product={selectedProduct} />
             </div>
-          )}
-
-          {selectedProduct.medicalConditions?.length > 0 && (
-            <div>
-              <h4 className='font-semibold text-app-secondary mb-1'>
-                Suitable For:
-              </h4>
-              <div className='flex flex-wrap gap-2'>
-                {selectedProduct.medicalConditions.map((cond, i) => (
-                  <span
-                    key={i}
-                    className='bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm'>
-                    {cond}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {selectedProduct.allergens?.length > 0 && (
-            <div>
-              <h4 className='font-semibold text-app-secondary mb-1'>
-                Allergens:
-              </h4>
-              <div className='flex flex-wrap gap-2'>
-                {selectedProduct.allergens.map((allergen, i) => (
-                  <span
-                    key={i}
-                    className='bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm'>
-                    {allergen}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {selectedProduct.tags?.length > 0 && (
-            <div>
-              <h4 className='font-semibold text-app-secondary mb-1'>Tags:</h4>
-              <div className='flex flex-wrap gap-2'>
-                {selectedProduct.tags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className='bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm'>
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {selectedProduct.ingredients?.length > 0 && (
-            <div>
-              <h4 className='font-semibold text-app-secondary mb-1'>
-                Ingredients:
-              </h4>
-              <ul className='list-disc list-inside text-sm text-gray-600 space-y-1'>
-                {selectedProduct.ingredients.map((ing, i) => (
-                  <li key={i}>{ing}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className='mt-6 flex items-center justify-between'>
-            <span
-              className={`text-sm px-3 py-1 rounded-full font-medium shadow-sm ${
-                selectedProduct.stock === "in-stock"
-                  ? "bg-green-200 text-green-800"
-                  : "bg-red-200 text-red-800"
-              }`}>
-              {selectedProduct.stock}
-            </span>
-            <span className='text-yellow-600 font-semibold text-sm'>
-              ★ {selectedProduct.rating}/5
-            </span>
-          </div>
-
-          <div className='pt-6'>
-            <AddButton product={selectedProduct} />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ProductDetailsCard;
