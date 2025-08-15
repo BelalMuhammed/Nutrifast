@@ -25,17 +25,19 @@ export default function WhyChooseNutriFast() {
   ];
 
   return (
-    <section className='py-20 bg-app-muted'>
+    <section className='py-12 sm:py-16 md:py-20 bg-app-muted'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <h2 className='text-4xl md:text-5xl font-extrabold text-app-tertiary text-center mb-3 tracking-tight drop-shadow-sm'>
-          Why Choose NutriFast
-        </h2>
-        <p className='mt-2 text-secondary text-center max-w-2xl mx-auto text-lg mb-10'>
-          We are committed to your health with quality, expertise, and
-          sustainability.
-        </p>
+        <div className='text-center mb-8 sm:mb-10 md:mb-12'>
+          <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2'>
+            Why Choose NutriFast
+          </h2>
+          <p className='mt-2 text-secondary text-center max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed'>
+            We are committed to your health with quality, expertise, and
+            sustainability.
+          </p>
+        </div>
 
-        <div className='mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid gap-6 sm:gap-8 md:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
           {features.map((feature, idx) => (
             <motion.div
               key={idx}
@@ -47,15 +49,15 @@ export default function WhyChooseNutriFast() {
                 delay: idx * 0.15,
                 ease: "easeOut",
               }}>
-              <Card className='border-0 bg-white/95 shadow-xl hover:shadow-2xl transition rounded-3xl p-2 md:p-3 flex flex-col text-center relative overflow-visible group'>
+              <Card className='border-0 bg-white/95 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 flex flex-col text-center relative overflow-visible group h-full'>
                 <div className='flex flex-col items-center'>
-                  <div className='flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 border-2 border-primary mb-4 shadow-md'>
+                  <div className='flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 border-2 border-primary mb-3 sm:mb-4 shadow-md'>
                     {feature.icon}
                   </div>
-                  <h4 className='text-xl font-bold text-app-primary mb-2 tracking-tight'>
+                  <h4 className='text-lg sm:text-xl font-bold text-app-primary mb-2 tracking-tight'>
                     {feature.title}
                   </h4>
-                  <p className='text-secondary text-base'>
+                  <p className='text-secondary text-sm sm:text-base leading-relaxed'>
                     {feature.description}
                   </p>
                 </div>

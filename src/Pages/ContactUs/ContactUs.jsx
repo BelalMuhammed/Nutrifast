@@ -26,7 +26,7 @@ const ContactUs = () => {
         <h1 className='text-3xl md:text-4xl font-extrabold text-app-primary mb-2 text-center'>
           Contact Us
         </h1>
-        <p className='text-lg md:text-xl text-gray-700 text-center max-w-xl mb-4'>
+        <p className='text-lg  text-gray-700 text-center max-w-xl mb-2'>
           Have questions, feedback, or need support? We're here to help! Reach
           out to us using the form below or through our contact details.
         </p>
@@ -115,22 +115,7 @@ const ContactUs = () => {
             Send Message
           </button>
         </form>
-        <div className='mt-10 bg-app-quaternary/30 rounded-xl p-6 shadow flex flex-col gap-2 mb-10'>
-          <h2 className='text-xl font-bold text-app-tertiary mb-2 flex items-center gap-2'>
-            <FaEnvelope className='text-app-primary' /> Contact Details
-          </h2>
-          <p className='text-gray-700 flex items-center gap-2'>
-            <FaEnvelope className='text-app-primary' /> Email:
-            support@nutrifast.com
-          </p>
-          <p className='text-gray-700 flex items-center gap-2'>
-            <FaPhoneAlt className='text-app-primary' /> Phone: +20 123 456 7890
-          </p>
-          <p className='text-gray-700 flex items-center gap-2'>
-            <FaMapMarkerAlt className='text-app-primary' /> Address: Alexandria,
-            Egypt
-          </p>
-        </div>
+   
       </div>
     </div>
   );

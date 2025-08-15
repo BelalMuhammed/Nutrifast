@@ -3,7 +3,7 @@ import banner from "../../../assets/banner.png";
 
 function HeroSection() {
   return (
-    <section className='relative w-full min-h-[448px] h-[68vh] md:h-[78vh] flex items-center justify-center overflow-hidden'>
+    <section className='relative w-full min-h-[400px] h-[60vh] sm:h-[68vh] md:h-[78vh] flex items-center justify-center overflow-hidden'>
       {/* Background Image */}
       <img
         src={banner}
@@ -15,7 +15,7 @@ function HeroSection() {
       <div className='absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-white/0 z-10' />
       {/* Content */}
       <motion.div
-        className='relative z-20 flex flex-col items-center justify-center text-center w-full px-4'
+        className='relative z-20 flex flex-col items-center justify-center text-center w-full max-w-4xl px-4 sm:px-6 lg:px-8'
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}>
@@ -23,21 +23,21 @@ function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className='text-3xl md:text-5xl font-extrabold text-white drop-shadow-lg mb-5 leading-tight tracking-tight'>
+          className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg mb-4 sm:mb-5 leading-tight tracking-tight'>
           Your Journey to Wellness Starts Here
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-          className='text-base md:text-lg text-white/90 mb-8 max-w-2xl mx-auto font-semibold drop-shadow'>
+          className='text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto font-medium sm:font-semibold drop-shadow leading-relaxed'>
           Discover a curated selection of organic produce, wholesome snacks, and
           nutritional supplements to fuel your healthy lifestyle.
         </motion.p>
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.97 }}
-          className='btn-app text-base md:text-lg px-8 py-3 font-bold shadow-lg'
+          className='btn-app text-sm sm:text-base md:text-lg px-6 sm:px-8 py-2.5 sm:py-3 font-bold shadow-lg'
           onClick={() => (window.location.href = "/shop")}>
           Shop All Products
         </motion.button>

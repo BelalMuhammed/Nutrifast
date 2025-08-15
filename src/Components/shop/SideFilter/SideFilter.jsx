@@ -84,13 +84,13 @@ function SideFilter({ products = [], onFilter }) {
   }, [selectedFilters, products, onFilter]);
 
   return (
-    <Sidebar className='bg-white rounded-xl shadow-lg max-w-xs w-full p-0 border border-gray-100'>
+    <Sidebar className='bg-white rounded-xl shadow-sm w-full p-0 border border-gray-100'>
       <div className='px-6 pt-6 pb-2'>
         <h2 className='text-2xl font-bold text-app-secondary mb-6 text-center tracking-tight'>
           Product Filters
         </h2>
       </div>
-      <div className='flex flex-col gap-3 px-2'>
+      <div className='flex flex-col gap-3 px-3'>
         {Object.keys(filters).map((group) => (
           <SidebarCollapse
             key={group}
@@ -100,7 +100,7 @@ function SideFilter({ products = [], onFilter }) {
               </span>
             }
             className='border border-gray-100 rounded-xl mb-2 bg-white shadow-sm'>
-            <div className='flex flex-col gap-2 px-2 py-2'>
+            <div className='flex flex-col gap-2 px-3 py-2'>
               {(filters[group] ?? []).map((item, idx) => {
                 const value =
                   item.min !== undefined
@@ -112,7 +112,7 @@ function SideFilter({ products = [], onFilter }) {
                 return (
                   <label
                     key={key}
-                    className='flex items-center gap-2 text-base text-gray-700 bg-gray-50 rounded-lg px-3 py-2 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-100'>
+                    className='flex items-center gap-3 text-base text-app-primary bg-gray-50 rounded-lg px-4 py-2.5 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-100'>
                     <Checkbox
                       checked={selectedFilters[group]?.some(
                         (selected) =>
@@ -127,16 +127,18 @@ function SideFilter({ products = [], onFilter }) {
                             : null
                         )
                       }
-                      className='accent-green-600 w-5 h-5'
+                      className='text-app-primary w-5 h-5 flex-shrink-0'
                     />
-                    <span className='ml-2 font-medium text-app-secondary'>
-                      {item.name}
-                    </span>
-                    {item.min !== undefined && (
-                      <span className='ml-2 text-xs text-gray-500'>
-                        ({item.min} - {item.max} cal)
+                    <div className='flex flex-col flex-1 min-w-0'>
+                      <span className='font-medium text-gray-700 truncate'>
+                        {item.name}
                       </span>
-                    )}
+                      {item.min !== undefined && (
+                        <span className='text-xs text-gray-500 mt-0.5'>
+                          ({item.min} - {item.max} cal)
+                        </span>
+                      )}
+                    </div>
                   </label>
                 );
               })}
@@ -144,12 +146,12 @@ function SideFilter({ products = [], onFilter }) {
           </SidebarCollapse>
         ))}
       </div>
-      <div className='px-2 pb-6'>
-        <section className='bg-white rounded-xl border border-gray-100 shadow-sm p-4 mt-2'>
-          <h3 className='text-base font-bold text-app-secondary mb-4 border-b border-gray-100 pb-2 tracking-wide'>
+      <div className='px-3 pb-6'>
+        <section className='bg-white rounded-xl border border-gray-100 shadow-sm p-5 mt-2'>
+          <h3 className='text-base font-bold text-app-secondary mb-4 pb-2 tracking-wide'>
             Calories Range
           </h3>
-          <div className='flex flex-col gap-2 px-2'>
+          <div className='flex flex-col gap-3 px-2'>
             <Slider
               range
               min={caloriesMin}
@@ -157,43 +159,17 @@ function SideFilter({ products = [], onFilter }) {
               step={10}
               value={selectedFilters.CaloriesRange}
               onChange={handleCaloriesChange}
-              trackStyle={[
-                { backgroundColor: "#16a34a", height: 8, borderRadius: 4 },
-              ]}
-              railStyle={{
-                backgroundColor: "#e5e7eb",
-                height: 8,
-                borderRadius: 4,
-              }}
-              handleStyle={[
-                {
-                  borderColor: "#16a34a",
-                  backgroundColor: "#16a34a",
-                  width: 24,
-                  height: 24,
-                  marginTop: -8,
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                },
-                {
-                  borderColor: "#16a34a",
-                  backgroundColor: "#16a34a",
-                  width: 24,
-                  height: 24,
-                  marginTop: -8,
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                },
-              ]}
               handleRender={(node, props) => (
                 <Tooltip overlay={`${props.value} cal`} placement='top'>
                   {node}
                 </Tooltip>
               )}
             />
-            <div className='flex justify-between text-sm mt-2'>
-              <span className='font-semibold text-app-secondary bg-gray-50 rounded px-2 py-1 shadow'>
+            <div className='flex justify-between text-sm mt-3'>
+              <span className='font-semibold text-app-primary bg-gray-50 rounded-lg px-3 py-2 shadow-sm border border-gray-100'>
                 {selectedFilters.CaloriesRange[0]} cal
               </span>
-              <span className='font-semibold text-app-secondary bg-gray-50 rounded px-2 py-1 shadow'>
+              <span className='font-semibold text-app-primary bg-gray-50 rounded-lg px-3 py-2 shadow-sm border border-gray-100'>
                 {selectedFilters.CaloriesRange[1]} cal
               </span>
             </div>
