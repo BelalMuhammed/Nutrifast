@@ -40,8 +40,8 @@ export default function Register() {
         payload
       );
 
-      localStorage.setItem("currentUser", JSON.stringify(response.data.user));
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("currentUser", JSON.stringify(response.data));
+
       navigate("/login");
       reset();
     } catch (error) {
