@@ -9,27 +9,44 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
+  const [serverError, setServerError] = React.useState("");
   const onSubmit = async (data) => {
-    const payload = {
-      username: data.firstName + data.lastName,
-      email: data.email,
-      password: data.password,
-      phone: data.phone,
-      role: "user",
-    };
+    console.log(data);
     try {
+      const usersResponse = await axios.get(
+        "https://nutrifast-data.up.railway.app/users"
+      );
+      const exists = usersResponse.data.find(
+        (user) =>
+          user.email.toLowerCase().trim() === data.email.toLowerCase().trim()
+      );
+      if (exists) {
+        setServerError(
+          "This email is already registered. Please login instead."
+        );
+        return;
+      }
+      const payload = {
+        username: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        role: "user",
+      };
       const response = await axios.post(
         "https://nutrifast-data.up.railway.app/users",
         payload
       );
-      console.log("User registered:", response.data);
-      localStorage.setItem("currentUser", JSON.stringify(response.data));
 
+      localStorage.setItem("currentUser", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
       navigate("/login");
+      reset();
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Error during registration");
+      setServerError(error.response?.data?.message || "Registration failed");
     }
   };
   return (
@@ -152,6 +169,9 @@ export default function Register() {
             Forgot Password?
           </a>
         </div>
+        {serverError && (
+          <p className="text-red-500 text-sm mb-4">{serverError}</p>
+        )}
         <button type="submit" className="btn-app w-full">
           Sign Up
         </button>
