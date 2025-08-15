@@ -34,7 +34,7 @@ function FeatureHighlights() {
   ];
 
   return (
-    <div className='bg-app-primary/90 py-8 border-b border-white/10'>
+    <div className='bg-app-primary/90 py-8 border-b border-white/10 mt-10'>
       <div className='max-w-7xl mx-auto px-4 md:px-10'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
           {features.map((feature, index) => (

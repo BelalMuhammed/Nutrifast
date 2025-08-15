@@ -19,7 +19,7 @@ function ProductCard({ product }) {
   const isInWishlist = wishlistItems.some((item) => item.id === product.id);
 
   return (
-    <div className='product bg-white rounded-2xl p-5 shadow-md w-full max-w-[300px] md:max-w-[320px] md:w-[320px] min-w-0 relative transition-transform duration-200 hover:shadow-lg group border border-gray-100 flex flex-col'>
+    <div className='product bg-white rounded-2xl p-5 shadow-sm w-full max-w-[300px] md:max-w-[320px] md:w-[320px] min-w-0 relative transition-transform duration-200 hover:shadow-md group border border-gray-100 flex flex-col'>
       {/* Image and heart button */}
       <div className='relative h-[160px] rounded-xl overflow-hidden mb-4'>
         <Link to={`/product/${id}`}>
@@ -41,7 +41,7 @@ function ProductCard({ product }) {
           <FaHeart size={18} />
         </button>
       </div>
-      <h3 className='text-lg font-bold text-app-secondary mb-2'>{name}</h3>
+      <h3 className='text-lg font-bold text-gray-700 mb-2'>{name}</h3>
       <div className='flex flex-wrap gap-2 mb-3'>
         {tags.map((tag) => (
           <span
