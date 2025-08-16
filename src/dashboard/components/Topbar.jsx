@@ -31,7 +31,7 @@ export default function DashboardTopbar({ onMenuClick }) {
         </div> */}
 
         {/* Right: Icons + Profile */}
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center gap-3 md:gap-4 ms-auto">
           <button className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
             <HiMoon size={20} />
           </button>
