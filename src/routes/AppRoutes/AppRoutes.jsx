@@ -19,7 +19,7 @@ const Shop = lazy(() => import("../../Pages/Shop/Shop"));
 const ProductDetails = lazy(() =>
   import("../../Pages/ProductDetails/ProductDetails")
 );
-const Auth = lazy(() => import("../../Pages/Auth/Auth"));
+
 const Cart = lazy(() => import("../../Pages/Cart/Cart"));
 const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
@@ -79,10 +79,6 @@ export default function AppRoutes() {
         {
           path: "cart",
           element: <Cart />,
-        },
-        {
-          path: "auth",
-          element: <Auth />,
         },
         {
           path: "wishList",

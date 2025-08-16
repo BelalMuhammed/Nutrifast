@@ -40,7 +40,7 @@ function Shop() {
   };
 
   return (
-    <div className='flex gap-6 px-6 py-8 min-h-screen'>
+    <div className='flex gap-15 px-6 py-8 min-h-screen'>
       {/* Sidebar or Drawer */}
       {isMobile ? (
         <>
@@ -48,7 +48,7 @@ function Shop() {
           <Drawer
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            className='transition-all duration-600 ease-in-out w-[370px]'
+            className='transition-all duration-600 ease-in-out w-[400px]'
             position='left'>
             <DrawerHeader title='Filters' />
             <DrawerItems>
@@ -57,7 +57,7 @@ function Shop() {
           </Drawer>
         </>
       ) : (
-        <div className='w-[280px] shrink-0'>
+        <div className='w-[320px] shrink-0'>
           <SideFilter products={products} onFilter={setFilteredProducts} />
         </div>
       )}

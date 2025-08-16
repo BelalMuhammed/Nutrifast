@@ -1,18 +1,17 @@
-import React from "react";
 import { FaLeaf, FaCheck, FaHeart } from "react-icons/fa";
 
 const AboutUs = () => (
   <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
     {/* Hero Section */}
-    <div className='w-full flex flex-col items-center justify-center py-12 px-4 bg-gradient-to-r from-app-primary/10 to-app-quaternary/10'>
+    <div className='w-full flex flex-col items-center justify-center pt-12 px-4 bg-gradient-to-r from-app-primary/10 to-app-quaternary/10'>
       <img
         src='/src/assets/banner.png'
         alt='NutriFast Banner'
         className='w-32 h-32 mb-4 rounded-full shadow-lg border-4 border-app-primary object-cover'
       />
-      <h1 className='text-4xl md:text-5xl font-extrabold text-app-tertiary mb-2 text-center'>
+      <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight text-center mb-2'>
         About NutriFast
-      </h1>
+      </h2>
       <p className='text-lg md:text-xl text-gray-700 text-center max-w-2xl mb-4'>
         NutriFast is dedicated to providing healthy, delicious meals and snacks
         for every lifestyle. Our mission is to make clean eating easy,

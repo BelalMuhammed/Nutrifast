@@ -23,45 +23,56 @@ function Categories() {
     autoplay: false,
     autoplaySpeed: 3000,
     pauseOnHover: true,
+    arrows: false,
     responsive: [
       {
-        breakpoint: 1200,
+        breakpoint: 1280,
         settings: {
           slidesToShow: 3,
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 880,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 2,
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
         settings: {
           slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
   };
 
   return (
-    <section className='mx-auto py-12 bg-app-muted'>
-      <div className='app-container '>
-        <div className=' flex flex-col items-center justify-center mb-8'>
-          <h2 className='text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight text-center mb-2 '>
-            Explore by Category
+    <section className='mx-auto py-8 sm:py-10 md:py-12 bg-app-muted'>
+      <div className='app-container'>
+        <div className='flex flex-col items-center justify-center mb-6 sm:mb-8 px-4'>
+          <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight text-center mb-2'>
+            Our Categories
           </h2>
-          <div className='w-16 h-1 rounded-full bg-app-accent mb-2' />
-          <p className='text-base md:text-lg text-app-secondary/80 text-center max-w-xl'>
+          <div className='w-12 sm:w-16 h-1 rounded-full bg-app-accent mb-2' />
+          <p className='text-sm sm:text-base md:text-lg text-app-secondary/80 text-center max-w-xl leading-relaxed'>
             Find the perfect healthy option for your lifestyle from our curated
             categories.
           </p>
         </div>
-        <div className='app-slider pb-12'>
+        <div className='app-slider pb-8 sm:pb-10 md:pb-12'>
           <Slider {...settings}>
             {categories.map((category) => (
-              <div key={category.id} className='px-3'>
+              <div key={category.id} className='px-2 sm:px-3'>
                 <HomeCard category={category} />
               </div>
             ))}
