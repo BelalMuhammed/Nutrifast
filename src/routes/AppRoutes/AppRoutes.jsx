@@ -1,3 +1,4 @@
+
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
@@ -10,6 +11,7 @@ import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
 import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
+import Products from "../../dashboard/pages/Products";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -132,6 +134,7 @@ export default function AppRoutes() {
           element: <DashboardLayout />,
           children: [
             { index: true, element: <Dashboard /> },
+            { path: "products", element: <Products /> },
             // { path: "users", element: <Users /> },
             // { path: "orders", element: <Orders /> },
             // { path: "settings", element: <Settings /> },

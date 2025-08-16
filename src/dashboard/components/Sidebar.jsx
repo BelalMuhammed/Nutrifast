@@ -18,6 +18,7 @@ import {
   HiMenu,
   HiX,
 } from "react-icons/hi";
+import { NavLink } from "react-router-dom";
 
 export default function DashboardSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,26 +53,36 @@ export default function DashboardSidebar() {
                 Dashboard
               </SidebarItem>
               <SidebarCollapse icon={HiShoppingBag} label="E-commerce">
-                <SidebarItem href="#">Products</SidebarItem>
+                <SidebarItem href="#">
+                
+              <NavLink to="products">
+  Products
+              </NavLink>
+                  </SidebarItem>
                 <SidebarItem href="#">Sales</SidebarItem>
                 <SidebarItem href="#">Refunds</SidebarItem>
                 <SidebarItem href="#">Shipping</SidebarItem>
               </SidebarCollapse>
-              <SidebarItem href="#" icon={HiInbox}>
-                Inbox
-              </SidebarItem>
-              <SidebarItem href="#" icon={HiUser}>
+        
+            
+                       <SidebarCollapse icon={HiUser} label="Vendors">
+                <SidebarItem href="#">Vendors Applications</SidebarItem>
+                <SidebarItem href="#">Vendors List</SidebarItem>
+              </SidebarCollapse>
+                <SidebarItem href="#" icon={HiUser}>
                 Users
               </SidebarItem>
-              <SidebarItem href="#" icon={HiShoppingBag}>
-                Products
+                  <SidebarItem href="#" icon={HiTable}>
+                Orders
               </SidebarItem>
-              <SidebarItem href="#" icon={HiArrowSmRight}>
-                Sign In
+
+                 <SidebarItem href="#" icon={HiInbox}>
+                Messages
               </SidebarItem>
-              <SidebarItem href="#" icon={HiTable}>
-                Sign Up
+                 <SidebarItem href="#" icon={HiInbox}>
+                Filters
               </SidebarItem>
+      
             </SidebarItemGroup>
           </SidebarItems>
         </Sidebar>
