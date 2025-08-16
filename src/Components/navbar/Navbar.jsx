@@ -44,21 +44,13 @@ function Navbar() {
       <div className='max-w-7xl mx-auto flex flex-wrap items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-3'>
         {/* Logo */}
         <Link
-<<<<<<< HEAD
           to='/'
           className='flex items-center gap-2 min-w-[50px] flex-shrink-0'>
-=======
-          to="/"
-          className="flex items-center gap-2 min-w-[50px] flex-shrink-0"
-        >
-
->>>>>>> development
           <img
             className='w-32 sm:w-36 md:w-40 lg:w-43 h-12 sm:h-14 md:h-15 lg:h-16 object-contain'
             src={logoImg}
             alt='logo'
           />
-
         </Link>
 
         {/* Desktop Menu */}
