@@ -53,12 +53,14 @@ export default function DashboardSidebar() {
                 Dashboard
               </SidebarItem>
               <SidebarCollapse icon={HiShoppingBag} label="E-commerce">
-                <SidebarItem href="#">
+               
                 
               <NavLink to="products">
-  Products
+              <SidebarItem >Products</SidebarItem>
+  
+  
               </NavLink>
-                  </SidebarItem>
+                 
                 <SidebarItem href="#">Sales</SidebarItem>
                 <SidebarItem href="#">Refunds</SidebarItem>
                 <SidebarItem href="#">Shipping</SidebarItem>

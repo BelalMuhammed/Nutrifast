@@ -5,7 +5,7 @@ import DashboardSidebar from "./components/Sidebar";
 
 export default function DashboardLayout() {
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       <DashboardSidebar />
 
@@ -14,10 +14,10 @@ export default function DashboardLayout() {
         <Topbar />
 
         {/* Page Content */}
-        <main className="flex-1 p-4">
+        <main className="flex-1 px-4 py-20 overflow-y-auto">
           <Outlet />
         </main>
       </div>
-    </div>
-  );
+    </div>
+  );
 }

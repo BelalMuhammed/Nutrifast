@@ -745,90 +745,90 @@
 //     </DropdownMenu>
 //   )
 // }
-import React, { useState } from "react"
-import { FaChevronDown, FaChevronUp, FaTrash, FaPlus } from "react-icons/fa"
+// // import React, { useState } from "react"
+// // import { FaChevronDown, FaChevronUp, FaTrash, FaPlus } from "react-icons/fa"
 
-export default function ProductsTable() {
-  const [products, setProducts] = useState([
-    { id: 1, name: "Apple", price: 10 },
-    { id: 2, name: "Orange", price: 15 },
-    { id: 3, name: "Banana", price: 7 },
-  ])
+// // export default function ProductsTable() {
+// //   const [products, setProducts] = useState([
+// //     { id: 1, name: "Apple", price: 10 },
+// //     { id: 2, name: "Orange", price: 15 },
+// //     { id: 3, name: "Banana", price: 7 },
+// //   ])
 
-  const [showModal, setShowModal] = useState(false)
-  const [selectedId, setSelectedId] = useState(null)
+// //   const [showModal, setShowModal] = useState(false)
+// //   const [selectedId, setSelectedId] = useState(null)
 
-  // فتح الـ modal للتأكيد
-  const handleDeleteClick = (id) => {
-    setSelectedId(id)
-    setShowModal(true)
-  }
+// //   // فتح الـ modal للتأكيد
+// //   const handleDeleteClick = (id) => {
+// //     setSelectedId(id)
+// //     setShowModal(true)
+// //   }
 
-  // تأكيد الحذف
-  const confirmDelete = () => {
-    setProducts(products.filter((p) => p.id !== selectedId))
-    setShowModal(false)
-    setSelectedId(null)
-  }
+// //   // تأكيد الحذف
+// //   const confirmDelete = () => {
+// //     setProducts(products.filter((p) => p.id !== selectedId))
+// //     setShowModal(false)
+// //     setSelectedId(null)
+// //   }
 
-  return (
-    <div className="p-6 pt-5">
-      <h2 className="text-2xl font-bold mb-4">Products Table</h2>
+// //   return (
+// //     <div className="p-6 pt-5">
+// //       <h2 className="text-2xl font-bold mb-4">Products Table</h2>
 
-      <table className="min-w-full border text-sm text-left">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border px-4 py-2">#</th>
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Price</th>
-            <th className="border px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p, index) => (
-            <tr key={p.id} className="hover:bg-gray-50">
-              <td className="border px-4 py-2">{index + 1}</td>
-              <td className="border px-4 py-2">{p.name}</td>
-              <td className="border px-4 py-2">{p.price} EGP</td>
-              <td className="border px-4 py-2 flex gap-3">
-                <button
-                  onClick={() => handleDeleteClick(p.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <FaTrash />
-                </button>
-                <button className="text-green-500 hover:text-green-700">
-                  <FaPlus />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+// //       <table className="min-w-full border text-sm text-left">
+// //         <thead className="bg-gray-100">
+// //           <tr>
+// //             <th className="border px-4 py-2">#</th>
+// //             <th className="border px-4 py-2">Name</th>
+// //             <th className="border px-4 py-2">Price</th>
+// //             <th className="border px-4 py-2">Actions</th>
+// //           </tr>
+// //         </thead>
+// //         <tbody>
+// //           {products.map((p, index) => (
+// //             <tr key={p.id} className="hover:bg-gray-50">
+// //               <td className="border px-4 py-2">{index + 1}</td>
+// //               <td className="border px-4 py-2">{p.name}</td>
+// //               <td className="border px-4 py-2">{p.price} EGP</td>
+// //               <td className="border px-4 py-2 flex gap-3">
+// //                 <button
+// //                   onClick={() => handleDeleteClick(p.id)}
+// //                   className="text-red-500 hover:text-red-700"
+// //                 >
+// //                   <FaTrash />
+// //                 </button>
+// //                 <button className="text-green-500 hover:text-green-700">
+// //                   <FaPlus />
+// //                 </button>
+// //               </td>
+// //             </tr>
+// //           ))}
+// //         </tbody>
+// //       </table>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-md w-80">
-            <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
-            <p className="mb-4">Are you sure you want to delete this product?</p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowModal(false)}
-                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
+// //       {/* Modal */}
+// //       {showModal && (
+// //         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+// //           <div className="bg-white p-6 rounded-lg shadow-md w-80">
+// //             <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
+// //             <p className="mb-4">Are you sure you want to delete this product?</p>
+// //             <div className="flex justify-end gap-3">
+// //               <button
+// //                 onClick={() => setShowModal(false)}
+// //                 className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+// //               >
+// //                 Cancel
+// //               </button>
+// //               <button
+// //                 onClick={confirmDelete}
+// //                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+// //               >
+// //                 Delete
+// //               </button>
+// //             </div>
+// //           </div>
+// //         </div>
+// //       )}
+// //     </div>
+// //   )
+// // }
