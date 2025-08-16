@@ -127,7 +127,11 @@ function SideFilter({ products = [], onFilter }) {
                             : null
                         )
                       }
-                      className='text-app-primary w-5 h-5 flex-shrink-0'
+                      className='text-app-primary w-5 h-5 flex-shrink-0 accent-app-primary'
+                      style={{
+                        accentColor: "var(--color-primary)",
+                        borderColor: "var(--color-primary)",
+                      }}
                     />
                     <div className='flex flex-col flex-1 min-w-0'>
                       <span className='font-medium text-gray-700 truncate'>
