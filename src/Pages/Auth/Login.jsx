@@ -21,8 +21,7 @@ export default function Login() {
   } = useForm();
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    // فقط لو المستخدم مسجّل دخول وهو في صفحة غير /login
+    const savedUser = localStorage.getItem("auth:user");
     if (savedUser && location.pathname !== "/login") {
       dispatch(loginSuccess(JSON.parse(savedUser)));
       navigate("/");
@@ -43,7 +42,7 @@ export default function Login() {
         (u) => u.email === data.email && u.password === data.password
       );
       if (!user) throw new Error("Invalid email or password");
-      localStorage.setItem("currentUser", JSON.stringify(user));
+      localStorage.setItem("auth:user", JSON.stringify(user));
       dispatch(loginSuccess(user));
       navigate("/");
     } catch (err) {
