@@ -1,4 +1,3 @@
-
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
@@ -23,6 +22,9 @@ const ProductDetails = lazy(() =>
 const Cart = lazy(() => import("../../Pages/Cart/Cart"));
 const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
+const OrderDetails = lazy(() =>
+  import("../../Pages/orderDetails/OrderDetails")
+);
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
 const VendorRegisteration = lazy(() =>
@@ -100,31 +102,35 @@ export default function AppRoutes() {
           path: "vendorRegisteration",
           element: <VendorRegisteration />,
         },
-        // {
-        //   element: <ProtectedRoute />,
-        //   children: [
-        //     {
-        //       path: "myOrders",
-        //       element: <MyOrders />,
-        //     },
-        //     // {
-        //     //   path: "vendorDashboard",
-        //     //   element: <VendorDashboard />,
-        //     // },
+        {
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: "myOrders",
+              element: <MyOrders />,
+            },
+            {
+              path: "order/:id",
+              element: <OrderDetails />,
+            },
+            //     // {
+            //     //   path: "vendorDashboard",
+            //     //   element: <VendorDashboard />,
+            //     // },
 
-        //     // ✅ New protected dashboard routes
-        //     {
-        //       path: "dashboard",
-        //       element: <DashboardLayout />,
-        //       children: [
-        //         { index: true, element: <Dashboard /> },
-        //         // { path: "users", element: <Users /> },
-        //         // { path: "orders", element: <Orders /> },
-        //         // { path: "settings", element: <Settings /> },
-        //       ],
-        //     },
-        //   ],
-        // },
+            //     // ✅ New protected dashboard routes
+            //     {
+            //       path: "dashboard",
+            //       element: <DashboardLayout />,
+            //       children: [
+            //         { index: true, element: <Dashboard /> },
+            //         // { path: "users", element: <Users /> },
+            //         // { path: "orders", element: <Orders /> },
+            //         // { path: "settings", element: <Settings /> },
+            //       ],
+            //     },
+          ],
+        },
         {
           path: "dashboard",
           element: <DashboardLayout />,

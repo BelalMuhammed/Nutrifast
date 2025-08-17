@@ -35,7 +35,11 @@ export default function Checkout() {
       return;
     }
 
+    const user = JSON.parse(localStorage.getItem("auth:user"));
+    const userId = user.id;
+
     const orderData = {
+      userId: userId,
       items: cartItems,
       customer: formData,
       subtotal: subtotal.toFixed(2),
