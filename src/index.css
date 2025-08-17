@@ -31,6 +31,7 @@ button {
   --color-secondary: #4caf50; /* Main Button/Check Green */
   --color-tertiary: #0a472e; /* Deep Forest Green */
   --color-light: #b6e388; /* Light Lettuce Green */
+  --color-dark: #121712;
   --color-muted: #e9f5dbeb; /* Soft Background Green */
   /* --color-muted: #f8fafc; Misty White */
   --color-white: #fff;
@@ -54,6 +55,9 @@ button {
 }
 .text-app-accent {
   color: var(--color-accent);
+}
+.text-app-dark {
+  color: var(--color-dark);
 }
 /* Background colors */
 .bg-app-primary {
@@ -148,8 +152,7 @@ button {
 }
 
 .app-slider .slick-dots li button:before {
-  color: var(--color-accent) !important;
-  font-size: 12px !important;
+  font-size: 8px !important;
 }
 
 .app-slider .slick-dots li.slick-active button:before {
@@ -157,7 +160,7 @@ button {
 }
 /* inputs */
 input {
-  @apply  border rounded-md focus:outline-none focus:ring-2 transition duration-150;
+  @apply border rounded-md focus:outline-none focus:ring-2 transition duration-150;
   border-color: var(--color-muted);
   background-color: var(--color-white);
   color: var(--color-tertiary);
