@@ -2,7 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
+import { Toast, ToastToggle } from "flowbite-react";
+import { HiCheck, HiX } from "react-icons/hi";
+import { useState } from "react";
 export default function Register() {
   const navigate = useNavigate();
   const {
@@ -11,7 +13,12 @@ export default function Register() {
     formState: { errors },
     reset,
   } = useForm();
-  const [serverError, setServerError] = React.useState("");
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const showToastMessage = (message, type = "success") => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+  };
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -23,8 +30,9 @@ export default function Register() {
           user.email.toLowerCase().trim() === data.email.toLowerCase().trim()
       );
       if (exists) {
-        setServerError(
-          "This email is already registered. Please login instead."
+        showToastMessage(
+          "This email is already registered. Please login instead.",
+          "error"
         );
         return;
       }
@@ -35,22 +43,46 @@ export default function Register() {
         phone: data.phone,
         role: "user",
       };
-      const response = await axios.post(
-        "https://nutrifast-data.up.railway.app/users",
-        payload
-      );
-
-      localStorage.setItem("currentUser", JSON.stringify(response.data));
-
-      navigate("/login");
+      await axios.post("https://nutrifast-data.up.railway.app/users", payload);
+      showToastMessage("Registration successful!", "success");
       reset();
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       console.error("Registration failed:", error);
-      setServerError(error.response?.data?.message || "Registration failed");
+      showToastMessage(
+        error.response?.data?.message || "Registration failed",
+        "error"
+      );
     }
   };
   return (
     <div className="flex items-center justify-center">
+      {/* Toast Notification */}
+      {toast.show && (
+        <div className="fixed bottom-5 right-5 z-50">
+          <Toast>
+            <div
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg 
+          ${
+            toast.type === "success"
+              ? "bg-green-100 text-green-500"
+              : "bg-red-100 text-red-500"
+          }`}
+            >
+              {toast.type === "success" ? (
+                <HiCheck className="h-5 w-5" />
+              ) : (
+                <HiX className="h-5 w-5" />
+              )}
+            </div>
+            <div className="ml-3 text-sm font-normal">{toast.message}</div>
+            <ToastToggle
+              onClick={() => setToast({ show: false, message: "", type: "" })}
+            />
+          </Toast>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-8  w-full max-w-md"
@@ -164,14 +196,7 @@ export default function Register() {
         {errors.password && (
           <p className="text-red-500 text-sm mb-4">{errors.password.message}</p>
         )}
-        <div className="text-right mb-4">
-          <a href="#" className="text-sm text-app-tertiary hover:underline">
-            Forgot Password?
-          </a>
-        </div>
-        {serverError && (
-          <p className="text-red-500 text-sm mb-4">{serverError}</p>
-        )}
+        <div className="text-right mb-4"></div>
         <button type="submit" className="btn-app w-full">
           Sign Up
         </button>
