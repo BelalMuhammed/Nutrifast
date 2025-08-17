@@ -40,12 +40,12 @@ export default function CustomerFavorites() {
   return (
     <section className="app-container mx-auto py-8 sm:py-10 md:py-12">
       {/* Heading */}
-      <div className="flex flex-col mb-6 sm:mb-8 px-4">
+      <div className="flex flex-col mb-6 sm:mb-8 px-4 items-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2">
           Customer Favorites
         </h2>
         <div className="w-12 sm:w-16 h-1 rounded-full bg-app-accent mb-2" />
-        <p className="text-sm sm:text-base md:text-lg text-app-dark max-w-xl leading-relaxed">
+        <p className="text-sm sm:text-base md:text-lg text-app-dark max-w-xl leading-relaxed text-center">
           See what our customers love most! Discover top-rated healthy picks and
           trending products.
         </p>

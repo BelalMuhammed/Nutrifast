@@ -41,12 +41,12 @@ export default function Categories() {
     <section className="mx-auto py-8 sm:py-10 md:py-12">
       <div className="app-container">
         {/* Heading */}
-        <div className="flex flex-col mb-6 sm:mb-8 px-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2">
+        <div className="flex flex-col mb-6 sm:mb-8 px-4 items-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2 ">
             Our Categories
           </h2>
           <div className="w-12 sm:w-16 h-1 rounded-full bg-app-accent mb-2" />
-          <p className="text-sm sm:text-base md:text-lg text-app-dark max-w-xl leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-app-dark max-w-xl leading-relaxed text-center">
             Find the perfect healthy option for your lifestyle from our curated
             categories.
           </p>

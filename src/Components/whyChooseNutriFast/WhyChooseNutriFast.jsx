@@ -28,14 +28,14 @@ export default function WhyChooseNutriFast() {
   ];
 
   return (
-    <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 app-container">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading Section */}
-        <div className="mb-8 sm:mb-10 md:mb-12">
+        <div className="mb-8 sm:mb-10 md:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-5">
             Why Choose NutriFast
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-app-dark max-w-xl leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-app-dark max-w-xl leading-relaxed mx-auto">
             We are committed to your health with quality, expertise, and
             sustainability.
           </p>
