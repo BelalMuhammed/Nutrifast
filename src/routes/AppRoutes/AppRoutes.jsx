@@ -10,6 +10,7 @@ import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
 import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
+import ResetPassword from "../../Pages/Auth/ResetPassword";
 import Products from "../../dashboard/pages/Products";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
@@ -57,6 +58,10 @@ export default function AppRoutes() {
         {
           path: "about",
           element: <AboutUs />,
+        },
+        {
+          path: "reset-password",
+          element: <ResetPassword />,
         },
         {
           path: "contact",
