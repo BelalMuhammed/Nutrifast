@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { sendContactMessage } from "../../Api/apiService";
+import { Toast, ToastToggle } from "flowbite-react";
+import { HiCheck, HiX } from "react-icons/hi";
 
 const ContactUs = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState("success");
+  const [toastMessage, setToastMessage] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -10,14 +18,47 @@ const ContactUs = () => {
     reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    // You can handle the form submission here (e.g., send to API)
-    alert("Message sent!\n" + JSON.stringify(data, null, 2));
-    reset();
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+
+    try {
+      // Create message data to send to API
+      const messageData = {
+        id: Date.now(),
+        name: data.name,
+        email: data.email,
+        message: data.message,
+        timestamp: new Date().toISOString(),
+        status: "new",
+      };
+
+      // Send data to API
+      await sendContactMessage(messageData);
+
+      // Show success message
+      setToastType("success");
+      setToastMessage("Message sent successfully! We'll get back to you soon.");
+      setShowToast(true);
+
+      // Clear form
+      reset();
+    } catch (error) {
+      console.error("Error sending message:", error);
+
+      // Show error message
+      setToastType("error");
+      setToastMessage("Failed to send message. Please try again later.");
+      setShowToast(true);
+    } finally {
+      setIsSubmitting(false);
+
+      // Hide toast after 5 seconds
+      setTimeout(() => setShowToast(false), 5000);
+    }
   };
 
   return (
-  <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
+    <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
       {/* Hero Section */}
       <div className='w-full flex flex-col items-center justify-center pt-12 px-4'>
         <span className='bg-app-primary text-white rounded-full p-4 mb-4 shadow-lg'>
@@ -111,12 +152,40 @@ const ContactUs = () => {
           </div>
           <button
             type='submit'
-            className='bg-app-primary text-white font-semibold py-3 px-8 rounded-lg hover:bg-app-tertiary transition w-full md:w-auto mx-auto md:mx-0'>
-            Send Message
+            disabled={isSubmitting}
+            className={`font-semibold py-3 px-8 rounded-lg transition w-full md:w-auto mx-auto md:mx-0 ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed text-white"
+                : "bg-app-primary text-white hover:bg-app-tertiary"
+            }`}>
+            {isSubmitting ? "Sending..." : "Send Message"}
           </button>
         </form>
-   
       </div>
+
+      {/* Toast Notification for success and error */}
+      {showToast && (
+        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-sm w-full mx-4'>
+          <Toast>
+            <div
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                toastType === "error"
+                  ? "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
+                  : "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
+              }`}>
+              {toastType === "error" ? (
+                <HiX className='h-5 w-5' />
+              ) : (
+                <HiCheck className='h-5 w-5' />
+              )}
+            </div>
+            <div className='ml-3 text-sm font-normal text-gray-700'>
+              {toastMessage}
+            </div>
+            <ToastToggle onDismiss={() => setShowToast(false)} />
+          </Toast>
+        </div>
+      )}
     </div>
   );
 };
