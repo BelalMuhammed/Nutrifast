@@ -7,3 +7,7 @@ export function getCategories() {
 export function getCustomerFavorites() {
   return axiosInstance.get("/favoritesProduct ");
 }
+
+export function sendContactMessage(messageData) {
+  return axiosInstance.post("/messages", messageData);
+}
