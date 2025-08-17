@@ -20,7 +20,7 @@ export default function Login() {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const showToastMessage = (message, type = "success") => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+    setTimeout(() => setToast({ show: false, message: "", type: "" }), 2000);
   };
 
   const {
