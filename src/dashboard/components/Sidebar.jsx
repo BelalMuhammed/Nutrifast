@@ -74,9 +74,13 @@ export default function DashboardSidebar() {
                 <SidebarItem href="#" icon={HiUser}>
                 Users
               </SidebarItem>
-                  <SidebarItem href="#" icon={HiTable}>
+
+              <NavLink to="orders">
+      <SidebarItem  icon={HiTable}>
                 Orders
               </SidebarItem>
+              </NavLink>
+            
 
                  <SidebarItem href="#" icon={HiInbox}>
                 Messages

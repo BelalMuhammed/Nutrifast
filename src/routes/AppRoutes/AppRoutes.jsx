@@ -12,6 +12,7 @@ import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistrati
 import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
 import Products from "../../dashboard/pages/Products";
+import Orders from "@/dashboard/pages/Orders";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -131,6 +132,7 @@ export default function AppRoutes() {
           children: [
             { index: true, element: <Dashboard /> },
             { path: "products", element: <Products /> },
+             { path: "orders", element: <Orders /> },
             // { path: "users", element: <Users /> },
             // { path: "orders", element: <Orders /> },
             // { path: "settings", element: <Settings /> },
