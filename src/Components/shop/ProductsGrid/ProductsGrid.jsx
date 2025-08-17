@@ -2,7 +2,6 @@ import { Spinner } from "flowbite-react";
 import ProductCard from "../ProductCard/ProductCard";
 import { FiSearch, FiFilter, FiRefreshCw, FiChevronDown } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import ScrollToTop from "../../shared/ScrollToTop/ScrollToTop";
 
 function ProductsGrid({ products, loading }) {
   const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -93,9 +92,6 @@ function ProductsGrid({ products, loading }) {
           </p>
         </div>
       )}
-
-      {/* Scroll to Top Button */}
-      <ScrollToTop />
     </div>
   );
 }
