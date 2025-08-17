@@ -32,11 +32,9 @@ export default function WishList() {
       <h1 className='text-xl sm:text-2xl md:text-3xl font-bold mb-6 sm:mb-8 text-app-primary text-center'>
         Your Wishlist
       </h1>
-      <div className='w-full flex flex-wrap justify-center gap-5 sm:gap-7'>
+      <div className='flex flex-wrap gap-5 justify-center lg:justify-start'>
         {items.map((item) => (
-          <div className='flex-grow-0 flex-shrink-0 basis-[320px] max-w-xs w-full'>
-            <ProductCard key={item.id} product={item} />
-          </div>
+          <ProductCard key={item.id} product={item} />
         ))}
       </div>
     </div>

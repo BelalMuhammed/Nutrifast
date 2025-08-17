@@ -47,7 +47,11 @@ export default function Checkout() {
 
   const confirmOrder = async () => {
     setShowConfirm(false);
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const userId = user.id;
+
     const orderData = {
+      userId: userId,
       items: cartItems,
       customer: formData,
       subtotal: subtotal.toFixed(2),

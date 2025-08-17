@@ -10,12 +10,14 @@ import {
 function MyOrders() {
   const dispatch = useDispatch();
   const { list: orders, loading } = useSelector((state) => state.orders);
-  const user = useSelector((state) => state.auth.user);
+  const user = JSON.parse(localStorage.getItem("auth:user"));
   const [activeTab, setActiveTab] = useState("All");
 
   useEffect(() => {
-    dispatch(fetchOrders(1));
-  }, [dispatch]);
+    if (user?.id) {
+      dispatch(fetchOrders(user.id));
+    }
+  }, [dispatch, user?.id]);
 
   const filteredOrders =
     activeTab === "All"
@@ -24,18 +26,20 @@ function MyOrders() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-app-secondary mb-6">My Orders</h1>
+      <h1 className="text-3xl font-bold text-app-secondary mb-6 text-center md:text-left">
+        My Orders
+      </h1>
 
       {/* Tabs */}
-      <div className="flex bg-green-100 rounded-full overflow-hidden mb-8">
+      <div className="flex flex-col sm:flex-row bg-transparent sm:bg-green-100 sm:rounded-full overflow-hidden mb-8">
         {["All", "Shipped", "Delivered", "Cancelled", "Returned"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2 text-sm font-medium ${
+            className={`w-full sm:flex-1 py-2 text-sm font-medium text-center md:text-base ${
               activeTab === tab
-                ? "bg-[#dde0ddff] text-[#4F964F] rounded-full"
-                : "bg-[#E8F2E8] text-[#4F964F]"
+                ? "bg-[#dde0ddff] text-[#4F964F] rounded-full mb-2 sm:mb-0 sm:mr-2 last:mr-0"
+                : "bg-[#E8F2E8] text-[#4F964F] rounded-full mb-2 sm:mb-0 sm:mr-2 last:mr-0"
             }`}
           >
             {tab}
@@ -45,43 +49,42 @@ function MyOrders() {
 
       {/* Orders List */}
       {loading ? (
-        <p>Loading orders...</p>
+        <p className="text-center">Loading orders...</p>
       ) : filteredOrders.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-2">
           {filteredOrders.map((order) => (
             <div
               key={order.id}
-              className="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm transition-transform duration-300 hover:translate-x-2"
+              className="flex flex-col items-center md:flex-row md:items-center justify-between bg-white rounded-lg p-4 shadow-sm transition-transform duration-300 hover:translate-x-1"
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col md:flex-row items-center md:items-start space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto">
                 <img
                   src={order.items?.[0]?.image}
                   alt={order.items?.[0]?.name}
-                  className="w-16 h-16 rounded-md object-cover"
+                  className="w-16 h-16 rounded-md object-cover flex-shrink-0"
                 />
-                <div>
-                  <p className="font-semibold text-app-secondary">
+                <div className="flex flex-col items-center md:items-start flex-1 min-w-0 text-center md:text-left">
+                  <p className="font-semibold text-app-secondary truncate">
                     Order #{order.id}
                   </p>
-
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 truncate">
                     {order.items?.[0]?.name}
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 truncate">
                     {order.date} · {order.items?.[0]?.price} · {order.status}
                   </p>
                 </div>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex flex-wrap md:flex-nowrap gap-2 mt-2 md:mt-0">
                 <Link
-                  to={`/product/${order.items?.[0]?.id}`}
-                  className="px-4 py-2 bg-[#dde0ddff] text-app-secondary rounded-full text-sm font-medium hover:bg-[#cacecaff] transition"
+                  to={`/order/${order.id}`}
+                  className="px-4 py-2 bg-[#dde0ddff] w-full md: text-app-secondary rounded-full text-sm font-medium hover:bg-[#cacecaff] transition text-center"
                 >
                   View Order
                 </Link>
                 <button
                   onClick={() => dispatch(deleteOrder(order.id))}
-                  className=" px-4 py-2 bg-red-100 text-red-600 rounded-full text-sm font-medium hover:bg-red-200 transition"
+                  className="px-4 py-2 bg-red-100 w-full md:w-1/2 text-red-600 rounded-full text-sm font-medium hover:bg-red-200 transition"
                 >
                   Remove
                 </button>
@@ -90,12 +93,12 @@ function MyOrders() {
           ))}
         </div>
       ) : (
-        <p>No orders found.</p>
+        <p className="text-center text-gray-500">No orders found.</p>
       )}
 
       {/* Delete Actions */}
       {orders.length > 0 && (
-        <div className="mt-8 flex justify-end space-x-4">
+        <div className="mt-8 flex justify-center md:justify-end">
           <button
             onClick={() => dispatch(clearOrders(user.id))}
             className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"

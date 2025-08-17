@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/*  ---break--- */
+@custom-variant dark (&:is(.dark *));
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
@@ -34,7 +36,7 @@ button {
   --color-muted: #e9f5dbeb; /* Soft Background Green */
   /* --color-muted: #f8fafc; Misty White */
   --color-white: #fff;
-  --color-accent: #e65100; /* Deep Orange Accent */
+  --color-accent: #e65100; /* Deep Orange Accent */ --radius: 0.625rem; --background: oklch(1 0 0); --foreground: oklch(0.145 0 0); --card: oklch(1 0 0); --card-foreground: oklch(0.145 0 0); --popover: oklch(1 0 0); --popover-foreground: oklch(0.145 0 0); --primary: oklch(0.205 0 0); --primary-foreground: oklch(0.985 0 0); --secondary: oklch(0.97 0 0); --secondary-foreground: oklch(0.205 0 0); --muted: oklch(0.97 0 0); --muted-foreground: oklch(0.556 0 0); --accent: oklch(0.97 0 0); --accent-foreground: oklch(0.205 0 0); --destructive: oklch(0.577 0.245 27.325); --border: oklch(0.922 0 0); --input: oklch(0.922 0 0); --ring: oklch(0.708 0 0); --chart-1: oklch(0.646 0.222 41.116); --chart-2: oklch(0.6 0.118 184.704); --chart-3: oklch(0.398 0.07 227.392); --chart-4: oklch(0.828 0.189 84.429); --chart-5: oklch(0.769 0.188 70.08); --sidebar: oklch(0.985 0 0); --sidebar-foreground: oklch(0.145 0 0); --sidebar-primary: oklch(0.205 0 0); --sidebar-primary-foreground: oklch(0.985 0 0); --sidebar-accent: oklch(0.97 0 0); --sidebar-accent-foreground: oklch(0.205 0 0); --sidebar-border: oklch(0.922 0 0); --sidebar-ring: oklch(0.708 0 0);
 }
 
 /* Text colors */
@@ -126,6 +128,22 @@ button {
   @apply w-5 h-5 rounded border-2  focus:ring-2  transition duration-150;
   accent-color: var(--color-accent);
 }
+
+/* Custom checkbox styling for Flowbite */
+input[type="checkbox"]:checked {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px var(--color-light) !important;
+  border-color: var(--color-primary) !important;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
 @keyframes float {
   0% {
     transform: translateY(0);
@@ -140,6 +158,67 @@ button {
 
 .animate-float {
   animation: float 1.8s ease-in-out infinite;
+}
+
+/* Toast animations */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.toast-enter {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+.toast-enter-top {
+  animation: slideInFromTop 0.4s ease-out forwards;
+}
+
+.toast-exit {
+  animation: slideOutToRight 0.3s ease-out forwards;
+}
+
+.toast-exit-top {
+  animation: slideOutToTop 0.3s ease-out forwards;
 }
 
 /* Unified Slider Dots Styling */
@@ -157,7 +236,7 @@ button {
 }
 /* inputs */
 input {
-  @apply  border rounded-md focus:outline-none focus:ring-2 transition duration-150;
+  @apply border rounded-md focus:outline-none focus:ring-2 transition duration-150;
   border-color: var(--color-muted);
   background-color: var(--color-white);
   color: var(--color-tertiary);
@@ -171,4 +250,5 @@ input:focus {
 input::placeholder {
   color: var(--color-tertiary);
   opacity: 0.7;
+
 }
