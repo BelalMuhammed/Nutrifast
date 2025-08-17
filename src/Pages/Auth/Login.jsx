@@ -52,7 +52,6 @@ export default function Login() {
       const user = allUsers.find(
         (u) => u.email === data.email && u.password === data.password
       );
-<<<<<<< HEAD
 
       if (!user) {
         showToastMessage("Invalid email or password", "error");
@@ -61,10 +60,8 @@ export default function Login() {
       }
 
       localStorage.setItem("currentUser", JSON.stringify(user));
-=======
       if (!user) throw new Error("Invalid email or password");
       localStorage.setItem("auth:user", JSON.stringify(user));
->>>>>>> 7d445bd87756aa3dfc962eaff8e486fb6824b809
       dispatch(loginSuccess(user));
       showToastMessage("Login successful!", "success");
 
