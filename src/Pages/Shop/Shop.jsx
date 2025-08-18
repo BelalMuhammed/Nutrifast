@@ -35,6 +35,9 @@ function Shop() {
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
+  const [displayedCount, setDisplayedCount] = useState(12);
+
+  const PRODUCTS_PER_PAGE = 12;
 
   // Get search term from URL
   const queryParams = new URLSearchParams(location.search);
@@ -54,6 +57,7 @@ function Shop() {
   // Update filtered products when products change
   useEffect(() => {
     setFilteredProducts(products || []);
+    setDisplayedCount(12); // Reset displayed count when products change
   }, [products]);
 
   // Handle screen resize
@@ -102,10 +106,17 @@ function Shop() {
 
   const handleClearSearch = () => {
     setLocalSearchTerm("");
+    setDisplayedCount(12); // Reset displayed count
     navigate("/shop");
   };
 
+  const handleShowMore = () => {
+    setDisplayedCount((prev) => prev + PRODUCTS_PER_PAGE);
+  };
+
   const sortedProducts = getSortedProducts();
+  const displayedProducts = sortedProducts.slice(0, displayedCount);
+  const hasMoreProducts = sortedProducts.length > displayedCount;
 
   return (
     <div className='min-h-screen bg-gradient-to-b from-white to-app-quaternary/20 overflow-x-hidden'>
@@ -179,7 +190,7 @@ function Shop() {
               <span className='text-gray-600 font-medium text-sm lg:text-base'>
                 {loading
                   ? "Loading..."
-                  : `${sortedProducts.length} products found`}
+                  : `Showing ${displayedProducts.length} of ${sortedProducts.length} products`}
               </span>
               {!isMobile && (
                 <button
@@ -337,29 +348,131 @@ function Shop() {
                 <Loader />
               </div>
             ) : sortedProducts.length > 0 ? (
-              <div
-                className={`w-full ${
-                  viewMode === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
-                    : "space-y-4"
-                }`}>
-                {sortedProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    viewMode={viewMode}
-                  />
-                ))}
-              </div>
+              <>
+                <div
+                  className={`w-full ${
+                    viewMode === "grid"
+                      ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
+                      : "space-y-4"
+                  }`}>
+                  {displayedProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      viewMode={viewMode}
+                    />
+                  ))}
+                </div>
+
+                {/* Show More Button */}
+                {hasMoreProducts && (
+                  <div className='flex justify-center mt-8'>
+                    <button
+                      onClick={handleShowMore}
+                      className='text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2'
+                      style={{
+                        backgroundColor: "#388e3c",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.target.style.backgroundColor = "#4caf50")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.backgroundColor = "#388e3c")
+                      }>
+                      <span>Show More Products</span>
+                      <FiChevronDown className='rotate-180' size={18} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Products count info */}
+                <div className='text-center mt-6 text-gray-600'>
+                  <p className='text-sm'>
+                    Showing {displayedProducts.length} of{" "}
+                    {sortedProducts.length} products
+                  </p>
+                </div>
+              </>
             ) : (
-              <div className='py-20'>
-                <EmptyState
-                  message={
-                    searchName
-                      ? `No products found for "${searchName}"`
-                      : "No products available"
-                  }
-                />
+              <div className='flex flex-col items-center justify-center  px-4'>
+                {/* Empty State Container */}
+                <div className='bg-white rounded-3xl shadow-lg border border-gray-100 p-8 max-w-md w-full text-center'>
+                  {/* Icon Section */}
+                  <div >
+                    <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full w-24 h-24 mx-auto flex items-center justify-center '>
+                      <FiSearch className='text-app-primary' size={40} />
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className='space-y-4'>
+                    <h3 className='text-2xl font-bold text-app-secondary'>
+                      {searchName
+                        ? "No Results Found"
+                        : "No Products Available"}
+                    </h3>
+
+                    <p className='text-gray-600 leading-relaxed'>
+                      {searchName ? (
+                        <>
+                          We couldn't find any products matching{" "}
+                          <span className='font-semibold text-app-primary'>
+                            "{searchName}"
+                          </span>
+                          <br />
+                          Try adjusting your search or browse our categories.
+                        </>
+                      ) : (
+                        "Our shelves are currently being restocked with healthy products. Check back soon!"
+                      )}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className='flex flex-col sm:flex-row gap-3 pt-4'>
+                      {searchName ? (
+                        <>
+                          <button
+                            onClick={handleClearSearch}
+                            className='text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2'
+                            style={{
+                              backgroundColor: "#388e3c",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.target.style.backgroundColor = "#4caf50")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.target.style.backgroundColor = "#388e3c")
+                            }>
+                            <FiX size={18} />
+                            Clear Search
+                          </button>
+                          <button
+                            onClick={() => navigate("/shop")}
+                            className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2'>
+                            <FiShoppingBag size={18} />
+                            Browse All
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => window.location.reload()}
+                          className='text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2'
+                          style={{
+                            backgroundColor: "#388e3c",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.backgroundColor = "#4caf50")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.backgroundColor = "#388e3c")
+                          }>
+                          <FiSearch size={18} />
+                          Reset filter
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
