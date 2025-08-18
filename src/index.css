@@ -10,9 +10,24 @@
   @apply box-border;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: Poppins;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
+
+/* Prevent horizontal scrolling */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
 li {
   list-style: none;
 }
@@ -24,7 +39,19 @@ button {
 }
 
 .app-container {
-  @apply max-w-[1600px] mx-auto px-6 sm:px-6 lg:px-8;
+  @apply max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure all containers don't overflow */
+.container,
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
 }
 
 /* Css Variables */

@@ -108,21 +108,21 @@ function Shop() {
   const sortedProducts = getSortedProducts();
 
   return (
-    <div className='min-h-screen bg-gradient-to-b from-white to-app-quaternary/20'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 py-8'>
+    <div className='min-h-screen bg-gradient-to-b from-white to-app-quaternary/20 overflow-x-hidden'>
+      <div className='w-full max-w-7xl mx-auto px-4 sm:px-6 py-8'>
         {/* Header Section */}
         <div className='mb-8'>
-          <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6'>
-            <div className='text-center sm:text-left'>
-              <div className='flex items-center justify-center sm:justify-start gap-3 mb-3'>
+          <div className='flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6'>
+            <div className='text-center lg:text-left'>
+              <div className='flex items-center justify-center lg:justify-start gap-3 mb-3'>
                 <div className='bg-app-primary/10 p-3 rounded-xl'>
                   <FiShoppingBag className='text-app-primary' size={32} />
                 </div>
-                <div>
-                  <h1 className='text-3xl font-bold text-app-secondary'>
+                <div className='min-w-0'>
+                  <h1 className='text-2xl lg:text-3xl font-bold text-app-secondary break-words'>
                     {searchName ? "Search Results" : "Shop All Products"}
                   </h1>
-                  <p className='text-gray-600 mt-1'>
+                  <p className='text-gray-600 mt-1 text-sm lg:text-base break-words'>
                     {searchName ? (
                       <>
                         Showing results for "
@@ -140,38 +140,43 @@ function Shop() {
             </div>
 
             {/* Enhanced Search Bar */}
-            <div className='flex items-center gap-2 bg-white rounded-2xl shadow-lg border border-gray-200 px-4 py-3 min-w-[350px] max-w-md'>
-              <FiSearch className='text-app-primary' size={20} />
-              <input
-                type='text'
-                placeholder='Search for healthy products...'
-                className='flex-1 outline-none text-app-tertiary placeholder-gray-400 font-medium'
-                value={localSearchTerm}
-                onChange={(e) => setLocalSearchTerm(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              />
-              {localSearchTerm && (
+            <div className='w-full lg:max-w-md'>
+              <div className='flex items-center gap-2 bg-white rounded-2xl shadow-lg border border-gray-200 px-3 lg:px-4 py-3'>
+                <FiSearch
+                  className='text-app-primary flex-shrink-0'
+                  size={20}
+                />
+                <input
+                  type='text'
+                  placeholder='Search for healthy products...'
+                  className='flex-1 outline-none text-app-tertiary placeholder-gray-400 font-medium min-w-0 text-sm lg:text-base'
+                  value={localSearchTerm}
+                  onChange={(e) => setLocalSearchTerm(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                />
+                {localSearchTerm && (
+                  <button
+                    onClick={handleClearSearch}
+                    className='text-gray-400 hover:text-red-500 transition-colors duration-200 p-1 flex-shrink-0'>
+                    <FiX size={18} />
+                  </button>
+                )}
                 <button
-                  onClick={handleClearSearch}
-                  className='text-gray-400 hover:text-red-500 transition-colors duration-200 p-1'>
-                  <FiX size={18} />
+                  onClick={handleSearch}
+                  className='bg-app-primary text-white px-3 lg:px-6 py-2 rounded-xl hover:bg-app-tertiary transition-all duration-200 font-semibold shadow-md hover:shadow-lg text-sm lg:text-base flex-shrink-0'>
+                  Search
                 </button>
-              )}
-              <button
-                onClick={handleSearch}
-                className='bg-app-primary text-white px-6 py-2 rounded-xl hover:bg-app-tertiary transition-all duration-200 font-semibold shadow-md hover:shadow-lg'>
-                Search
-              </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Controls Bar */}
-        <div className='bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-8'>
-          <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
+        <div className='bg-white rounded-2xl shadow-sm border border-gray-100 p-3 lg:p-4 mb-8'>
+          <div className='flex flex-col lg:flex-row lg:items-center justify-between gap-4'>
             {/* Results Count & Filter Toggle */}
-            <div className='flex items-center gap-4'>
-              <span className='text-gray-600 font-medium'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between lg:justify-start gap-4'>
+              <span className='text-gray-600 font-medium text-sm lg:text-base'>
                 {loading
                   ? "Loading..."
                   : `${sortedProducts.length} products found`}
@@ -179,7 +184,7 @@ function Shop() {
               {!isMobile && (
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className='flex items-center gap-2 text-app-primary hover:text-app-tertiary transition-colors duration-200 font-medium'>
+                  className='flex items-center gap-2 text-app-primary hover:text-app-tertiary transition-colors duration-200 font-medium text-sm lg:text-base'>
                   <FiSliders size={16} />
                   Filters
                   <FiChevronDown
@@ -193,9 +198,9 @@ function Shop() {
             </div>
 
             {/* View Controls */}
-            <div className='flex items-center gap-4 flex-wrap'>
+            <div className='flex flex-col xl:flex-row items-start xl:items-center gap-4'>
               {/* Sort Options */}
-              <div className='flex items-center gap-2'>
+              <div className='flex flex-col sm:flex-row sm:items-center gap-2 w-full xl:w-auto'>
                 <span className='text-gray-600 text-sm font-medium whitespace-nowrap'>
                   Sort by:
                 </span>
@@ -206,7 +211,7 @@ function Shop() {
                         sortOption === "name-asc" ? "name-desc" : "name-asc"
                       )
                     }
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                       sortOption.startsWith("name")
                         ? "bg-app-primary text-white shadow-md"
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -224,7 +229,7 @@ function Shop() {
                         sortOption === "price-asc" ? "price-desc" : "price-asc"
                       )
                     }
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                       sortOption.startsWith("price")
                         ? "bg-app-primary text-white shadow-md"
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -244,7 +249,7 @@ function Shop() {
                           : "rating-desc"
                       )
                     }
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                       sortOption.startsWith("rating")
                         ? "bg-app-primary text-white shadow-md"
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -260,7 +265,7 @@ function Shop() {
               </div>
 
               {/* View Mode Toggle */}
-              <div className='flex items-center bg-gray-100 rounded-xl p-1'>
+              <div className='flex items-center bg-gray-100 rounded-xl p-1 ml-auto xl:ml-0'>
                 <button
                   onClick={() => setViewMode("grid")}
                   className={`p-2 rounded-lg transition-all duration-200 ${
@@ -289,7 +294,7 @@ function Shop() {
         </div>
 
         {/* Main Content */}
-        <div className='flex gap-8'>
+        <div className='flex flex-col lg:flex-row gap-4 lg:gap-8'>
           {/* Sidebar Filters */}
           {isMobile ? (
             <>
@@ -297,7 +302,7 @@ function Shop() {
               <Drawer
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
-                className='transition-all duration-600 ease-in-out w-[400px]'
+                className='transition-all duration-600 ease-in-out w-full max-w-[400px]'
                 position='left'>
                 <DrawerHeader title='Filters' />
                 <DrawerItems>
@@ -312,7 +317,7 @@ function Shop() {
             <div
               className={`transition-all duration-300 ${
                 showFilters
-                  ? "w-[320px] opacity-100"
+                  ? "w-full lg:w-[300px] xl:w-[320px] opacity-100"
                   : "w-0 opacity-0 overflow-hidden"
               }`}>
               {showFilters && (
@@ -325,16 +330,16 @@ function Shop() {
           )}
 
           {/* Products Content */}
-          <div className='flex-1 min-w-0'>
+          <div className='flex-1 min-w-0 w-full'>
             {loading ? (
               <div className='flex justify-center items-center py-20'>
                 <Loader />
               </div>
             ) : sortedProducts.length > 0 ? (
               <div
-                className={`${
+                className={`w-full ${
                   viewMode === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
                     : "space-y-4"
                 }`}>
                 {sortedProducts.map((product) => (

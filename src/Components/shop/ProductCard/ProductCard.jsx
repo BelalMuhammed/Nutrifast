@@ -160,7 +160,7 @@ function ProductCard({ product, viewMode = "grid" }) {
         </button>
       </div>
       <Link to={`/product/${id}`}>
-        <h3 className='text-lg font-bold text-gray-700 mb-2 hover:text-app-primary transition-colors duration-200'>
+        <h3 className='text-lg font-semibold text-gray-700 mb-2 hover:text-app-primary transition-colors duration-200'>
           {name}
         </h3>
       </Link>
@@ -188,7 +188,7 @@ function ProductCard({ product, viewMode = "grid" }) {
       <div className='flex-1'></div>
       {/* Price and Add to Cart Button */}
       <div className='flex items-center justify-between mt-auto'>
-        <span className='text-lg font-bold text-green-700'>{price} EGP</span>
+        <span className='text-md font-bold text-green-700'>{price} EGP</span>
         <AddButton product={product} />
       </div>
 

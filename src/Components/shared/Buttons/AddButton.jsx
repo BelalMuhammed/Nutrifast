@@ -44,7 +44,7 @@ function AddButton({ product }) {
         onClick={handleAddToCart}
         className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""}`}>
         <HiOutlineShoppingBag size={22} className='me-2' />
-        <span>{isInCart ? "Already in Cart" : "Add to cart"}</span>
+        <span>{isInCart ? "in Cart" : "Add to cart"}</span>
       </button>
 
       {/* Flowbite Toast Notification */}
