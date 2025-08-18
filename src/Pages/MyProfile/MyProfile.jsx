@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { updateUserProfile, getUserProfile } from "../../Api/apiService";
 import {
   updateProfileStart,
@@ -15,57 +16,83 @@ const MyProfile = () => {
   const navigate = useNavigate();
   const { user, loading } = useSelector((state) => state.auth);
   const [editMode, setEditMode] = useState(false);
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    address: "",
-    avatar: "",
-    role: "",
+
+  // React Hook Form for profile
+  const {
+    register: registerProfile,
+    handleSubmit: handleSubmitProfile,
+    reset: resetProfile,
+    formState: { errors: profileErrors },
+    watch,
+  } = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      phone: "",
+      address: "",
+      avatar: "",
+      role: "user",
+      password: "",
+    },
   });
+
+  // React Hook Form for password change
+  const {
+    register: registerPassword,
+    handleSubmit: handleSubmitPassword,
+    reset: resetPassword,
+    formState: { errors: passwordErrors },
+    watch: watchPassword,
+  } = useForm({
+    defaultValues: {
+      old: "",
+      new: "",
+      confirm: "",
+    },
+  });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  // Change password state
-  const [passwords, setPasswords] = useState({ old: "", new: "", confirm: "" });
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
 
+  // Watch form values for display
+  const profileData = watch();
+  const passwordData = watchPassword();
+
   useEffect(() => {
     if (user) {
-      setForm({
+      resetProfile({
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
         address: user.address || "",
         avatar: user.avatar || "",
         role: user.role || "user",
+        password: user.password || ""
       });
     }
-  }, [user]);
+  }, [user, resetProfile]);
 
   useEffect(() => {
     if (user && user.id) {
       getUserProfile(user.id)
         .then((res) => {
           if (res.data) {
-            setForm({
+            resetProfile({
               username: res.data.username || "",
               email: res.data.email || "",
               phone: res.data.phone || "",
               address: res.data.address || "",
               avatar: res.data.avatar || "",
               role: res.data.role || "user",
+              password: res.data.password || ""
             });
           }
         })
         .catch(() => {});
     }
-  }, [user]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  }, [user, resetProfile]);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -78,24 +105,24 @@ const MyProfile = () => {
     setError("");
     setSuccess("");
     if (user) {
-      setForm({
+      resetProfile({
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
         address: user.address || "",
         avatar: user.avatar || "",
         role: user.role || "user",
+        password: user.password || ""
       });
     }
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
+  const handleSave = async (data) => {
     setError("");
     setSuccess("");
     dispatch(updateProfileStart());
     try {
-      const res = await updateUserProfile({ ...form, id: user.id });
+      const res = await updateUserProfile({ ...data, id: user.id });
 
       // Update Redux state with the new user data
       dispatch(updateProfileSuccess(res.data));
@@ -121,23 +148,15 @@ const MyProfile = () => {
   };
 
   // Change password logic
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    setPasswords((prev) => ({ ...prev, [name]: value }));
-  };
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
+  const handlePasswordSubmit = async (data) => {
     setPasswordError("");
     setPasswordSuccess("");
-    if (!passwords.old || !passwords.new || !passwords.confirm) {
-      setPasswordError("All fields are required.");
-      return;
-    }
-    if (passwords.new.length < 8) {
+
+    if (data.new.length < 8) {
       setPasswordError("Password must be at least 8 characters.");
       return;
     }
-    if (passwords.new !== passwords.confirm) {
+    if (data.new !== data.confirm) {
       setPasswordError("Passwords do not match.");
       return;
     }
@@ -146,9 +165,9 @@ const MyProfile = () => {
       // Update password as part of the user object (include all user data)
       dispatch(updateProfileStart());
       const updatedUserData = {
-        ...form,
+        ...profileData,
         id: user.id,
-        password: passwords.new, // Store only the new password in the user object
+        password: data.new, // Store only the new password in the user object
       };
 
       const res = await updateUserProfile(updatedUserData); // Update Redux state with the updated user data
@@ -162,7 +181,7 @@ const MyProfile = () => {
       }
 
       setPasswordSuccess("Password changed successfully!");
-      setTimeout(() => setPasswords({ old: "", new: "", confirm: "" }), 1200);
+      setTimeout(() => resetPassword(), 1200);
     } catch (error) {
       dispatch(updateProfileFailure(error.message));
       setPasswordError(
@@ -193,9 +212,9 @@ const MyProfile = () => {
           {/* Profile Card */}
           <div className='flex flex-col items-center md:items-start md:w-1/3 p-0'>
             <div className='w-40 h-40 rounded-full overflow-hidden border-2 border-app-primary mb-4 flex items-center justify-center'>
-              {form.avatar ? (
+              {profileData.avatar ? (
                 <img
-                  src={form.avatar}
+                  src={profileData.avatar}
                   alt='avatar'
                   className='w-full h-full object-cover'
                 />
@@ -213,10 +232,10 @@ const MyProfile = () => {
               )}
             </div>
             <h2 className='text-2xl font-bold text-app-secondary mb-1 text-center md:text-left'>
-              {form.username}
+              {profileData.username}
             </h2>
             <p className='text-gray-500 dark:text-gray-300 mb-2 text-center md:text-left'>
-              {form.email}
+              {profileData.email}
             </p>
             <div className='flex gap-2 mt-2 w-full justify-center md:justify-start'>
               <button
@@ -241,7 +260,7 @@ const MyProfile = () => {
 
           {/* Profile Form */}
           <form
-            onSubmit={handleSave}
+            onSubmit={handleSubmitProfile(handleSave)}
             className='flex-1 space-y-6 max-w-xl mx-auto p-0'>
             <h3
               className={`text-xl font-bold mb-4 flex items-center gap-2 transition-all duration-200 ${
@@ -260,17 +279,21 @@ const MyProfile = () => {
               </label>
               <input
                 type='text'
-                name='username'
-                value={form.username}
-                onChange={handleChange}
+                {...registerProfile("username", {
+                  required: "Full name is required",
+                })}
                 disabled={!editMode}
                 className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
                   editMode
                     ? "border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-transparent bg-white text-app-secondary shadow-sm"
                     : "border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed"
                 }`}
-                required
               />
+              {profileErrors.username && (
+                <p className='text-red-500 text-sm mt-1'>
+                  {profileErrors.username.message}
+                </p>
+              )}
             </div>
             <div>
               <label className='block font-semibold mb-2 text-gray-400'>
@@ -278,8 +301,7 @@ const MyProfile = () => {
               </label>
               <input
                 type='email'
-                name='email'
-                value={form.email}
+                {...registerProfile("email")}
                 disabled
                 className='w-full border-2 border-gray-300 rounded-lg px-4 py-2 bg-gray-200 text-gray-500 text-lg cursor-not-allowed'
               />
@@ -293,9 +315,7 @@ const MyProfile = () => {
               </label>
               <input
                 type='text'
-                name='phone'
-                value={form.phone}
-                onChange={handleChange}
+                {...registerProfile("phone")}
                 disabled={!editMode}
                 className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
                   editMode
@@ -310,9 +330,7 @@ const MyProfile = () => {
               </label>
               <input
                 type='text'
-                name='address'
-                value={form.address}
-                onChange={handleChange}
+                {...registerProfile("address")}
                 disabled={!editMode}
                 className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
                   editMode
@@ -327,8 +345,7 @@ const MyProfile = () => {
               </label>
               <input
                 type='text'
-                name='role'
-                value={form.role}
+                {...registerProfile("role")}
                 disabled
                 className='w-full border-2 border-gray-300 rounded-lg px-4 py-2 bg-gray-200 text-gray-500 text-lg cursor-not-allowed'
                 placeholder='user'
@@ -343,9 +360,7 @@ const MyProfile = () => {
               </label>
               <input
                 type='url'
-                name='avatar'
-                value={form.avatar}
-                onChange={handleChange}
+                {...registerProfile("avatar")}
                 disabled={!editMode}
                 placeholder={
                   editMode
@@ -415,7 +430,7 @@ const MyProfile = () => {
 
             {/* Password Form */}
             <form
-              onSubmit={handlePasswordSubmit}
+              onSubmit={handleSubmitPassword(handlePasswordSubmit)}
               className='flex-1 space-y-6 max-w-xl mx-auto p-0'>
               <h3 className='text-xl font-bold mb-4 flex items-center gap-2 text-app-secondary'>
                 <FiKey /> Change Password
@@ -426,11 +441,16 @@ const MyProfile = () => {
                 </label>
                 <input
                   type='password'
-                  name='old'
-                  value={passwords.old}
-                  onChange={handlePasswordChange}
+                  {...registerPassword("old", {
+                    required: "Old password is required",
+                  })}
                   className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 text-lg'
                 />
+                {passwordErrors.old && (
+                  <p className='text-red-500 text-sm mt-1'>
+                    {passwordErrors.old.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className='block font-semibold mb-2 text-app-secondary'>
@@ -438,11 +458,20 @@ const MyProfile = () => {
                 </label>
                 <input
                   type='password'
-                  name='new'
-                  value={passwords.new}
-                  onChange={handlePasswordChange}
+                  {...registerPassword("new", {
+                    required: "New password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters",
+                    },
+                  })}
                   className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 text-lg'
                 />
+                {passwordErrors.new && (
+                  <p className='text-red-500 text-sm mt-1'>
+                    {passwordErrors.new.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className='block font-semibold mb-2 text-app-secondary'>
@@ -450,11 +479,18 @@ const MyProfile = () => {
                 </label>
                 <input
                   type='password'
-                  name='confirm'
-                  value={passwords.confirm}
-                  onChange={handlePasswordChange}
+                  {...registerPassword("confirm", {
+                    required: "Please confirm your password",
+                    validate: (value) =>
+                      value === passwordData.new || "Passwords do not match",
+                  })}
                   className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 text-lg'
                 />
+                {passwordErrors.confirm && (
+                  <p className='text-red-500 text-sm mt-1'>
+                    {passwordErrors.confirm.message}
+                  </p>
+                )}
               </div>
               {passwordError && (
                 <div className='text-red-500 text-base font-medium'>
