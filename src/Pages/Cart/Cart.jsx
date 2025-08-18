@@ -81,19 +81,19 @@ function Cart() {
                     Price includes VAT
                   </span>
                 </div>
-                <div className='flex items-center bg-app-quaternary/20 rounded-full px-2 py-1 mt-2 md:mt-0 min-w-[110px] justify-between gap-2'>
+                <div className='flex items-center  rounded-full px-3 py-2 mt-2 md:mt-0 min-w-[120px] justify-between gap-3'>
                   <button
                     onClick={() => dispatch(decreaseQty(item.id))}
-                    className='w-8 h-8 flex items-center justify-center rounded-full bg-app-primary/10 text-app-primary text-xl font-bold hover:bg-app-primary hover:text-white transition'
+                    className='w-8 h-8 flex items-center justify-center rounded-full bg-transparent border border-gray-300 text-gray-600 text-lg font-semibold hover:border-gray-400 hover:text-gray-800 transition-all duration-200'
                     aria-label='Decrease quantity'>
-                    -
+                    −
                   </button>
-                  <span className='font-bold text-app-secondary text-base px-2 select-none text-center min-w-[24px]'>
+                  <span className='font-semibold text-app-secondary text-base px-2 select-none text-center min-w-[24px]'>
                     {item.quantity}
                   </span>
                   <button
                     onClick={() => dispatch(increaseQty(item.id))}
-                    className='w-8 h-8 flex items-center justify-center rounded-full bg-app-primary/10 text-app-primary text-xl font-bold hover:bg-app-primary hover:text-white transition'
+                    className='w-8 h-8 flex items-center justify-center rounded-full bg-app-primary text-white text-lg font-semibold hover:bg-app-tertiary transition-all duration-200 shadow-sm'
                     aria-label='Increase quantity'>
                     +
                   </button>
