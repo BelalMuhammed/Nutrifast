@@ -324,6 +324,7 @@ function Shop() {
                 <SideFilter
                   products={products}
                   onFilter={setFilteredProducts}
+                  onClose={() => setShowFilters(false)}
                 />
               )}
             </div>
