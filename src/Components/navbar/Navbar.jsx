@@ -11,6 +11,7 @@ import {
 } from "react-icons/fi";
 import { FaSignOutAlt, FaCog, FaList, FaUserShield } from "react-icons/fa";
 import logoImg from "/logo-light.png";
+import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,16 +90,7 @@ function Navbar() {
 
             <div className="flex items-center space-x-6 ml-4">
               {/* Search Bar */}
-              <div className="relative">
-                <div className="flex items-center border-b border-white/50 py-1 px-2">
-                  <FiSearch className="mr-2" />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="bg-transparent outline-none w-32 placeholder-white/70"
-                  />
-                </div>
-              </div>
+              <NavBarSearch />
 
               {/* Cart and Wishlist */}
               <Link to="/cart" className="relative">
