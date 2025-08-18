@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 function ProductsGrid({ products, loading }) {
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10;
+  const productsPerPage = 12;
 
   // Reset pagination when products change
   useEffect(() => {
