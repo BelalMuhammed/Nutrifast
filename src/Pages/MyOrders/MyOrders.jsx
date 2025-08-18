@@ -10,7 +10,7 @@ import {
 function MyOrders() {
   const dispatch = useDispatch();
   const { list: orders, loading } = useSelector((state) => state.orders);
-  const user = JSON.parse(localStorage.getItem("auth:user"));
+  const user = JSON.parse(localStorage.getItem("currentUser"));
   const [activeTab, setActiveTab] = useState("All");
 
   useEffect(() => {

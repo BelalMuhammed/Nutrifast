@@ -19,8 +19,11 @@ export const fetchProductById = createAsyncThunk(
 export const searchProductsByName = createAsyncThunk(
   "products/searchByName",
   async (name) => {
-    const response = await axiosInstance.get(`/products?name=${name}`);
-    return response.data;
+    const response = await axiosInstance.get(`/products`);
+    const searchTerm = name.toLowerCase();
+    return response.data.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm)
+    );
   }
 );
 
