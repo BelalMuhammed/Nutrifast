@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import AddButton from "../../shared/Buttons/AddButton";
 import { Rating, RatingStar } from "flowbite-react";
 import { CiWarning } from "react-icons/ci";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleWishlistItem } from "../../../Redux/slices/wishListSlice";
+import { Toast, ToastToggle } from "flowbite-react";
+import { HiCheck, HiX } from "react-icons/hi";
 import {
   FiStar,
   FiShield,
@@ -14,6 +18,28 @@ import {
 } from "react-icons/fi";
 
 const ProductDetailsCard = ({ selectedProduct }) => {
+  const dispatch = useDispatch();
+  const [showWishlistToast, setShowWishlistToast] = useState(false);
+  const [wishlistToastType, setWishlistToastType] = useState("success");
+
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const isInWishlist = wishlistItems.some(
+    (item) => item.id === selectedProduct.id
+  );
+
+  const handleWishlistToggle = () => {
+    if (isInWishlist) {
+      // Removing from wishlist
+      setWishlistToastType("removed");
+    } else {
+      // Adding to wishlist
+      setWishlistToastType("added");
+    }
+
+    dispatch(toggleWishlistItem(selectedProduct));
+    setShowWishlistToast(true);
+    setTimeout(() => setShowWishlistToast(false), 4000);
+  };
   return (
     <div className='bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden max-w-5xl mx-auto'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 lg:min-h-[600px] items-stretch'>
@@ -99,9 +125,22 @@ const ProductDetailsCard = ({ selectedProduct }) => {
                     {selectedProduct.name}
                   </h1>
                 </div>
-                <button className='p-2 bg-gray-50 hover:bg-red-50 rounded-full transition-colors duration-200 group'>
+                <button
+                  onClick={handleWishlistToggle}
+                  className={`p-2 rounded-full transition-colors duration-200 group ${
+                    isInWishlist
+                      ? "bg-red-50 hover:bg-red-100"
+                      : "bg-gray-50 hover:bg-red-50"
+                  }`}
+                  aria-label={
+                    isInWishlist ? "Remove from wishlist" : "Add to wishlist"
+                  }>
                   <FiHeart
-                    className='text-gray-400 group-hover:text-red-500 transition-colors'
+                    className={`transition-colors ${
+                      isInWishlist
+                        ? "text-red-500 fill-red-500"
+                        : "text-gray-400 group-hover:text-red-500"
+                    }`}
                     size={18}
                   />
                 </button>
@@ -276,6 +315,32 @@ const ProductDetailsCard = ({ selectedProduct }) => {
           </div>
         </div>
       </div>
+
+      {/* Wishlist Toast Notification */}
+      {showWishlistToast && (
+        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-xs w-full'>
+          <Toast>
+            <div
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                wishlistToastType === "removed"
+                  ? "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
+                  : "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
+              }`}>
+              {wishlistToastType === "removed" ? (
+                <HiX className='h-5 w-5' />
+              ) : (
+                <HiCheck className='h-5 w-5' />
+              )}
+            </div>
+            <div className='ml-3 text-sm font-normal'>
+              {wishlistToastType === "removed"
+                ? `"${selectedProduct.name}" removed from wishlist!`
+                : `"${selectedProduct.name}" added to wishlist!`}
+            </div>
+            <ToastToggle onDismiss={() => setShowWishlistToast(false)} />
+          </Toast>
+        </div>
+      )}
     </div>
   );
 };
