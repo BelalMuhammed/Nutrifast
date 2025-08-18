@@ -10,6 +10,8 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
+import FloatingFoodIcons from "@/Components/shared/FloatingFoodIcons/FloatingFoodIcons";
+
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -47,7 +49,10 @@ export default function Login() {
       const adminsRes = await axios.get(
         "https://nutrifast-data.up.railway.app/admins"
       );
-      const allUsers = [...res.data, ...adminsRes.data];
+      const vendorsRes = await axios.get(
+        "https://nutrifast-data.up.railway.app/vendors"
+      );
+      const allUsers = [...res.data, ...adminsRes.data, ...vendorsRes.data];
 
       const user = allUsers.find(
         (u) => u.email === data.email && u.password === data.password
@@ -74,6 +79,8 @@ export default function Login() {
 
   return (
     <div className="h-screen flex items-center justify-center">
+      {/* Background icons layer (does not affect layout) */}
+      <FloatingFoodIcons count={26} opacity={0.09} />
       {/* Toast Notification */}
       {toast.show && (
         <div className="fixed bottom-5 right-5 z-50">
@@ -102,18 +109,19 @@ export default function Login() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 w-full max-w-md"
+        className="bg-app-softest rounded-xl p-8 w-full max-w-md shadow-lg"
       >
-        <h2 className="text-3xl font-medium mb-2 text-left">Welcome Back</h2>
-        <p className="text-sm text-gray-500 mb-6 text-left">
-          Your journey to better health starts with one small step — log in and
-          take it.
+        <h2 className="text-5xl font-medium mb-2 text-center text-app-tertiary">
+          Welcome Back
+        </h2>
+        <p className="text-xl text-app-tertiary mb-6 text-center flex items-center justify-center gap-2">
+          Glad to see you again!
         </p>
 
         {/* Email */}
         <label
           htmlFor="email"
-          className="block mb-1 text-app-secondary text-left"
+          className="block mb-1 text-app-tertiary text-left"
         >
           Email
         </label>
@@ -137,7 +145,7 @@ export default function Login() {
         {/* Password */}
         <label
           htmlFor="password"
-          className="block mb-1 text-app-secondary text-left"
+          className="block mb-1 text-app-tertiary text-left"
         >
           Password
         </label>

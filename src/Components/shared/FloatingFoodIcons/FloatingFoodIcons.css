@@ -1,0 +1,31 @@
+.floating-icons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.icon {
+  position: absolute;
+  color: #76c893; 
+  animation: float linear infinite;
+  opacity: 0.7;
+}
+
+
+@keyframes float {
+  0% {
+    top: 100%;
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(20px) rotate(180deg);
+  }
+  100% {
+    top: -10%;
+    transform: translateX(-20px) rotate(360deg);
+  }
+}
