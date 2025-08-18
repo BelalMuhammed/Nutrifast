@@ -58,16 +58,16 @@ const ContactUs = () => {
   };
 
   return (
-    <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
+    <div className='min-h-[400px] h-[100vh] bg-gradient-to-br from-green-50 to-white py-0'>
       {/* Hero Section */}
       <div className='w-full flex flex-col items-center justify-center pt-12 px-4'>
         <span className='bg-app-primary text-white rounded-full p-4 mb-4 shadow-lg'>
           <FaEnvelope size={40} />
         </span>
-        <h1 className='text-3xl md:text-4xl font-extrabold text-app-primary mb-2 text-center'>
+      <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight text-center mb-2'>
           Contact Us
-        </h1>
-        <p className='text-lg  text-gray-700 text-center max-w-xl mb-2'>
+        </h2>
+        <p className='text-lg  text-gray-700 text-center max-w-2xl mb-2'>
           Have questions, feedback, or need support? We're here to help! Reach
           out to us using the form below or through our contact details.
         </p>
