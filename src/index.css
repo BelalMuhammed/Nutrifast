@@ -241,7 +241,6 @@ input[type="checkbox"] {
 input {
   @apply border rounded-md focus:outline-none focus:ring-2 transition duration-150;
   border-color: var(--color-muted);
-  background-color: var(--color-white);
   color: var(--color-tertiary);
 }
 
