@@ -34,18 +34,19 @@ function FeatureHighlights() {
   ];
 
   return (
-    <div className='bg-app-primary/90 py-8 border-b border-white/10 mt-10'>
-      <div className='max-w-7xl mx-auto px-4 md:px-10'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+    <div className="bg-app-primary/90 py-8 border-b border-white/10 mt-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <div key={index} className='flex items-center gap-4'>
-              <div className='bg-app-accent rounded-full p-3'>
-                <feature.icon className='text-white text-xl' />
+            <div key={index} className="flex items-center gap-4">
+              <div className="bg-app-accent rounded-full p-3">
+                <feature.icon className="text-white text-xl" />
               </div>
               <div>
-                <h4 className='font-bold text-white'>{feature.title}</h4>
+                <h4 className="font-bold text-white">{feature.title}</h4>
                 <p
-                  className={`${feature.descriptionColor} text-sm font-medium`}>
+                  className={`${feature.descriptionColor} text-sm font-medium`}
+                >
                   {feature.description}
                 </p>
               </div>

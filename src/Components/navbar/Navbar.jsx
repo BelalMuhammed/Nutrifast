@@ -1,36 +1,39 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
 import {
-  FaSignOutAlt,
-  FaCog,
-  FaList,
-  FaUserShield,
-  FaUser,
-} from "react-icons/fa";
-
-
-import logoImg from "/logo.png";
-
+  FiShoppingCart,
+  FiMenu,
+  FiX,
+  FiHeart,
+  FiUser,
+  FiSearch,
+} from "react-icons/fi";
+import { FaSignOutAlt, FaCog, FaList, FaUserShield, FaUser } from "react-icons/fa";
+import logoImg from "/logo-light.png";
 import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const storedUser = localStorage.getItem("currentUser");
   const user = storedUser ? JSON.parse(storedUser) : null;
-
   const userName = useSelector((state) => state.auth.user);
-
-  // Get cart and wishlist data from Redux
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
   const wishlistItems = useSelector((state) => state.wishlist?.items || []);
-
-  // Calculate counts - count unique products, not total quantity
-  const cartCount = cartItems.length; // Count unique products in cart
+  const cartCount = cartItems.length;
   const wishlistCount = wishlistItems.length;
 
   const handleLogout = () => {
@@ -39,243 +42,227 @@ function Navbar() {
     window.location.reload();
   };
 
-  return (
-    <nav className='w-full bg-white shadow-lg sticky top-0 z-50'>
-      <div className='max-w-7xl mx-auto flex flex-wrap items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-3'>
-        {/* Logo */}
-        <Link
-          to='/'
-          className='flex items-center gap-2 min-w-[50px] flex-shrink-0'>
-          <img
-            className='w-32 sm:w-36 md:w-40 lg:w-43 h-12 sm:h-14 md:h-15 lg:h-16 object-contain'
-            src={logoImg}
-            alt='logo'
-          />
-        </Link>
+  const isHome = location.pathname === "/";
 
-        {/* Desktop Menu */}
-        <div className='hidden lg:flex flex-1 items-center justify-between ml-4 xl:ml-8 min-w-0'>
-          <div className='flex flex-wrap space-x-4 xl:space-x-6 min-w-0'>
+  return (
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
+        isHome
+          ? scrolled || isOpen
+            ? "bg-black/70 text-white shadow-lg backdrop-blur-md"
+            : "bg-transparent text-white"
+          : "bg-white text-black shadow-md"
+      }`}
+    >
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <img className="h-10 w-auto" src={logoImg} alt="Brand Logo" />
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-8">
             <Link
-              to='/'
-              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
+              to="/"
+              className="text-sm font-medium hover:opacity-80 transition"
+            >
               Home
             </Link>
             <Link
-              to='/shop'
-              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
+              to="/shop"
+              className="text-sm font-medium hover:opacity-80 transition"
+            >
               Shop
             </Link>
             <Link
-              to='/about'
-              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
+              to="/about"
+              className="text-sm font-medium hover:opacity-80 transition"
+            >
               About Us
             </Link>
             <Link
-              to='/contact'
-              className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
+              to="/contact"
+              className="text-sm font-medium hover:opacity-80 transition"
+            >
               Contact
             </Link>
 
-            {!user && (
-              <>
+            <div className="flex items-center space-x-6 ml-4">
+              {/* Search Bar */}
+              <NavBarSearch />
+
+              {/* Cart and Wishlist */}
+              <Link to="/cart" className="relative">
+                <FiShoppingCart className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    {cartCount > 9 ? "9+" : cartCount}
+                  </span>
+                )}
+              </Link>
+
+              <Link to="/wishList" className="relative">
+                <FiHeart className="w-5 h-5" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    {wishlistCount > 9 ? "9+" : wishlistCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Account */}
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center space-x-1"
+                  >
+                    <FiUser className="w-5 h-5" />
+                    <span className="text-sm font-medium">
+                      {userName?.username || "Account"}
+                    </span>
+                  </button>
+
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg text-gray-800 z-50">
+                      <div className="py-1">
+                        <Link
+                          to="/myOrders"
+                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          <FaList className="mr-3" /> My Orders
+                        </Link>
+                        <Link
+                          to="/myProfile"
+                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          <FaUser className="mr-3" /> My Profile
+                        </Link>
+                        {user.role === "admin" && (
+                          <Link
+                            to="/adminDashboard"
+                            className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                          >
+                            <FaUserShield className="mr-3" /> Admin Dashboard
+                          </Link>
+                        )}
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          <FaSignOutAlt className="mr-3" /> Logout
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
                 <Link
-                  to='/login'
-                  className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
+                  to="/login"
+                  className="text-sm font-medium hover:opacity-80 transition"
+                >
                   Login
                 </Link>
-                <Link
-                  to='/choose-role'
-                  className='text-sm lg:text-base font-semibold text-app-tertiary hover:text-app-primary transition whitespace-nowrap'>
-                  Sign Up
-                </Link>
-              </>
-            )}
+              )}
+            </div>
           </div>
 
-          <div className='flex items-center space-x-2 lg:space-x-4 ml-4 xl:ml-8 min-w-0 flex-shrink-0'>
-            <NavBarSearch />
-
-            {/* Cart and Wishlist Icons */}
-            {user && (
-              <>
-                <Link
-                  to='/cart'
-                  className='relative p-2 text-app-tertiary hover:text-app-primary transition-colors duration-300'>
-                  <FiShoppingCart className='w-6 h-6' />
-                  {cartCount > 0 && (
-                    <span className='absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center'>
-                      {cartCount > 99 ? "99+" : cartCount}
-                    </span>
-                  )}
-                </Link>
-                <Link
-                  to='/wishList'
-                  className='relative p-2 text-app-tertiary hover:text-app-primary transition-colors duration-300'>
-                  <FiHeart className='w-6 h-6' />
-                  {wishlistCount > 0 && (
-                    <span className='absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center'>
-                      {wishlistCount > 99 ? "99+" : wishlistCount}
-                    </span>
-                  )}
-                </Link>
-              </>
-            )}
-          </div>
-
-          <div>
-            {user && (
-              <div className='relative'>
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className='flex items-center gap-1 lg:gap-2 focus:outline-none'>
-                  <FiUser className='w-5 h-5 lg:w-6 lg:h-6 text-app-tertiary' />
-                  <span className='font-semibold text-sm lg:text-base text-app-tertiary hover:text-app-primary whitespace-nowrap'>
-                    {userName?.username || "account"}
-                  </span>
-                </button>
-                {dropdownOpen && (
-                  <div className='absolute -right-10 mt-2 w-48 bg-white shadow-lg rounded-lg border z-50'>
-                    <Link
-                      to='/myOrders'
-                      className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
-                      <FaList /> My Orders
-                    </Link>
-                    <Link
-                      to='/settings'
-                      className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
-                      <FaUser /> My Profile
-                    </Link>
-                    {user.role === "admin" && (
-                      <Link
-                        to='/adminDashboard'
-                        className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
-                        <FaUserShield /> Admin Dashboard
-                      </Link>
-                    )}
-                    <button
-                      onClick={handleLogout}
-                      className='w-full text-left flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
-                      <FaSignOutAlt /> Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-4">
+            <Link to="/cart" className="relative">
+              <FiShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-md hover:bg-white/10 focus:outline-none"
+            >
+              {isOpen ? (
+                <FiX className="w-5 h-5" />
+              ) : (
+                <FiMenu className="w-5 h-5" />
+              )}
+            </button>
           </div>
         </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className='lg:hidden text-2xl sm:text-3xl text-app-tertiary ml-2 p-1 sm:p-2 rounded focus:outline-none focus:ring-2 focus:ring-app-primary flex-shrink-0'
-          style={{ minWidth: 0 }}
-          onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       {isOpen && (
-        <div className='lg:hidden bg-white shadow-lg rounded-b-xl px-3 sm:px-4 py-3 sm:py-4 animate-slideDown overflow-x-hidden'>
-          <div className='flex flex-col gap-2 sm:gap-3 mb-3 sm:mb-4'>
+        <div
+          className={`md:hidden ${
+            isHome ? "bg-black/90" : "bg-white"
+          } text-white`}
+        >
+          <div className="px-4 py-3 space-y-3">
             <Link
-              to='/'
-              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
-              onClick={() => setIsOpen(false)}>
+              to="/"
+              className="block py-2 hover:bg-white/10 rounded px-2"
+              onClick={() => setIsOpen(false)}
+            >
               Home
             </Link>
             <Link
-              to='/shop'
-              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
-              onClick={() => setIsOpen(false)}>
+              to="/shop"
+              className="block py-2 hover:bg-white/10 rounded px-2"
+              onClick={() => setIsOpen(false)}
+            >
               Shop
             </Link>
             <Link
-              to='/about'
-              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
-              onClick={() => setIsOpen(false)}>
+              to="/about"
+              className="block py-2 hover:bg-white/10 rounded px-2"
+              onClick={() => setIsOpen(false)}
+            >
               About Us
             </Link>
             <Link
-              to='/contact'
-              className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
-              onClick={() => setIsOpen(false)}>
+              to="/contact"
+              className="block py-2 hover:bg-white/10 rounded px-2"
+              onClick={() => setIsOpen(false)}
+            >
               Contact
             </Link>
 
-            {!user && (
-              <>
+            <div className="pt-4 border-t border-white/20">
+              {user ? (
+                <>
+                  <Link
+                    to="/myOrders"
+                    className="flex items-center py-2 hover:bg-white/10 rounded px-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaList className="mr-3" /> My Orders
+                  </Link>
+                  <Link
+                    to="/myProfile"
+                    className="flex items-center py-2 hover:bg-white/10 rounded px-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaUser className="mr-3" /> My Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left flex items-center py-2 hover:bg-white/10 rounded px-2"
+                  >
+                    <FaSignOutAlt className="mr-3" /> Logout
+                  </button>
+                </>
+              ) : (
                 <Link
-                  to='/login'
-                  className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
-                  onClick={() => setIsOpen(false)}>
+                  to="/login"
+                  className="block py-2 hover:bg-white/10 rounded px-2"
+                  onClick={() => setIsOpen(false)}
+                >
                   Login
                 </Link>
-                <Link
-                  to='/choose-role'
-                  className='text-sm sm:text-base font-semibold text-app-tertiary hover:text-app-primary transition py-1'
-                  onClick={() => setIsOpen(false)}>
-                  Sign Up
-                </Link>
-              </>
-            )}
-
-            {user && (
-              <>
-                <Link
-                  to='/myOrders'
-                  className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
-                  onClick={() => setIsOpen(false)}>
-                  <FaList className='w-4 h-4' /> My Orders
-                </Link>
-                <Link
-                  to='/settings'
-                  className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
-                  onClick={() => setIsOpen(false)}>
-                  <FaUser className='w-4 h-4' /> My Profile
-                </Link>
-                {user.role === "admin" && (
-                  <Link
-                    to='/adminDashboard'
-                    className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
-                    onClick={() => setIsOpen(false)}>
-                    <FaUserShield className='w-4 h-4' /> Admin Dashboard
-                  </Link>
-                )}
-                <button
-                  onClick={handleLogout}
-                  className='w-full text-left flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'>
-                  <FaSignOutAlt className='w-4 h-4' /> Logout
-                </button>
-              </>
-            )}
-          </div>
-          <div className='flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4 mt-3 border-t pt-3'>
-            <div className='flex-1 max-w-xs'>
-              <NavBarSearch />
+              )}
             </div>
-            <Link
-              to='/cart'
-              className='relative'
-              onClick={() => setIsOpen(false)}>
-              <FiShoppingCart className='w-7 h-7 sm:w-8 sm:h-8 p-1.5 sm:p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
-              {cartCount > 0 && (
-                <span className='absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white text-xs sm:text-sm font-bold rounded-full flex items-center justify-center'>
-                  {cartCount > 99 ? "99+" : cartCount}
-                </span>
-              )}
-            </Link>
-            <Link
-              to='/wishList'
-              className='relative'
-              onClick={() => setIsOpen(false)}>
-              <FiHeart className='w-7 h-7 sm:w-8 sm:h-8 p-1.5 sm:p-2 rounded-md bg-app-quaternary/20 text-app-tertiary hover:text-app-primary transition' />
-              {wishlistCount > 0 && (
-                <span className='absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white text-xs sm:text-sm font-bold rounded-full flex items-center justify-center'>
-                  {wishlistCount > 99 ? "99+" : wishlistCount}
-                </span>
-              )}
-            </Link>
           </div>
         </div>
       )}

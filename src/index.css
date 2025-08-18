@@ -24,7 +24,7 @@ button {
 }
 
 .app-container {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  @apply max-w-[1600px] mx-auto px-6 sm:px-6 lg:px-8;
 }
 
 /* Css Variables */
@@ -33,6 +33,7 @@ button {
   --color-secondary: #4caf50; /* Main Button/Check Green */
   --color-tertiary: #0a472e; /* Deep Forest Green */
   --color-light: #b6e388; /* Light Lettuce Green */
+  --color-dark: #121712;
   --color-muted: #e9f5dbeb; /* Soft Background Green */
   --color-softest: #f8fcfa; /* Softest Background Green */
   /* --color-muted: #f8fafc; Misty White */
@@ -57,6 +58,9 @@ button {
 }
 .text-app-accent {
   color: var(--color-accent);
+}
+.text-app-dark {
+  color: var(--color-dark);
 }
 /* Background colors */
 .bg-app-primary {
@@ -231,8 +235,7 @@ input[type="checkbox"] {
 }
 
 .app-slider .slick-dots li button:before {
-  color: var(--color-accent) !important;
-  font-size: 12px !important;
+  font-size: 8px !important;
 }
 
 .app-slider .slick-dots li.slick-active button:before {
@@ -254,4 +257,8 @@ input::placeholder {
   color: var(--color-tertiary);
   opacity: 0.7;
 
+}
+
+input.search-input::placeholder {
+  color: #fff !important;
 }
