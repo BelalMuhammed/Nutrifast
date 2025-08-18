@@ -36,7 +36,7 @@ function ProductsGrid({ products, loading }) {
           displayedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))
-        ) : products.length === 0 ? (
+        ) : !loading && products.length === 0 ? (
           <div className='w-full flex flex-col items-center justify-center py-16 px-4'>
             <div className='bg-app-quaternary/10 rounded-full p-6 mb-6'>
               <FiSearch className='text-6xl text-app-tertiary/40' />
