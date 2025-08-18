@@ -10,7 +10,6 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-
 import logoImg from "/logo.png";
 
 import NavBarSearch from "../navbarSearch/NavBarSearch";
@@ -142,7 +141,7 @@ function Navbar() {
                       <FaList /> My Orders
                     </Link>
                     <Link
-                      to='/settings'
+                      to='/myProfile'
                       className='flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-base font-semibold text-app-tertiary hover:text-app-primary'>
                       <FaUser /> My Profile
                     </Link>
@@ -229,7 +228,7 @@ function Navbar() {
                   <FaList className='w-4 h-4' /> My Orders
                 </Link>
                 <Link
-                  to='/settings'
+                  to='/myProfile'
                   className='flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded text-sm sm:text-base'
                   onClick={() => setIsOpen(false)}>
                   <FaUser className='w-4 h-4' /> My Profile

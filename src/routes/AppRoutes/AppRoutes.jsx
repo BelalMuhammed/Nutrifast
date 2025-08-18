@@ -28,6 +28,7 @@ const OrderDetails = lazy(() =>
 );
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
+const MyProfile = lazy(() => import("../../Pages/MyProfile/MyProfile"));
 const VendorRegisteration = lazy(() =>
   import("../../Pages/vindorRegisteration/VendorRegistration")
 );
@@ -110,6 +111,10 @@ export default function AppRoutes() {
         {
           element: <ProtectedRoute />,
           children: [
+            {
+              path: "myProfile",
+              element: <MyProfile />,
+            },
             {
               path: "myOrders",
               element: <MyOrders />,
