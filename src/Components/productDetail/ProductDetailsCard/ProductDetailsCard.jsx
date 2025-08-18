@@ -6,7 +6,7 @@ import { CiWarning } from "react-icons/ci";
 const ProductDetailsCard = ({ selectedProduct }) => {
   return (
     <div className='flex items-start justify-center bg-white px-1 pt-2 mb-10'>
-      <div className='w-full max-w-6xl xl:max-w-7xl mx-auto bg-white rounded-2xl shadow p-0 sm:p-4 md:p-6 flex flex-col md:flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8'>
+      <div className='w-full max-w-6xl xl:max-w-7xl mx-auto bg-white rounded-2xl  p-0 sm:py-4 md:py-6 flex flex-col md:flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8'>
         {/* Product Image Section */}
         <div className='flex-shrink-0 flex flex-col items-start justify-start w-full md:w-full lg:w-1/2 mb-0'>
           <img
