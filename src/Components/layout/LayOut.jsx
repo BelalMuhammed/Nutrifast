@@ -17,7 +17,7 @@ export default function Layout() {
       <ScrollToTopOnRouteChange />
 
       {!hideNavbar && <Navbar />}
-      <main className='flex-1'>
+      <main className='flex-1 mt-16'>
         <Outlet />
       </main>
       <Footer />
