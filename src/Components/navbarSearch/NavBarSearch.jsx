@@ -34,7 +34,7 @@ export default function NavBarSearch() {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      navigate(`/search?name=${searchTerm}`);
+      navigate(`/shop?name=${searchTerm}`);
       dispatch(clearSuggestions());
       setSearchTerm("");
       setOpen(false);
@@ -50,22 +50,21 @@ export default function NavBarSearch() {
   };
 
   return (
-    <div className="relative w-64">
-      <div className="flex items-center border border-gray-200 rounded-full px-2 py-2 bg-white/80 backdrop-blur-md shadow-md transition-all duration-300">
+    <div className='relative w-64'>
+      <div className='flex items-center border border-gray-200 rounded-full px-2 py-2 bg-white/80 backdrop-blur-md shadow-md transition-all duration-300'>
         <button
-          type="button"
+          type='button'
           aria-label={open ? "Close search" : "Open search"}
           className={`text-app-primary text-lg transition-all duration-300 ${
             open ? "mr-2" : "mx-auto"
           }`}
           onClick={() => setOpen((prev) => !prev)}
-          tabIndex={0}
-        >
+          tabIndex={0}>
           <FiSearch />
         </button>
         <input
           ref={inputRef}
-          type="text"
+          type='text'
           className={`flex-1 outline-none text-base bg-transparent placeholder-app-primary text-app-tertiary px-1 transition-all duration-300 ${
             open ? "w-full opacity-100 ml-2" : "w-0 opacity-0 p-0"
           }`}
@@ -75,35 +74,34 @@ export default function NavBarSearch() {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           onBlur={handleBlur}
-          aria-label="Search products"
+          aria-label='Search products'
         />
       </div>
 
       {open && suggestions.length > 0 && (
-        <ul className="absolute left-0 mt-2 w-full bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl overflow-hidden z-50 animate-fadeIn border border-gray-100 transition-all duration-300">
+        <ul className='absolute left-0 mt-2 w-full bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl overflow-hidden z-50 animate-fadeIn border border-gray-100 transition-all duration-300'>
           {suggestionsLoading ? (
-            <li className="px-4 py-2 text-gray-400 text-base">Loading...</li>
+            <li className='px-4 py-2 text-gray-400 text-base'>Loading...</li>
           ) : (
             suggestions.map((item) => (
               <li
                 key={item.id}
-                className="px-4 py-2 text-base text-app-tertiary hover:bg-app-quaternary/80 hover:text-app-primary cursor-pointer transition-all duration-150"
+                className='px-4 py-2 text-base text-app-tertiary hover:bg-app-quaternary/80 hover:text-app-primary cursor-pointer transition-all duration-150'
                 tabIndex={0}
-                role="button"
+                role='button'
                 aria-label={`Go to ${item.name}`}
                 onClick={() => {
-                  navigate(`/search?name=${item.name}`);
+                  navigate(`/shop?name=${item.name}`);
                   dispatch(clearSuggestions());
                   setOpen(false);
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    navigate(`/search?name=${item.name}`);
+                    navigate(`/shop?name=${item.name}`);
                     dispatch(clearSuggestions());
                     setOpen(false);
                   }
-                }}
-              >
+                }}>
                 {item.name}
               </li>
             ))

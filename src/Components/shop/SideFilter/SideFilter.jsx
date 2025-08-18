@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar, SidebarCollapse, Checkbox } from "flowbite-react";
+import { FiX } from "react-icons/fi";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import Tooltip from "rc-tooltip";
@@ -14,7 +15,7 @@ const HandleWithTooltip = ({ value, ...restProps }) => (
   </Tooltip>
 );
 
-function SideFilter({ products = [], onFilter }) {
+function SideFilter({ products = [], onFilter, onClose = null }) {
   // Filter groups (excluding CaloriesRange)
   const [filters, setFilters] = useState({
     Categories: [],
@@ -84,8 +85,16 @@ function SideFilter({ products = [], onFilter }) {
   }, [selectedFilters, products, onFilter]);
 
   return (
-    <Sidebar className='bg-white rounded-xl shadow-sm w-full p-0 border border-gray-100'>
-      <div className='px-6 pt-6 pb-2'>
+    <Sidebar className='bg-white rounded-xl shadow-sm w-full  border border-gray-100'>
+      <div className='px-6 pt-6 pb-2 relative'>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className='absolute top-0 right-0 p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 group'
+            aria-label='Close filters'>
+            <FiX className='text-xl text-gray-500 group-hover:text-gray-700' />
+          </button>
+        )}
         <h2 className='text-2xl font-bold text-app-secondary mb-6 text-center tracking-tight'>
           Product Filters
         </h2>
@@ -95,7 +104,7 @@ function SideFilter({ products = [], onFilter }) {
           <SidebarCollapse
             key={group}
             label={
-              <span className='capitalize tracking-wide text-base font-semibold'>
+              <span className='capitalize tracking-wide text-md font-semibold'>
                 {group.replace(/([A-Z])/g, " $1").trim()}
               </span>
             }
@@ -112,7 +121,7 @@ function SideFilter({ products = [], onFilter }) {
                 return (
                   <label
                     key={key}
-                    className='flex items-center gap-3 text-base text-app-primary bg-gray-50 rounded-lg px-4 py-2.5 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-100'>
+                    className='flex items-center gap-3 text-lg text-app-primary bg-gray-50 rounded-lg px-4 py-2.5 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-100'>
                     <Checkbox
                       checked={selectedFilters[group]?.some(
                         (selected) =>
@@ -134,7 +143,7 @@ function SideFilter({ products = [], onFilter }) {
                       }}
                     />
                     <div className='flex flex-col flex-1 min-w-0'>
-                      <span className='font-medium text-gray-700 truncate'>
+                      <span className='font-medium text-sm text-gray-700 truncate'>
                         {item.name}
                       </span>
                       {item.min !== undefined && (
