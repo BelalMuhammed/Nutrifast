@@ -16,7 +16,7 @@ const MyProfile = () => {
   const { user, loading } = useSelector((state) => state.auth);
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
-    name: "",
+    username: "",
     email: "",
     phone: "",
     address: "",
@@ -33,7 +33,7 @@ const MyProfile = () => {
   useEffect(() => {
     if (user) {
       setForm({
-        name: user.name || "",
+        username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
         address: user.address || "",
@@ -49,7 +49,7 @@ const MyProfile = () => {
         .then((res) => {
           if (res.data) {
             setForm({
-              name: res.data.name || "",
+              username: res.data.username || "",
               email: res.data.email || "",
               phone: res.data.phone || "",
               address: res.data.address || "",
@@ -79,7 +79,7 @@ const MyProfile = () => {
     setSuccess("");
     if (user) {
       setForm({
-        name: user.name || "",
+        username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
         address: user.address || "",
@@ -133,8 +133,8 @@ const MyProfile = () => {
       setPasswordError("All fields are required.");
       return;
     }
-    if (passwords.new.length < 6) {
-      setPasswordError("Password must be at least 6 characters.");
+    if (passwords.new.length < 8) {
+      setPasswordError("Password must be at least 8 characters.");
       return;
     }
     if (passwords.new !== passwords.confirm) {
@@ -143,15 +143,28 @@ const MyProfile = () => {
     }
 
     try {
-      // Call API to change password remotely
-      await updateUserProfile({
+      // Update password as part of the user object (include all user data)
+      dispatch(updateProfileStart());
+      const updatedUserData = {
+        ...form,
         id: user.id,
-        oldPassword: passwords.old,
-        newPassword: passwords.new,
-      });
+        password: passwords.new, // Store only the new password in the user object
+      };
+
+      const res = await updateUserProfile(updatedUserData); // Update Redux state with the updated user data
+      dispatch(updateProfileSuccess(res.data));
+
+      // Also update localStorage if it exists there (for navbar sync)
+      const storedUser = localStorage.getItem("currentUser");
+      if (storedUser) {
+        const updatedUser = { ...JSON.parse(storedUser), ...res.data };
+        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      }
+
       setPasswordSuccess("Password changed successfully!");
       setTimeout(() => setPasswords({ old: "", new: "", confirm: "" }), 1200);
     } catch (error) {
+      dispatch(updateProfileFailure(error.message));
       setPasswordError(
         "Failed to change password. Please check your old password."
       );
@@ -200,7 +213,7 @@ const MyProfile = () => {
               )}
             </div>
             <h2 className='text-2xl font-bold text-app-secondary mb-1 text-center md:text-left'>
-              {form.name}
+              {form.username}
             </h2>
             <p className='text-gray-500 dark:text-gray-300 mb-2 text-center md:text-left'>
               {form.email}
@@ -208,10 +221,14 @@ const MyProfile = () => {
             <div className='flex gap-2 mt-2 w-full justify-center md:justify-start'>
               <button
                 type='button'
-                className='flex items-center gap-1 bg-app-primary text-white px-5 py-2 rounded-full hover:bg-app-tertiary transition text-base font-medium shadow'
+                className={`flex items-center gap-1 px-5 py-2 rounded-full transition-all duration-200 text-base font-medium shadow ${
+                  editMode
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-app-primary text-white hover:bg-app-tertiary hover:scale-105"
+                }`}
                 onClick={handleEdit}
                 disabled={editMode}>
-                <FiEdit2 /> Edit
+                <FiEdit2 /> {editMode ? "Editing..." : "Edit"}
               </button>
               <button
                 type='button'
@@ -226,8 +243,16 @@ const MyProfile = () => {
           <form
             onSubmit={handleSave}
             className='flex-1 space-y-6 max-w-xl mx-auto p-0'>
-            <h3 className='text-xl font-bold mb-4 flex items-center gap-2 text-app-secondary'>
-              <FiUser /> Profile Information
+            <h3
+              className={`text-xl font-bold mb-4 flex items-center gap-2 transition-all duration-200 ${
+                editMode ? "text-app-primary" : "text-app-secondary"
+              }`}>
+              <FiUser /> Profile Information{" "}
+              {editMode && (
+                <span className='text-sm bg-app-primary text-white px-2 py-1 rounded-full'>
+                  Editing
+                </span>
+              )}
             </h3>
             <div>
               <label className='block font-semibold mb-2 text-app-secondary'>
@@ -235,16 +260,20 @@ const MyProfile = () => {
               </label>
               <input
                 type='text'
-                name='name'
-                value={form.name}
+                name='username'
+                value={form.username}
                 onChange={handleChange}
                 disabled={!editMode}
-                className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 focus:outline-app-primary bg-gray-50 dark:bg-gray-900 dark:text-white text-lg'
+                className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
+                  editMode
+                    ? "border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-transparent bg-white text-app-secondary shadow-sm"
+                    : "border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed"
+                }`}
                 required
               />
             </div>
             <div>
-              <label className='block font-semibold mb-2 text-app-secondary'>
+              <label className='block font-semibold mb-2 text-gray-400'>
                 Email
               </label>
               <input
@@ -252,8 +281,11 @@ const MyProfile = () => {
                 name='email'
                 value={form.email}
                 disabled
-                className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 bg-gray-100 text-gray-400 dark:bg-gray-700 text-lg'
+                className='w-full border-2 border-gray-300 rounded-lg px-4 py-2 bg-gray-200 text-gray-500 text-lg cursor-not-allowed'
               />
+              <p className='text-sm text-gray-400 mt-1 italic'>
+                Email cannot be changed
+              </p>
             </div>
             <div>
               <label className='block font-semibold mb-2 text-app-secondary'>
@@ -265,7 +297,11 @@ const MyProfile = () => {
                 value={form.phone}
                 onChange={handleChange}
                 disabled={!editMode}
-                className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 focus:outline-app-primary bg-gray-50 dark:bg-gray-900 dark:text-white text-lg'
+                className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
+                  editMode
+                    ? "border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-transparent bg-white text-app-secondary shadow-sm"
+                    : "border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed"
+                }`}
               />
             </div>
             <div>
@@ -278,11 +314,15 @@ const MyProfile = () => {
                 value={form.address}
                 onChange={handleChange}
                 disabled={!editMode}
-                className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 focus:outline-app-primary bg-gray-50 dark:bg-gray-900 dark:text-white text-lg'
+                className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
+                  editMode
+                    ? "border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-transparent bg-white text-app-secondary shadow-sm"
+                    : "border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed"
+                }`}
               />
             </div>
             <div>
-              <label className='block font-semibold mb-2 text-app-secondary'>
+              <label className='block font-semibold mb-2 text-gray-400'>
                 Role
               </label>
               <input
@@ -290,10 +330,10 @@ const MyProfile = () => {
                 name='role'
                 value={form.role}
                 disabled
-                className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 bg-gray-100 text-gray-400 dark:bg-gray-700 text-lg'
+                className='w-full border-2 border-gray-300 rounded-lg px-4 py-2 bg-gray-200 text-gray-500 text-lg cursor-not-allowed'
                 placeholder='user'
               />
-              <p className='text-sm text-gray-500 mt-1'>
+              <p className='text-sm text-gray-400 mt-1 italic'>
                 Contact support to change your role
               </p>
             </div>
@@ -307,11 +347,24 @@ const MyProfile = () => {
                 value={form.avatar}
                 onChange={handleChange}
                 disabled={!editMode}
-                placeholder='https://example.com/image.jpg'
-                className='w-full border-2 border-app-quaternary rounded-lg px-4 py-2 focus:outline-app-primary bg-gray-50 dark:bg-gray-900 dark:text-white text-lg'
+                placeholder={
+                  editMode
+                    ? "https://example.com/image.jpg"
+                    : "Click Edit to change avatar"
+                }
+                className={`w-full border-2 rounded-lg px-4 py-2 text-lg transition-all duration-200 ${
+                  editMode
+                    ? "border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-transparent bg-white text-app-secondary shadow-sm"
+                    : "border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed"
+                }`}
               />
-              <p className='text-sm text-gray-500 mt-1'>
-                Enter a valid image URL for your profile picture
+              <p
+                className={`text-sm mt-1 ${
+                  editMode ? "text-gray-500" : "text-gray-400 italic"
+                }`}>
+                {editMode
+                  ? "Enter a valid image URL for your profile picture"
+                  : "Profile picture can be updated in edit mode"}
               </p>
             </div>
 
@@ -415,8 +468,9 @@ const MyProfile = () => {
               )}
               <button
                 type='submit'
-                className='bg-app-primary text-white px-8 py-2 hover:bg-app-tertiary text-lg font-bold'>
-                Change Password
+                className='bg-app-primary text-white px-8 py-2 hover:bg-app-tertiary text-lg font-bold'
+                disabled={loading}>
+                {loading ? "Changing Password..." : "Change Password"}
               </button>
             </form>
           </div>
