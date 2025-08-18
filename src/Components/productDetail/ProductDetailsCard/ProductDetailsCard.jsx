@@ -74,7 +74,7 @@ const ProductDetailsCard = ({ selectedProduct }) => {
                   {selectedProduct.tags.map((tag, i) => (
                     <span
                       key={i}
-                      className='bg-app-accent/5 text-app-accent px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-app-accent/10 transition-colors duration-200'>
+                      className='bg-app-accent/5 text-app-tertiary px-3 py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-app-accent/10 transition-colors duration-200'>
                       # {tag}
                     </span>
                   ))}
@@ -88,12 +88,12 @@ const ProductDetailsCard = ({ selectedProduct }) => {
           <div>
             {/* Title, Category, Description */}
             <div className='mb-2'>
-              <div className='flex flex-col sm:flex-row sm:items-center sm:gap-3 mb-3'>
+              <div className='flex flex-col gap-2 mb-3'>
                 <h2 className='text-xl sm:text-2xl md:text-3xl font-bold text-app-tertiary'>
                   {selectedProduct.name}
                 </h2>
-                <span className='text-app-accent text-sm sm:text-base font-bold tracking-wider  bg-app-accent/10 px-3 py-1 rounded-full mt-2 sm:mt-0 w-fit'>
-                 " {selectedProduct.brand || "NutriFast"} "
+                <span className='text-app-accent text-sm sm:text-base font-bold tracking-wider bg-app-accent/10 px-3 py-1 rounded-full w-fit'>
+                  " {selectedProduct.brand || "NutriFast"} "
                 </span>
               </div>
               <div className='flex items-center justify-between mb-1'>

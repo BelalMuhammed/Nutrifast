@@ -9,7 +9,7 @@ import {
   FiUser,
   FiSearch,
 } from "react-icons/fi";
-import { FaSignOutAlt, FaCog, FaList, FaUserShield } from "react-icons/fa";
+import { FaSignOutAlt, FaCog, FaList, FaUserShield, FaUser } from "react-icons/fa";
 import logoImg from "/logo-light.png";
 import NavBarSearch from "../navbarSearch/NavBarSearch";
 
@@ -51,7 +51,7 @@ function Navbar() {
           ? scrolled || isOpen
             ? "bg-black/70 text-white shadow-lg backdrop-blur-md"
             : "bg-transparent text-white"
-          : "bg-white text-black shadow-lg"
+          : "bg-white text-black shadow-md"
       }`}
     >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -134,10 +134,10 @@ function Navbar() {
                           <FaList className="mr-3" /> My Orders
                         </Link>
                         <Link
-                          to="/settings"
+                          to="/myProfile"
                           className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                         >
-                          <FaCog className="mr-3" /> Settings
+                          <FaUser className="mr-3" /> My Profile
                         </Link>
                         {user.role === "admin" && (
                           <Link
@@ -240,11 +240,11 @@ function Navbar() {
                     <FaList className="mr-3" /> My Orders
                   </Link>
                   <Link
-                    to="/settings"
+                    to="/myProfile"
                     className="flex items-center py-2 hover:bg-white/10 rounded px-2"
                     onClick={() => setIsOpen(false)}
                   >
-                    <FaCog className="mr-3" /> Settings
+                    <FaUser className="mr-3" /> My Profile
                   </Link>
                   <button
                     onClick={handleLogout}
