@@ -1,4 +1,3 @@
-
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
@@ -11,6 +10,7 @@ import Register from "../../Pages/Auth/Register";
 import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
 import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
+import ResetPassword from "../../Pages/Auth/ResetPassword";
 import Products from "../../dashboard/pages/Products";
 import Orders from "@/dashboard/pages/Orders";
 
@@ -24,8 +24,12 @@ const ProductDetails = lazy(() =>
 const Cart = lazy(() => import("../../Pages/Cart/Cart"));
 const Checkout = lazy(() => import("../../Pages/Checkout/Checkout"));
 const MyOrders = lazy(() => import("../../Pages/MyOrders/MyOrders"));
+const OrderDetails = lazy(() =>
+  import("../../Pages/orderDetails/OrderDetails")
+);
 
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
+const MyProfile = lazy(() => import("../../Pages/MyProfile/MyProfile"));
 const VendorRegisteration = lazy(() =>
   import("../../Pages/vindorRegisteration/VendorRegistration")
 );
@@ -56,6 +60,10 @@ export default function AppRoutes() {
         {
           path: "about",
           element: <AboutUs />,
+        },
+        {
+          path: "reset-password",
+          element: <ResetPassword />,
         },
         {
           path: "contact",
@@ -101,31 +109,39 @@ export default function AppRoutes() {
           path: "vendorRegisteration",
           element: <VendorRegisteration />,
         },
-        // {
-        //   element: <ProtectedRoute />,
-        //   children: [
-        //     {
-        //       path: "myOrders",
-        //       element: <MyOrders />,
-        //     },
-        //     // {
-        //     //   path: "vendorDashboard",
-        //     //   element: <VendorDashboard />,
-        //     // },
+        {
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: "myProfile",
+              element: <MyProfile />,
+            },
+            {
+              path: "myOrders",
+              element: <MyOrders />,
+            },
+            {
+              path: "order/:id",
+              element: <OrderDetails />,
+            },
+            //     // {
+            //     //   path: "vendorDashboard",
+            //     //   element: <VendorDashboard />,
+            //     // },
 
-        //     // ✅ New protected dashboard routes
-        //     {
-        //       path: "dashboard",
-        //       element: <DashboardLayout />,
-        //       children: [
-        //         { index: true, element: <Dashboard /> },
-        //         // { path: "users", element: <Users /> },
-        //         // { path: "orders", element: <Orders /> },
-        //         // { path: "settings", element: <Settings /> },
-        //       ],
-        //     },
-        //   ],
-        // },
+            //     // ✅ New protected dashboard routes
+            //     {
+            //       path: "dashboard",
+            //       element: <DashboardLayout />,
+            //       children: [
+            //         { index: true, element: <Dashboard /> },
+            //         // { path: "users", element: <Users /> },
+            //         // { path: "orders", element: <Orders /> },
+            //         // { path: "settings", element: <Settings /> },
+            //       ],
+            //     },
+          ],
+        },
         {
           path: "dashboard",
           element: <DashboardLayout />,

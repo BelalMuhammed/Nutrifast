@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { Toast, ToastToggle } from "flowbite-react";
+import { HiCheck, HiX } from "react-icons/hi";
+import FloatingFoodIcons from "@/Components/shared/FloatingFoodIcons/FloatingFoodIcons";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -11,7 +14,14 @@ export default function Register() {
     formState: { errors },
     reset,
   } = useForm();
-  const [serverError, setServerError] = React.useState("");
+
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+
+  const showToastMessage = (message, type = "success") => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+  };
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -23,82 +33,96 @@ export default function Register() {
           user.email.toLowerCase().trim() === data.email.toLowerCase().trim()
       );
       if (exists) {
-        setServerError(
-          "This email is already registered. Please login instead."
+        showToastMessage(
+          "This email is already registered. Please login instead.",
+          "error"
         );
         return;
       }
+
       const payload = {
-        username: `${data.firstName} ${data.lastName}`,
+        username: data.fullName,
         email: data.email,
         password: data.password,
         phone: data.phone,
         role: "user",
       };
-      const response = await axios.post(
-        "https://nutrifast-data.up.railway.app/users",
-        payload
-      );
 
-      localStorage.setItem("currentUser", JSON.stringify(response.data));
-
-      navigate("/login");
+      await axios.post("https://nutrifast-data.up.railway.app/users", payload);
+      showToastMessage("Registration successful!", "success");
       reset();
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       console.error("Registration failed:", error);
-      setServerError(error.response?.data?.message || "Registration failed");
+      showToastMessage(
+        error.response?.data?.message || "Registration failed",
+        "error"
+      );
     }
   };
+
   return (
-    <div className="flex items-center justify-center">
+    <div className="min-h-screen flex justify-center py-10">
+      <FloatingFoodIcons count={26} opacity={0.09} />
+
+      {toast.show && (
+        <div className="fixed bottom-5 right-5 z-50">
+          <Toast>
+            <div
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg 
+                ${
+                  toast.type === "success"
+                    ? "bg-green-100 text-green-500"
+                    : "bg-red-100 text-red-500"
+                }`}
+            >
+              {toast.type === "success" ? (
+                <HiCheck className="h-5 w-5" />
+              ) : (
+                <HiX className="h-5 w-5" />
+              )}
+            </div>
+            <div className="ml-3 text-sm font-normal">{toast.message}</div>
+            <ToastToggle
+              onClick={() => setToast({ show: false, message: "", type: "" })}
+            />
+          </Toast>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8  w-full max-w-md"
+        className="bg-app-softest rounded-xl shadow-lg p-8 w-full max-w-md"
       >
-        <h2 className="text-4xl font-medium mb-2 text-left ">Sign Up</h2>
-        <p className="text-sm text-gray-500 mb-6 text-left">
-          show up, glow up.
+        <h2 className="text-5xl font-medium mb-2 text-center text-app-tertiary">
+          Sign Up
+        </h2>
+        <p className="text-xl text-app-tertiary mb-6 text-center flex items-center justify-center gap-2">
+          We’re happy to have you with us!
         </p>
-        {/* First Name */}
+
+        {/* Full Name */}
         <label
-          htmlFor="firstName"
-          className="block mb-1 text-app-secondary text-left"
+          htmlFor="fullName"
+          className="block mb-1 text-app-tertiary text-left"
         >
-          First Name
+          Full Name
         </label>
         <input
           type="text"
-          id="firstName"
-          placeholder="First Name"
-          {...register("firstName", { required: "First name is required" })}
+          id="fullName"
+          placeholder="Full Name"
+          {...register("fullName", { required: "Full name is required" })}
           className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
         />
-        {errors.firstName && (
-          <p className="text-red-500 text-sm mb-2">
-            {errors.firstName.message}
-          </p>
+        {errors.fullName && (
+          <p className="text-red-500 text-sm mb-2">{errors.fullName.message}</p>
         )}
-        {/* Last Name  */}
-        <label
-          htmlFor="lastName"
-          className="block mb-1 text-app-secondary text-left"
-        >
-          Last Name
-        </label>
-        <input
-          id="lastName"
-          type="text"
-          placeholder="Last Name"
-          {...register("lastName", { required: "Last name is required" })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
-        />
-        {errors.lastName && (
-          <p className="text-red-500 text-sm mb-2">{errors.lastName.message}</p>
-        )}
+
         {/* Email */}
         <label
           htmlFor="email"
-          className="block mb-1 text-app-secondary text-left"
+          className="block mb-1 text-app-tertiary text-left"
         >
           Email
         </label>
@@ -118,10 +142,11 @@ export default function Register() {
         {errors.email && (
           <p className="text-red-500 text-sm mb-2">{errors.email.message}</p>
         )}
+
         {/* Phone */}
         <label
           htmlFor="phone"
-          className="block mb-1 text-app-secondary text-left"
+          className="block mb-1 text-app-tertiary text-left"
         >
           Phone
         </label>
@@ -141,10 +166,11 @@ export default function Register() {
         {errors.phone && (
           <p className="text-red-500 text-sm mb-2">{errors.phone.message}</p>
         )}
+
         {/* Password */}
         <label
           htmlFor="password"
-          className="block mb-1 text-app-secondary text-left"
+          className="block mb-1 text-app-tertiary text-left"
         >
           Password
         </label>
@@ -159,19 +185,12 @@ export default function Register() {
               message: "Password must be at least 8 characters",
             },
           })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
+          className="w-full p-2 mb-4 rounded bg-app-quaternary placeholder-app-primary"
         />
         {errors.password && (
           <p className="text-red-500 text-sm mb-4">{errors.password.message}</p>
         )}
-        <div className="text-right mb-4">
-          <a href="#" className="text-sm text-app-tertiary hover:underline">
-            Forgot Password?
-          </a>
-        </div>
-        {serverError && (
-          <p className="text-red-500 text-sm mb-4">{serverError}</p>
-        )}
+
         <button type="submit" className="btn-app w-full">
           Sign Up
         </button>

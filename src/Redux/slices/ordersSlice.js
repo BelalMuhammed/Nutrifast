@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../Network/interceptors";
 
-
 export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
-  async () => {
-    
-    const response = await axiosInstance.get(`/orders`);
+  async (userId) => {
+    const response = await axiosInstance.get(`/orders?userId=${userId}`);
+    console.log("Orders API response:", response.data);
     return response.data;
   }
 );
@@ -22,8 +21,12 @@ export const deleteOrder = createAsyncThunk(
 export const clearOrders = createAsyncThunk(
   "orders/clearOrders",
   async (userId) => {
-    await axiosInstance.delete(`/orders/?userId=${userId}`);
-    return [];
+    const response = await axiosInstance.get(`/orders?userId=${userId}`);
+    const userOrders = response.data;
+    await Promise.all(
+      userOrders.map((order) => axiosInstance.delete(`/orders/${order.id}`))
+    );
+    return userId;
   }
 );
 
@@ -42,7 +45,9 @@ const ordersSlice = createSlice({
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload;
+
+        const userId = action.meta.arg;
+        state.list = action.payload.filter((order) => order.userId === userId);
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false;
@@ -51,8 +56,10 @@ const ordersSlice = createSlice({
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.list = state.list.filter((order) => order.id !== action.payload);
       })
-      .addCase(clearOrders.fulfilled, (state) => {
-        state.list = [];
+      .addCase(clearOrders.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          (order) => order.userId !== action.payload
+        );
       });
   },
 });
