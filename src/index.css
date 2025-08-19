@@ -302,23 +302,3 @@ input[type="checkbox"] {
 .app-slider .slick-dots li.slick-active button:before {
   color: var(--color-primary) !important;
 }
-/* inputs */
-input {
-  @apply border rounded-md focus:outline-none focus:ring-2 transition duration-150;
-  border-color: var(--color-muted);
-  color: var(--color-tertiary);
-}
-
-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-light);
-}
-
-input::placeholder {
-  color: var(--color-tertiary);
-  opacity: 0.7;
-}
-
-input.search-input::placeholder {
-  color: #fff !important;
-}

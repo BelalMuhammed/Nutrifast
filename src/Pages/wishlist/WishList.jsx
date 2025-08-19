@@ -12,7 +12,7 @@ export default function WishList() {
   if (items.length === 0) {
     return (
       <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center px-4'>
-        <div className='bg-white rounded-3xl shadow-xl border border-gray-100 p-12 max-w-md w-full text-center'>
+        <div className='bg-white rounded-3xl shadow-sm border border-gray-100 p-12 max-w-md w-full text-center'>
           {/* Icon Section */}
           <div className='mb-8'>
             <div className='bg-gradient-to-br from-red-50 to-pink-50 rounded-full p-8 w-24 h-24 mx-auto flex items-center justify-center mb-6'>
@@ -34,23 +34,13 @@ export default function WishList() {
           {/* Action Button */}
           <button
             onClick={() => navigate("/shop")}
-            className='w-full text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3'
-            style={{
-              backgroundColor: "#388e3c",
-            }}
-            onMouseEnter={(e) => (e.target.style.backgroundColor = "#4caf50")}
-            onMouseLeave={(e) => (e.target.style.backgroundColor = "#388e3c")}>
+            className='w-full bg-app-primary text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
             <FiShoppingBag size={20} />
             Discover Products
             <FiArrowRight size={18} />
           </button>
 
-          {/* Decorative Elements */}
-          <div className='mt-8 flex justify-center space-x-2'>
-            <div className='w-2 h-2 bg-red-300 rounded-full animate-pulse'></div>
-            <div className='w-2 h-2 bg-pink-300 rounded-full animate-pulse delay-75'></div>
-            <div className='w-2 h-2 bg-red-300 rounded-full animate-pulse delay-150'></div>
-          </div>
+        
         </div>
       </div>
     );
