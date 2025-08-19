@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   vendorRegisterStart,
   vendorRegisterSuccess,
   vendorRegisterFailure,
 } from "../../Redux/slices/vendorSlice";
+import FloatingFoodIcons from "@/Components/shared/FloatingFoodIcons/FloatingFoodIcons";
+
 export default function VendorRegistration() {
   const {
     register,
@@ -18,6 +19,7 @@ export default function VendorRegistration() {
     reset,
     watch,
   } = useForm();
+
   const watchProducts = watch([
     "readyMeals",
     "healthySnacks",
@@ -25,6 +27,7 @@ export default function VendorRegistration() {
     "supplements",
     "other",
   ]);
+
   const businessTypes = [
     "Healthy Bakery Vendor",
     "Whole Grains & Cereals Supplier",
@@ -38,6 +41,7 @@ export default function VendorRegistration() {
     "Medical Nutrition Products Supplier",
     "Organic & Natural Products Supplier",
   ];
+
   const dispatch = useDispatch();
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const { loading, error } = useSelector((state) => state.vendor);
@@ -51,7 +55,6 @@ export default function VendorRegistration() {
       });
       return;
     }
-    console.log(data);
     try {
       const checkRes = await axios.get(
         `https://nutrifast-data.up.railway.app/vendors?email=${data.email}`
@@ -62,9 +65,10 @@ export default function VendorRegistration() {
           message: "This email is already registered",
           type: "error",
         });
-        setTimeout(() => {
-          setToast({ show: false, message: "", type: "" });
-        }, 3000);
+        setTimeout(
+          () => setToast({ show: false, message: "", type: "" }),
+          3000
+        );
         return;
       }
 
@@ -80,16 +84,16 @@ export default function VendorRegistration() {
         message: "Vendor registered successfully!",
         type: "success",
       });
-      setTimeout(() => {
-        setToast({ show: false, message: "", type: "" });
-      }, 3000);
+      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     } catch (err) {
       dispatch(vendorRegisterFailure(err.response?.data || err.message));
     }
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      {/* Toast Notification */}
+    <div className="min-h-screen flex items-center justify-center py-15 relative">
+      <FloatingFoodIcons count={26} opacity={0.09} />
+
       {toast.show && (
         <div className="fixed bottom-5 right-5 z-50">
           <Toast>
@@ -111,189 +115,204 @@ export default function VendorRegistration() {
           </Toast>
         </div>
       )}
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 w-full max-w-2xl"
+        className="bg-app-softest rounded-xl shadow-lg p-8 w-full max-w-3xl"
       >
-        <h2 className="text-2xl font-medium mb-2 text-center">
+        <h2 className="text-5xl font-medium mb-2 text-center text-app-tertiary">
           Vendor Registration
         </h2>
-        <p className="text-sm text-gray-500 mb-6 text-center">
+        <p className="text-xl text-app-tertiary mb-6 text-center flex items-center justify-center gap-2">
           Partner with us to deliver healthy food to more people!
         </p>
 
-        <h3 className="font-semibold mb-2">Business Information</h3>
-        <label className="block mb-1 text-app-secondary">Business Name</label>
-        <input
-          {...register("businessName", {
-            required: "Business name is required",
-          })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Enter your business name"
-        />
-        {errors.businessName && (
-          <p className="text-red-500 text-sm mb-2">
-            {errors.businessName.message}
-          </p>
-        )}
+        {/* Business Info & Contact Details */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 text-app-tertiary">
+          {/* Business Information */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold mb-2">Business Information</h3>
+            <input
+              {...register("businessName", {
+                required: "Business name is required",
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Business Name"
+            />
+            {errors.businessName && (
+              <p className="text-red-500 text-sm">
+                {errors.businessName.message}
+              </p>
+            )}
 
-        <label className="block mb-1 text-app-secondary">Business Type</label>
-        <select
-          {...register("businessType", {
-            required: "Business type is required",
-          })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary"
-        >
-          <option value="" className="placeholder-app-primary">
-            Select business type
-          </option>
-          {businessTypes.map((type, index) => (
-            <option key={index} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
-        {errors.businessType && (
-          <p className="text-red-500 text-sm mb-2">
-            {errors.businessType.message}
-          </p>
-        )}
+            <select
+              {...register("businessType", {
+                required: "Business type is required",
+              })}
+              className="w-full p-2 rounded bg-app-quaternary"
+            >
+              <option value="" className="placeholder-app-primary">
+                Select Business Type
+              </option>
+              {businessTypes.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            {errors.businessType && (
+              <p className="text-red-500 text-sm">
+                {errors.businessType.message}
+              </p>
+            )}
 
-        <label className="block mb-1 text-app-secondary">
-          Website/Social Media Links
-        </label>
-        <input
-          {...register("website", {
-            pattern: {
-              value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
-              message: "Please enter a valid URL",
-            },
-          })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Enter website or social media links"
-        />
+            <input
+              {...register("website", {
+                pattern: {
+                  value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
+                  message: "Please enter a valid URL",
+                },
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Website/Social Media Links"
+            />
 
-        <label className="block mb-1 text-app-secondary">
-          Business Address
-        </label>
-        <input
-          {...register("businessAddress", {
-            required: "Business address is required",
-          })}
-          className="w-full p-2 mb-4 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Enter your business address"
-        />
+            <input
+              {...register("businessAddress", {
+                required: "Business address is required",
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Business Address"
+            />
+            {errors.businessAddress && (
+              <p className="text-red-500 text-sm">
+                {errors.businessAddress.message}
+              </p>
+            )}
+          </div>
 
-        <h3 className="font-semibold mb-2">Contact Details</h3>
-        <label className="block mb-1 text-app-secondary">Full Name</label>
-        <input
-          {...register("fullName", { required: "Full name is required" })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Enter your full name"
-        />
-        {errors.fullName && (
-          <p className="text-red-500 text-sm mb-2">{errors.fullName.message}</p>
-        )}
+          {/* Contact Details */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold mb-2">Contact Details</h3>
+            <input
+              {...register("firstName", { required: "First name is required" })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="First Name"
+            />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+            )}
 
-        <label className="block mb-1 text-app-secondary">Email Address</label>
-        <input
-          type="email"
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Please enter a valid email address",
-            },
-          })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Enter your email address"
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm mb-2">{errors.email.message}</p>
-        )}
+            <input
+              {...register("lastName", { required: "Last name is required" })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Last Name"
+            />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+            )}
 
-        <label className="block mb-1 text-app-secondary">Phone Number</label>
-        <input
-          {...register("phone", {
-            required: "Phone number is required",
-            pattern: {
-              value: /^[0-9]{8,15}$/,
-              message: "Please enter a valid phone number",
-            },
-          })}
-          className="w-full p-2 mb-4 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Enter your phone number"
-        />
-        {errors.phone && (
-          <p className="text-red-500 text-sm mb-2">{errors.phone.message}</p>
-        )}
+            <input
+              type="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Please enter a valid email",
+                },
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Email Address"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
 
-        <h3 className="font-semibold mb-2">Product/Service Details</h3>
-        <div className="mb-2">
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" {...register("readyMeals")} />
-            <span>Ready meals</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" {...register("healthySnacks")} />
-            <span>Packaged healthy snacks</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" {...register("beverages")} />
-            <span>Beverages</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" {...register("supplements")} />
-            <span>Supplements</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" {...register("other")} />
-            <span>Other</span>
-          </label>
+            <input
+              {...register("phone", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^[0-9]{8,15}$/,
+                  message: "Please enter a valid phone number",
+                },
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Phone Number"
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-sm">{errors.phone.message}</p>
+            )}
+          </div>
         </div>
 
-        <input
-          {...register("productsInfo", {
-            required: "This field is required",
-          })}
-          className="w-full p-2 mb-2 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Do your products meet any of these? Yes/No"
-        />
-        <input
-          {...register("nutritionalInfo", {
-            required: "This field is required",
-          })}
-          className="w-full p-2 mb-4 rounded bg-app-quaternary placeholder-app-primary"
-          placeholder="Do you provide nutritional information? Yes/No"
-        />
+        {/* Product/Service Details & File Uploads */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 text-app-tertiary">
+          {/* Product/Service Details */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold mb-2">Product/Service Details</h3>
+            {[
+              "readyMeals",
+              "healthySnacks",
+              "beverages",
+              "supplements",
+              "other",
+            ].map((item, key) => (
+              <label key={key} className="flex items-center space-x-2">
+                <input type="checkbox" {...register(item)} />
+                <span>
+                  {item === "readyMeals"
+                    ? "Ready meals"
+                    : item === "healthySnacks"
+                    ? "Packaged healthy snacks"
+                    : item === "beverages"
+                    ? "Beverages"
+                    : item === "supplements"
+                    ? "Supplements"
+                    : "Other"}
+                </span>
+              </label>
+            ))}
+            <input
+              {...register("productsInfo", {
+                required: "This field is required",
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Do your products meet any of these? Y/N"
+            />
+            <input
+              {...register("nutritionalInfo", {
+                required: "This field is required",
+              })}
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+              placeholder="Do you provide nutritional information? Y/N"
+            />
+          </div>
 
-        <h3 className="font-semibold mb-2">File Uploads</h3>
+          {/* File Uploads */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold mb-2">File Uploads</h3>
+            <input
+              type="url"
+              {...register("licenseUrl", {
+                required: "License URL is required",
+                pattern: {
+                  value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
+                  message: "Please enter a valid URL",
+                },
+              })}
+              placeholder="Commercial Registration/License URL"
+              className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
+            />
+            {errors.licenseUrl && (
+              <p className="text-red-500 text-sm">
+                {errors.licenseUrl.message}
+              </p>
+            )}
+          </div>
+        </div>
 
-        <label className="block font-medium mb-2">
-          Commercial Registration/License
-        </label>
-        <input
-          type="url"
-          {...register("licenseUrl", {
-            required: "License URL is required",
-            pattern: {
-              value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
-              message: "Please enter a valid URL",
-            },
-          })}
-          placeholder="Enter the URL to your license"
-          className="w-full p-2 rounded bg-app-quaternary placeholder-app-primary"
-        />
-        {errors.licenseUrl && (
-          <p className="text-red-500 text-sm mb-2">
-            {errors.licenseUrl.message}
-          </p>
-        )}
-        {errors.website && (
-          <p className="text-red-500 text-sm mb-2">{errors.website.message}</p>
-        )}
-
-        <label className="flex items-center space-x-2 mb-4">
+        {/* Terms & Submit */}
+        <label className="flex items-center space-x-2 mb-4 text-app-tertiary">
           <input type="checkbox" {...register("terms", { required: true })} />
           <span>I agree to the terms and conditions</span>
         </label>
@@ -303,7 +322,7 @@ export default function VendorRegistration() {
           </p>
         )}
 
-        <button type="submit" className="btn-app w-full">
+        <button type="submit" className="btn-app w-full mb-2">
           Register Now
         </button>
         {loading && <p className="text-blue-500">Submitting...</p>}
