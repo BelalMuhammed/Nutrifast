@@ -4,7 +4,7 @@ import banner from "../../../assets/banner.png";
 
 function HeroSection() {
   return (
-    <section className="relative w-full min-h-[400px] h-[100vh] flex items-center justify-center overflow-hidden -mt-16"> 
+    <section className="relative w-full min-h-[400px] h-[100vh] flex items-center justify-center overflow-hidden -mt-16">
       {/* Background Image */}
       <img
         src={banner}

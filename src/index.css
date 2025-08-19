@@ -41,7 +41,6 @@ button {
 .app-container {
   @apply max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8;
   width: 100%;
-  overflow-x: hidden;
 }
 
 /* Ensure all containers don't overflow */
@@ -65,7 +64,7 @@ button {
   --color-softest: #f8fcfa; /* Softest Background Green */
   /* --color-muted: #f8fafc; Misty White */
   --color-white: #fff;
-  --color-accent: #e65100; /* Deep Orange Accent */
+  --color-accent: #f05e15; /* Deep Orange Accent */
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -143,6 +142,9 @@ button {
 }
 .bg-app-light {
   background-color: var(--color-light);
+}
+.bg-app-accent {
+  background-color: var(--color-accent);
 }
 .bg-app-softest {
   background-color: var(--color-softest);

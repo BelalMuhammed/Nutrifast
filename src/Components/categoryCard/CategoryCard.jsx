@@ -1,21 +1,27 @@
 "use client";
 
+import React from "react";
+
 export function CategoryCard({ category }) {
   return (
-    <div className='w-full max-w-[280px] mx-auto rounded-xl overflow-hidden shadow-sm bg-white hover:shadow-md transition-all duration-300'>
+    <div className="relative w-full max-w-[320px] mx-auto rounded-2xl overflow-hidden transition-all duration-300 group">
       <img
         src={category.image}
         alt={category.name}
-        className='w-full h-40 sm:h-44 md:h-48 object-cover'
+        className="w-full h-52 sm:h-56 object-cover rounded-2xl group-hover:scale-110 transition-transform duration-500"
       />
-      <div className='p-3 sm:p-4'>
-        <h5 className='text-base sm:text-lg font-semibold text-gray-900 mb-1 truncate'>
+      <div className="absolute bottom-0 left-0 w-full h-20 sm:h-24 z-10 bg-gradient-to-t from-black/100 to-transparent pointer-events-none rounded-b-2xl" />
+      <div className="absolute bottom-0 left-0 w-full p-2 z-20 flex flex-col items-start">
+        <h5 className="text-base font-bold text-white mb-0.5 truncate mb-2">
           {category.name}
         </h5>
         <a
           href={`/category/${category.slug || category.id}`}
-          className='text-app-tertiary text-sm sm:text-base hover:text-app-accent transition-colors duration-200'>
-          Shop {category.name}
+          className="text-white text-xs mb-2 font-semibold bg-white/20 backdrop-blur-md px-4 py-1 rounded-full shadow 
+             hover:bg-black/20 hover:text-app-primary transition-all duration-200 
+             focus:outline-none focus:ring-2 focus:ring-app-primary"
+        >
+          Discover More
         </a>
       </div>
     </div>
