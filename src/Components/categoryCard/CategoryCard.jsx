@@ -10,7 +10,6 @@ export function CategoryCard({ category }) {
         alt={category.name}
         className="w-full h-52 sm:h-56 object-cover rounded-2xl group-hover:scale-110 transition-transform duration-500"
       />
-      {/* Overlay covers the whole image: dark at bottom, transparent at top with gradient */}
       <div className="absolute bottom-0 left-0 w-full h-20 sm:h-24 z-10 bg-gradient-to-t from-black/100 to-transparent pointer-events-none rounded-b-2xl" />
       <div className="absolute bottom-0 left-0 w-full p-2 z-20 flex flex-col items-start">
         <h5 className="text-base font-bold text-white mb-0.5 truncate mb-2">

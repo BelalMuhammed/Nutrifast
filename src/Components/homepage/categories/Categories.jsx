@@ -12,7 +12,6 @@ import { getCategories } from "../../../api/apiService";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./categories-slider.css";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
