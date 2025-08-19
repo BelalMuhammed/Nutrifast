@@ -19,7 +19,7 @@ export default function Role() {
       </div>
       <div className="flex flex-col md:flex-row gap-6 max-w-3xl w-full">
         {/* User Card */}
-        <div className="flex flex-col items-center text-center bg-app-softest rounded-xl p-8 shadow-lg flex-1">
+        <div className="flex flex-col items-center text-center bg-app-softest backdrop-blur-xl rounded-xl p-8 shadow-lg flex-1">
           <div className="bg-green-100 p-4 rounded-full mb-4">
             <FiUser className="text-4xl text-green-500" />
           </div>
@@ -36,7 +36,8 @@ export default function Role() {
               experience
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-app-tertiary">●</span> Wide variety of products
+              <span className="text-app-tertiary">●</span> Wide variety of
+              products
             </li>
             <li className="flex items-center gap-2">
               <span className="text-app-tertiary">●</span> Easy order tracking
@@ -60,7 +61,7 @@ export default function Role() {
         </div>
 
         {/* Vendor Card */}
-        <div className="flex flex-col items-center text-center bg-app-softest rounded-xl p-8 shadow-lg flex-1">
+        <div className="flex flex-col items-center text-center bg-app-softest backdrop-blur-xl rounded-xl p-8 shadow-lg flex-1">
           <div className="bg-green-100 p-4 rounded-full mb-4">
             <FiBox className="text-4xl text-green-500" />
           </div>
@@ -73,10 +74,12 @@ export default function Role() {
           </p>
           <ul className="text-left mb-6 space-y-2">
             <li className="flex items-center gap-2">
-              <span className="text-app-tertiary">●</span> Easy product management
+              <span className="text-app-tertiary">●</span> Easy product
+              management
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-app-tertiary">●</span> Analytics and insights
+              <span className="text-app-tertiary">●</span> Analytics and
+              insights
             </li>
             <li className="flex items-center gap-2">
               <span className="text-app-tertiary">●</span> Secure payment
@@ -90,7 +93,7 @@ export default function Role() {
             Continue as a Vendor →
           </button>
           <p className="mt-4 text-sm ">
-            Already have a vendor account?{" "}   
+            Already have a vendor account?{" "}
             <Link
               to="/login"
               className="underline cursor-pointer text-app-tertiary"

@@ -118,7 +118,7 @@ export default function VendorRegistration() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-app-softest rounded-xl shadow-lg p-8 w-full max-w-3xl"
+        className="bg-app-softest backdrop-blur-xl rounded-xl shadow-lg p-8 w-full max-w-3xl"
       >
         <h2 className="text-5xl font-medium mb-2 text-center text-app-tertiary">
           Vendor Registration

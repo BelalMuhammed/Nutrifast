@@ -11,25 +11,21 @@ function FeatureHighlights() {
       icon: FaShippingFast,
       title: "Free Shipping",
       description: "On select items",
-      descriptionColor: "text-app-quaternary",
     },
     {
       icon: FaPhoneAlt,
       title: "Give Us A Call",
       description: "+20 123 456 7890",
-      descriptionColor: "text-app-accent",
     },
     {
       icon: FaEnvelope,
       title: "Email Us",
       description: "support@nutrifast.com",
-      descriptionColor: "text-app-accent",
     },
     {
       icon: FaHeart,
       title: "Community",
       description: "Shop with purpose",
-      descriptionColor: "text-app-quaternary",
     },
   ];
 
@@ -39,7 +35,7 @@ function FeatureHighlights() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center gap-4">
-              <div className="bg-app-accent rounded-full p-3">
+              <div className="rounded-full p-3">
                 <feature.icon className="text-white text-xl" />
               </div>
               <div>
