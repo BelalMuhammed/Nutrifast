@@ -92,7 +92,7 @@ export default function Register() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-app-softest rounded-xl shadow-lg p-8 w-full max-w-md"
+        className="bg-app-softest backdrop-blur-xl rounded-xl shadow-lg p-8 w-full max-w-md"
       >
         <h2 className="text-5xl font-medium mb-2 text-center text-app-tertiary">
           Sign Up

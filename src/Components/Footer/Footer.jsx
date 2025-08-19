@@ -22,7 +22,7 @@ function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Free Shipping */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="bg-app-accent rounded-full p-2 sm:p-3 flex-shrink-0">
+              <div className=" rounded-full p-2 sm:p-3 flex-shrink-0">
                 <FaShippingFast className="text-white text-lg sm:text-xl" />
               </div>
               <div className="min-w-0">
@@ -37,7 +37,7 @@ function Footer() {
 
             {/* Give Us A Call */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="bg-app-accent rounded-full p-2 sm:p-3 flex-shrink-0">
+              <div className=" rounded-full p-2 sm:p-3 flex-shrink-0">
                 <FaPhoneAlt className="text-white text-lg sm:text-xl" />
               </div>
               <div className="min-w-0">
@@ -52,7 +52,7 @@ function Footer() {
 
             {/* Email Us */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="bg-app-accent rounded-full p-2 sm:p-3 flex-shrink-0">
+              <div className=" rounded-full p-2 sm:p-3 flex-shrink-0">
                 <FaEnvelope className="text-white text-lg sm:text-xl" />
               </div>
               <div className="min-w-0">
@@ -67,7 +67,7 @@ function Footer() {
 
             {/* Community */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="bg-app-accent rounded-full p-2 sm:p-3 flex-shrink-0">
+              <div className=" rounded-full p-2 sm:p-3 flex-shrink-0">
                 <FaHeart className="text-white text-lg sm:text-xl" />
               </div>
               <div className="min-w-0">
