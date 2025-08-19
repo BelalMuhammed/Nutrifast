@@ -1,5 +1,5 @@
 "use client";
-
+import "./sidebar.css";
 import { useState } from "react";
 import {
   Sidebar,
@@ -24,7 +24,7 @@ export default function DashboardSidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex sidebarDashboard">
       {/* Sidebar */}
       <div
         className={`fixed md:static top-0 left-0 h-full z-50 transition-transform duration-300
@@ -34,10 +34,10 @@ export default function DashboardSidebar() {
           aria-label="Sidebar with multi-level dropdown example "
           className="w-64 relative"
         >
-          {/* Logo at the top, left-aligned */}
+          {/* Logo */}
           <div className="flex items-center h-20  border-gray-200 px-4 absolute top-0 w-full md:relative">
             <h1 className="text-xl font-bold text-green-600">Nutrifast</h1>
-            {/* Close button only visible on mobile */}
+            {/* Close button only on mobile */}
             <button
               onClick={() => setIsOpen(false)}
               className="md:hidden ml-auto p-2 bg-gray-100 rounded-md shadow me-2"
@@ -49,52 +49,90 @@ export default function DashboardSidebar() {
           {/* Sidebar items */}
           <SidebarItems className="mt-20 md:mt-0">
             <SidebarItemGroup>
-              <SidebarItem href="#" icon={HiChartPie}>
-                Dashboard
-              </SidebarItem>
+              {/* Dashboard */}
+              <NavLink to="/dashboard" end>
+                {({ isActive }) => (
+                  <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
+                    Dashboard
+                  </SidebarItem>
+                )}
+              </NavLink>
+
+              {/* E-commerce collapse */}
               <SidebarCollapse icon={HiShoppingBag} label="E-commerce">
-               
-                
-              <NavLink to="products">
-              <SidebarItem >Products</SidebarItem>
-  
-  
-              </NavLink>
-                 
-                <SidebarItem href="#">Sales</SidebarItem>
-                <SidebarItem href="#">Refunds</SidebarItem>
-                <SidebarItem href="#">Shipping</SidebarItem>
-              </SidebarCollapse>
-        
-            
-                       <SidebarCollapse icon={HiUser} label="Vendors">
-                <SidebarItem href="#">Vendors Applications</SidebarItem>
-                <SidebarItem href="#">Vendors List</SidebarItem>
-              </SidebarCollapse>
-                <SidebarItem href="#" icon={HiUser}>
-                Users
-              </SidebarItem>
+                <NavLink to="products">
+                  {({ isActive }) => (
+                    <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
+                      Products
+                    </SidebarItem>
+                  )}
+                </NavLink>
 
+                <NavLink to="addProducts">
+                  {({ isActive }) => (
+                    <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
+                      Add Products
+                    </SidebarItem>
+                  )}
+                </NavLink>
+              </SidebarCollapse>
+
+              {/* Vendors collapse */}
+              <SidebarCollapse icon={HiUser} label="Vendors">
+                <NavLink to="vendorApplications">
+                  {({ isActive }) => (
+                    <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
+                      Vendors Applications
+                    </SidebarItem>
+                  )}
+                </NavLink>
+
+                <NavLink to="vendorList">
+                  {({ isActive }) => (
+                    <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
+                      Vendors List
+                    </SidebarItem>
+                  )}
+                </NavLink>
+              </SidebarCollapse>
+
+              {/* Users */}
+              <NavLink to="users">
+                {({ isActive }) => (
+                  <SidebarItem icon={HiUser} className={isActive ? "bg-green-100 text-green-700" : ""}>
+                    Users
+                  </SidebarItem>
+                )}
+              </NavLink>
+
+              {/* Orders */}
               <NavLink to="orders">
-      <SidebarItem  icon={HiTable}>
-                Orders
-              </SidebarItem>
+                {({ isActive }) => (
+                  <SidebarItem icon={HiTable} className={isActive ? "bg-green-100 text-green-700" : ""}>
+                    Orders
+                  </SidebarItem>
+                )}
               </NavLink>
-            
 
-                 <SidebarItem href="#" icon={HiInbox}>
-                Messages
-              </SidebarItem>
-                 <SidebarItem href="#" icon={HiInbox}>
+              {/* Messages */}
+              <NavLink to="messages">
+                {({ isActive }) => (
+                  <SidebarItem icon={HiInbox} className={isActive ? "bg-green-100 text-green-700" : ""}>
+                    Messages
+                  </SidebarItem>
+                )}
+              </NavLink>
+
+              {/* Example static item */}
+              <SidebarItem href="#" icon={HiInbox}>
                 Filters
               </SidebarItem>
-      
             </SidebarItemGroup>
           </SidebarItems>
         </Sidebar>
       </div>
 
-      {/* Open button only visible on mobile when sidebar is closed */}
+      {/* Mobile toggle */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}

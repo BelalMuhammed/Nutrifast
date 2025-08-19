@@ -13,6 +13,11 @@ import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
 import Products from "../../dashboard/pages/Products";
 import Orders from "@/dashboard/pages/Orders";
+import Messages from "@/dashboard/pages/messages";
+import AddProducts from "@/dashboard/pages/AddProducts";
+import Users from "@/dashboard/pages/Users"
+import VendorList from "@/dashboard/pages/VendorList";
+import VendorsApplications from "@/dashboard/pages/VendorsApplications";
 
 const Role = lazy(() => import("../../Pages/role/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -132,10 +137,12 @@ export default function AppRoutes() {
           children: [
             { index: true, element: <Dashboard /> },
             { path: "products", element: <Products /> },
-             { path: "orders", element: <Orders /> },
-            // { path: "users", element: <Users /> },
-            // { path: "orders", element: <Orders /> },
-            // { path: "settings", element: <Settings /> },
+            { path: "orders", element: <Orders /> },
+            { path: "messages", element: <Messages /> },
+            { path: "addProducts", element: < AddProducts /> },
+            { path: "users", element: < Users /> },
+            { path: "vendorList", element: < VendorList /> },
+            { path: "vendorApplications", element: <VendorsApplications /> },
           ],
         },
 

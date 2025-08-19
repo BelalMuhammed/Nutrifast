@@ -26,7 +26,10 @@ import {
   ListFilterIcon,
   PlusIcon,
   TrashIcon,
+
 } from "lucide-react"
+
+import { LuSettings2 } from 'react-icons/lu';
 
 import { cn } from "@/lib/utils"
 import {
@@ -55,8 +58,11 @@ import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/p
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { HiPencil, HiTrash, HiBan, HiUserRemove, HiMailOpen, HiCheckCircle, HiXCircle, HiUserAdd } from "react-icons/hi";
+import { deleteProduct } from "@/Redux/slices/productSlice";
+import { useDispatch } from "react-redux";
 
-export default function TableDashboard({ data: externalData = [], type }) {
+export default function TableDashboard({ data: externalData = [], type, onDelete }) {
   const id = useId()
   const inputRef = useRef(null)
 
@@ -66,7 +72,7 @@ export default function TableDashboard({ data: externalData = [], type }) {
   const [columnFilters, setColumnFilters] = useState([])
   const [columnVisibility, setColumnVisibility] = useState({})
 
-
+  const dispatch = useDispatch()
   const columns = useMemo(() => {
     if (!data.length) return []
 
@@ -93,42 +99,154 @@ export default function TableDashboard({ data: externalData = [], type }) {
       cell: ({ row }) => {
         if (type === "products") {
           return (
-            <div className="flex gap-2">
-              <button
-                className="px-2 py-1 bg-blue-500 text-white rounded"
+            <div className="flex gap-3 text-lg">
+              <HiPencil
+                title="Edit product"
+                className="cursor-pointer text-blue-500 hover:text-blue-700"
                 onClick={() => console.log("Edit product", row.original)}
-              >
-                Edit
-              </button>
-              <button
-                className="px-2 py-1 bg-red-500 text-white rounded"
-                onClick={() => console.log("Delete product", row.original.id)}
-              >
-                Delete
-              </button>
+              />
+              <HiTrash
+                title="Delete product"
+                className="cursor-pointer text-red-500 hover:text-red-700"
+
+                onClick={() => onDelete(row.original.id)}
+              />
             </div>
-          )
+          );
         } else if (type === "users") {
           return (
-            <div className="flex gap-2">
-              <button
-                className="px-2 py-1 bg-yellow-500 text-white rounded"
+            <div className="flex gap-3 text-lg">
+              <HiBan
+                title="Block user"
+                className="cursor-pointer text-yellow-500 hover:text-yellow-700"
                 onClick={() => console.log("Block user", row.original.id)}
-              >
-                Block
-              </button>
-              <button
-                className="px-2 py-1 bg-red-500 text-white rounded"
+              />
+              <HiUserRemove
+                title="Remove user"
+                className="cursor-pointer text-red-500 hover:text-red-700"
                 onClick={() => console.log("Remove user", row.original.id)}
-              >
-                Remove
-              </button>
+              />
             </div>
-          )
+          );
+        } else if (type === "orders") {
+          return (
+            <div className="flex gap-3 text-lg">
+              <HiUserRemove
+                title="Remove user"
+                className="cursor-pointer text-red-500 hover:text-red-700"
+                onClick={() => console.log("Remove user", row.original.id)}
+              />
+              <LuSettings2
+                title="Change status"
+                className="cursor-pointer text-blue-500 hover:text-blue-700"
+                onClick={() => console.log("Change order status", row.original.id)}
+              />
+            </div>
+          );
+        } else if (type === "messages") {
+          return (
+            <div className="flex gap-3 text-lg">
+              <HiMailOpen
+                title="View message"
+                className="cursor-pointer text-green-500 hover:text-green-700"
+                onClick={() => console.log("View message", row.original.id)}
+              />
+              <HiTrash
+                title="Delete message"
+                className="cursor-pointer text-red-500 hover:text-red-700"
+                onClick={() => console.log("Delete message", row.original.id)}
+              />
+            </div>
+          );
+        } else if (type === "vendorApplications") {
+          return (
+            <div className="flex gap-3 text-lg">
+              <HiCheckCircle
+                title="Approve vendor"
+                className="cursor-pointer text-green-500 hover:text-green-700"
+                onClick={() => console.log("Approve vendor", row.original.id)}
+              />
+              <HiXCircle
+                title="Reject vendor"
+                className="cursor-pointer text-red-500 hover:text-red-700"
+                onClick={() => console.log("Reject vendor", row.original.id)}
+              />
+            </div>
+          );
+        } else if (type === "vendors") {
+          return (
+            <div className="flex gap-3 text-lg">
+              <HiUserAdd
+                title="Activate vendor"
+                className="cursor-pointer text-blue-500 hover:text-blue-700"
+                onClick={() => console.log("Activate vendor", row.original.id)}
+              />
+              <HiBan
+                title="Suspend vendor"
+                className="cursor-pointer text-yellow-500 hover:text-yellow-700"
+                onClick={() => console.log("Suspend vendor", row.original.id)}
+              />
+            </div>
+          );
         }
-        return null
+        return null;
       },
-    }
+    };
+    // const actionColumn = {
+    //   header: "Actions",
+    //   cell: ({ row }) => {
+    //     if (type === "products") {
+    //       return (
+    //         <div className="flex gap-3 text-lg">
+    //           <HiPencil
+    //             title="Edit product"
+    //             className="cursor-pointer text-blue-500 hover:text-blue-700"
+    //             onClick={() => console.log("Edit product", row.original)}
+    //           />
+    //           <HiTrash
+    //             title="Delete product"
+    //             className="cursor-pointer text-red-500 hover:text-red-700"
+    //             onClick={() => console.log("Delete product", row.original.id)}
+    //           />
+    //         </div>
+    //       );
+    //     } else if (type === "users") {
+    //       return (
+    //         <div className="flex gap-3 text-lg">
+    //           <HiBan
+    //             title="Block user"
+    //             className="cursor-pointer text-yellow-500 hover:text-yellow-700"
+    //             onClick={() => console.log("Block user", row.original.id)}
+    //           />
+    //           <HiUserRemove
+    //             title="Remove user"
+    //             className="cursor-pointer text-red-500 hover:text-red-700"
+    //             onClick={() => console.log("Remove user", row.original.id)}
+    //           />
+    //         </div>
+    //       )
+    //     } else if (type === "orders") {
+    //       return (
+    //         <div className="flex gap-3 text-lg">
+    //           <HiUserRemove
+    //             title="Remove user"
+    //             className="cursor-pointer text-red-500 hover:text-red-700"
+    //             onClick={() => console.log("Remove user", row.original.id)}
+    //           />
+
+    //           <LuSettings2
+    //             title="Status"
+    //             className="cursor-pointer text-blue-500 hover:text-blue-700"
+    //             onClick={() => console.log("Remove user", row.original.id)}
+    //           />
+    //         </div>
+
+    //       )
+
+    //     }
+    //     return null;
+    //   },
+    // };
 
     return [...baseColumns, actionColumn]
   }, [data, type])
@@ -160,6 +278,20 @@ export default function TableDashboard({ data: externalData = [], type }) {
     state: { sorting, pagination, columnFilters, columnVisibility },
   })
 
+  // pick the best column to filter on depending on type
+  const filterKeyMap = {
+    products: "name",
+    orders: "name",
+    users: "name",
+    vendors: "name",
+    messages: "message", // or "subject" / whatever field you have
+  };
+
+  // fallback if type not listed
+  const filterKey = filterKeyMap[type] || Object.keys(data[0] || {})[0];
+  const validFilterKey = data.length && data[0][filterKey] !== undefined
+    ? filterKey
+    : Object.keys(data[0] || {})[0];
   return (
 
     <div className="space-y-4 pt-20">
@@ -170,17 +302,17 @@ export default function TableDashboard({ data: externalData = [], type }) {
             id={`${id}-input`}
             ref={inputRef}
             className="peer min-w-60 ps-9"
-            value={table.getColumn("name")?.getFilterValue() ?? ""}
-            onChange={(e) => table.getColumn("name")?.setFilterValue(e.target.value)}
-            placeholder="Filter by name..."
+            value={table.getColumn(filterKey)?.getFilterValue() ?? ""}
+            onChange={(e) => table.getColumn(filterKey)?.setFilterValue(e.target.value)}
+            placeholder={`Filter by ${filterKey}...`}
           />
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 text-muted-foreground/80">
             <ListFilterIcon size={16} />
           </div>
-          {Boolean(table.getColumn("name")?.getFilterValue()) && (
+          {Boolean(table.getColumn(filterKey)?.getFilterValue()) && (
             <button
               onClick={() => {
-                table.getColumn("name")?.setFilterValue("")
+                table.getColumn(filterKey)?.setFilterValue("")
                 inputRef.current?.focus()
               }}
               className="absolute inset-y-0 end-0 flex w-9 items-center justify-center"

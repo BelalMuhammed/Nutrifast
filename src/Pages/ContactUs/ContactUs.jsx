@@ -2,6 +2,7 @@ import React from "react";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 
+
 const ContactUs = () => {
   const {
     register,
@@ -17,7 +18,7 @@ const ContactUs = () => {
   };
 
   return (
-  <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
+    <div className='w-full min-h-screen bg-gradient-to-br from-green-50 to-white py-0'>
       {/* Hero Section */}
       <div className='w-full flex flex-col items-center justify-center pt-12 px-4'>
         <span className='bg-app-primary text-white rounded-full p-4 mb-4 shadow-lg'>
@@ -44,9 +45,8 @@ const ContactUs = () => {
             <input
               type='text'
               placeholder='Name'
-              className={`border border-app-quaternary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app-primary ${
-                errors.name ? "border-red-500" : ""
-              }`}
+              className={`border border-app-quaternary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app-primary ${errors.name ? "border-red-500" : ""
+                }`}
               {...register("name", {
                 required: "Name is required",
                 minLength: {
@@ -68,9 +68,8 @@ const ContactUs = () => {
             <input
               type='email'
               placeholder='Email'
-              className={`border border-app-quaternary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app-primary ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              className={`border border-app-quaternary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app-primary ${errors.email ? "border-red-500" : ""
+                }`}
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -91,9 +90,8 @@ const ContactUs = () => {
             </label>
             <textarea
               placeholder='Message'
-              className={`border border-app-quaternary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app-primary ${
-                errors.message ? "border-red-500" : ""
-              }`}
+              className={`border border-app-quaternary rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-app-primary ${errors.message ? "border-red-500" : ""
+                }`}
               rows={4}
               {...register("message", {
                 required: "Message is required",
@@ -115,7 +113,7 @@ const ContactUs = () => {
             Send Message
           </button>
         </form>
-   
+
       </div>
     </div>
   );
