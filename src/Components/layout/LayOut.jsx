@@ -11,6 +11,10 @@ export default function Layout() {
   const noNavbarRoutes = ["/dashboard"];
   const hideNavbar = noNavbarRoutes.some((route) => pathname.startsWith(route));
 
+  // // Hide footer om dachboard 
+
+  // const hideFooter = noNavbarRoutes.some((route) => pathname.startsWith(route));
+
   return (
     <div className='min-h-screen flex flex-col'>
       {/* Auto scroll to top when route changes */}
@@ -20,7 +24,9 @@ export default function Layout() {
       <main className='flex-1 mt-16'>
         <Outlet />
       </main>
-      <Footer />
+      {!hideNavbar && <Footer />}
+
+
 
       {/* Global Scroll to Top Button */}
       <ScrollToTop />

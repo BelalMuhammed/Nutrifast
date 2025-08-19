@@ -7,11 +7,10 @@ import {
   loginSuccess,
   loginFailure,
 } from "../../Redux/slices/authSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
 import FloatingFoodIcons from "@/Components/shared/FloatingFoodIcons/FloatingFoodIcons";
-
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -109,7 +108,7 @@ export default function Login() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-app-softest rounded-xl p-8 w-full max-w-md shadow-lg"
+        className="bg-app-softest backdrop-blur-xl rounded-xl p-8 w-full max-w-md shadow-lg"
       >
         <h2 className="text-5xl font-medium mb-2 text-center text-app-tertiary">
           Welcome Back
@@ -180,9 +179,9 @@ export default function Login() {
         {/* Sign up link */}
         <p className="text-sm mt-4 text-center">
           Don’t you have an account?{" "}
-          <a href="/register" className="text-app-tertiary font-medium">
+          <Link to="/choose-role" className="text-app-tertiary font-medium">
             Sign up
-          </a>
+          </Link>
         </p>
       </form>
     </div>

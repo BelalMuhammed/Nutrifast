@@ -1,4 +1,5 @@
 // src/dashboard/pages/DashboardPage.jsx
+import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 import { useEffect, useState } from "react";
 import {
   HiOutlineShoppingBag,
@@ -104,7 +105,7 @@ export default function DashboardPage() {
 
     fetchData();
   }, []);
-
+  // if (loading) return <LoaderSpinner />;
   return (
     <div className="p-6 space-y-8">
       {/* KPI CARDS */}
