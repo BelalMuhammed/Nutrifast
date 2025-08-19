@@ -3,23 +3,19 @@ import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 function RelatedProducts({ category, currentProductId }) {
   const { products } = useSelector((state) => state.products);
-
   const related = products.filter(
     (p) => p.category === category && p.id !== currentProductId
   );
-
   if (related.length === 0) return null;
-
   const settings = {
     dots: true,
     infinite: related.length > 3,
     slidesToShow: 3,
-    slidesToScroll: 1,
-    speed: 500,
-    autoplay: false,
+    slidesToScroll: 3,
+    speed: 300,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 1280,
