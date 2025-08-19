@@ -150,7 +150,7 @@ export default function Login() {
             {/* Header Section (icon removed) */}
             <div className='text-center mb-6'>
               <div className='space-y-2'>
-                <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold text-app-secondary tracking-tight mb-2'>
+                <h2 className='text-2xl sm:text-3xl md:text-4xl text-center font-bold text-app-secondary tracking-tight mb-2'>
                   Welcome Back
                 </h2>
                 <p className='text-base text-gray-600 font-medium'>
