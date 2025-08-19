@@ -1,7 +1,18 @@
 "use client";
+import { useNavigate } from "react-router-dom";
 export function CustomerFavCard({ fav }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/product/${fav.id}`);
+  };
   return (
-    <div className="flex flex-col w-full max-w-[340px] mx-auto min-h-[260px] sm:min-h-[280px] rounded-2xl overflow-hidden shadow-lg bg-white/80 backdrop-blur-md transition-all duration-300">
+    <div
+      className="flex flex-col w-full max-w-[340px] mx-auto min-h-[260px] sm:min-h-[280px] rounded-2xl overflow-hidden shadow-lg bg-white/80 backdrop-blur-md transition-all duration-300 cursor-pointer"
+      onClick={handleClick}
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${fav.name}`}
+    >
       <div className="relative w-full h-40 sm:h-48 md:h-56">
         <img
           src={fav.image}
