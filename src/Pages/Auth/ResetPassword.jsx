@@ -95,7 +95,7 @@ export default function ResetPassword() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-app-softest rounded-xl shadow-lg p-8 w-full max-w-md"
+        className="bg-app-softest backdrop-blur-xl rounded-xl shadow-lg p-8 w-full max-w-md"
       >
         <h2 className="text-3xl font-medium mb-2 text-left">Reset Password</h2>
         <p className="text-sm text-gray-500 mb-6 text-left">

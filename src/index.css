@@ -61,7 +61,7 @@ button {
   --color-light: #b6e388; /* Light Lettuce Green */
   --color-dark: #121712;
   --color-muted: #e9f5dbeb; /* Soft Background Green */
-  --color-softest: #f8fcfa; /* Softest Background Green */
+  --color-softest: rgba(252, 255, 253, 0.8); /* Softest Background Green */
   /* --color-muted: #f8fafc; Misty White */
   --color-white: #fff;
   --color-accent: #f05e15; /* Deep Orange Accent */
