@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
+import FloatingFoodIcons from "@/Components/shared/FloatingFoodIcons/FloatingFoodIcons";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function ResetPassword() {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const showToastMessage = (message, type = "success") => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+    setTimeout(() => setToast({ show: false, message: "", type: "" }), 2000);
   };
 
   const {
@@ -24,7 +25,6 @@ export default function ResetPassword() {
 
   const onSubmit = async (data) => {
     try {
-      // جيب users و admins
       const res = await axios.get(
         "https://nutrifast-data.up.railway.app/users"
       );
@@ -32,7 +32,6 @@ export default function ResetPassword() {
         "https://nutrifast-data.up.railway.app/admins"
       );
 
-      // شوف هو user ولا admin
       let user = res.data.find((u) => u.email === data.email);
       let endpoint = "users";
 
@@ -46,7 +45,6 @@ export default function ResetPassword() {
         return;
       }
 
-      // تحديث الباسورد
       await axios.put(
         `https://nutrifast-data.up.railway.app/${endpoint}/${user.id}`,
         {
@@ -67,6 +65,8 @@ export default function ResetPassword() {
 
   return (
     <div className="h-screen flex items-center justify-center">
+      {/* Background icons layer (does not affect layout) */}
+      <FloatingFoodIcons count={26} opacity={0.09} />
       {/* Toast Notification */}
       {toast.show && (
         <div className="fixed bottom-5 right-5 z-50">
@@ -95,7 +95,7 @@ export default function ResetPassword() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 w-full max-w-md"
+        className="bg-app-softest rounded-xl shadow-lg p-8 w-full max-w-md"
       >
         <h2 className="text-3xl font-medium mb-2 text-left">Reset Password</h2>
         <p className="text-sm text-gray-500 mb-6 text-left">

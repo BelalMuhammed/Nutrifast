@@ -6,6 +6,7 @@ import { Toast } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
 import { clearCart } from "../../Redux/slices/cartSlice";
 
+
 export default function Checkout() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
@@ -77,9 +78,10 @@ export default function Checkout() {
 
   return (
     <div className="app-container py-8 flex flex-col lg:flex-row gap-8">
+      
       {/* LEFT: Product Summary */}
-      <div className="w-full md:w-1/2 space-y-4">
-        <h2 className="text-xl md:text-2xl font-bold mb-4 text-app-secondary">
+      <div className="w-full md:w-1/2 space-y-4 max-w-md mx-auto">
+        <h2 className="text-xl md:text-2xl font-bold mb-4 text-app-tertiary">
           Order Summary
         </h2>
         {cartItems.length > 0 ? (
@@ -95,7 +97,9 @@ export default function Checkout() {
                   className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded"
                 />
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-medium truncate">{item.name}</h4>
+                  <h4 className="font-medium truncate text-app-tertiary">
+                    {item.name}
+                  </h4>
                   <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                 </div>
               </div>
@@ -110,15 +114,15 @@ export default function Checkout() {
 
         <div className="p-4 bg-app-quaternary rounded-lg mt-4 space-y-2">
           <div className="flex justify-between">
-            <span className="text-app-secondary">Subtotal</span>
+            <span className="text-app-tertiary">Subtotal</span>
             <span>{subtotal.toFixed(2)} EGP</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-app-secondary">Shipping</span>
+            <span className="text-app-tertiary">Shipping</span>
             <span>{shipping === 0 ? "Free" : `${shipping} EGP`}</span>
           </div>
           <div className="flex justify-between font-bold">
-            <span className="text-app-secondary">Total</span>
+            <span className="text-app-tertiary">Total</span>
             <span>{total.toFixed(2)} EGP</span>
           </div>
         </div>
@@ -148,12 +152,12 @@ export default function Checkout() {
         )}
 
         <form onSubmit={handleSubmit(handlePlaceOrder)}>
-          <h1 className="text-2xl font-semibold text-app-secondary mb-6">
+          <h1 className="text-2xl font-semibold text-app-tertiary mb-6">
             Checkout
           </h1>
 
           {/* Shipping Information */}
-          <h2 className="text-lg font-medium text-app-secondary mb-4">
+          <h2 className="text-lg font-medium text-app-tertiary mb-4">
             Shipping Information
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -258,7 +262,7 @@ export default function Checkout() {
           </div>
 
           {/* Payment Method */}
-          <h2 className="text-lg font-medium text-app-secondary mb-4">
+          <h2 className="text-lg font-medium text-app-tertiary mb-4">
             Payment Method
           </h2>
           <div className="space-y-4 mb-6">
@@ -271,7 +275,7 @@ export default function Checkout() {
                 })}
               />
               <span>
-                <span className="font-medium text-app-secondary">
+                <span className="font-medium text-app-tertiary">
                   Credit Card
                 </span>
                 <br />
@@ -290,7 +294,7 @@ export default function Checkout() {
                 })}
               />
               <span>
-                <span className="font-medium text-app-secondary">PayPal</span>
+                <span className="font-medium text-app-tertiary">PayPal</span>
                 <br />
                 <span className="text-sm text-app-tertiary">
                   Pay with your PayPal account
@@ -378,7 +382,7 @@ export default function Checkout() {
         {showConfirm && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl shadow-xl p-6 w-11/12 md:w-96 text-center">
-              <h2 className="text-lg font-bold text-app-secondary mb-4">
+              <h2 className="text-lg font-bold text-app-tertiary mb-4">
                 Confirm Payment
               </h2>
               <p className="mb-6 text-app-tertiary">
