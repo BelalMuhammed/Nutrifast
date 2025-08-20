@@ -1,81 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { axiosInstance } from "../../Network/interceptors";
-
-// Simple SVG Icons
-const PlusIcon = ({ className }) => (
-  <svg
-    className={className}
-    fill='none'
-    stroke='currentColor'
-    viewBox='0 0 24 24'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      strokeWidth={2}
-      d='M12 4v16m8-8H4'
-    />
-  </svg>
-);
-
-const EditIcon = ({ className }) => (
-  <svg
-    className={className}
-    fill='none'
-    stroke='currentColor'
-    viewBox='0 0 24 24'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      strokeWidth={2}
-      d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-    />
-  </svg>
-);
-
-const TrashIcon = ({ className }) => (
-  <svg
-    className={className}
-    fill='none'
-    stroke='currentColor'
-    viewBox='0 0 24 24'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      strokeWidth={2}
-      d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-    />
-  </svg>
-);
-
-const RefreshIcon = ({ className }) => (
-  <svg
-    className={className}
-    fill='none'
-    stroke='currentColor'
-    viewBox='0 0 24 24'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      strokeWidth={2}
-      d='M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15'
-    />
-  </svg>
-);
-
-const XMarkIcon = ({ className }) => (
-  <svg
-    className={className}
-    fill='none'
-    stroke='currentColor'
-    viewBox='0 0 24 24'>
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      strokeWidth={2}
-      d='M6 18L18 6M6 6l12 12'
-    />
-  </svg>
-);
+import {
+  FiPlus,
+  FiEdit2,
+  FiTrash2,
+  FiRefreshCw,
+  FiX,
+  FiRotateCw,
+  FiAlertTriangle,
+  FiCheck,
+} from "react-icons/fi";
 
 function ProductFilters() {
   const [filters, setFilters] = useState({
@@ -100,6 +34,12 @@ function ProductFilters() {
   });
   const [selectedCategory, setSelectedCategory] = useState("Categories");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [confirmDialog, setConfirmDialog] = useState({
+    show: false,
+    type: "",
+    item: null,
+    category: null,
+  });
 
   const showToastMessage = (message, type = "success") => {
     setToast({ show: true, message, type });
@@ -132,7 +72,19 @@ function ProductFilters() {
   }, [fetchFilters]);
 
   const handleEdit = (category, item) => {
+    setConfirmDialog({
+      show: true,
+      type: "edit",
+      item,
+      category,
+      message: `Are you sure you want to edit "${item.name}"?`,
+    });
+  };
+
+  const handleConfirmEdit = () => {
+    const { item, category } = confirmDialog;
     setEditingItem({ category, ...item });
+    setConfirmDialog({ show: false, type: "", item: null, category: null });
   };
 
   const handleSaveEdit = async () => {
@@ -171,6 +123,19 @@ function ProductFilters() {
   };
 
   const handleDelete = async (category, itemId) => {
+    const item = filters[category].find((item) => item.id === itemId);
+    setConfirmDialog({
+      show: true,
+      type: "delete",
+      item,
+      category,
+      itemId,
+      message: `Are you sure you want to delete "${item?.name}"? This action cannot be undone.`,
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { category, itemId } = confirmDialog;
     try {
       setActionLoading((prev) => ({ ...prev, delete: true }));
 
@@ -186,6 +151,7 @@ function ProductFilters() {
 
       // Update local state after successful API call
       setFilters(currentFilters);
+      setConfirmDialog({ show: false, type: "", item: null, category: null });
 
       showToastMessage("Filter deleted successfully", "success");
     } catch (error) {
@@ -297,7 +263,7 @@ function ProductFilters() {
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-4'>
                 <div className='w-12 h-12 bg-gradient-to-r from-app-primary to-app-secondary rounded-xl flex items-center justify-center shadow-lg'>
-                  <EditIcon className='w-6 h-6 text-white' />
+                  <FiEdit2 className='w-6 h-6 text-white' />
                 </div>
                 <div>
                   <h1 className='text-2xl sm:text-3xl font-bold text-gray-800'>
@@ -314,7 +280,7 @@ function ProductFilters() {
                   disabled={loading}
                   className='bg-gray-100 text-gray-700 px-4 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300 flex items-center gap-2 shadow-lg disabled:opacity-50'
                   title='Refresh filters'>
-                  <RefreshIcon
+                  <FiRefreshCw
                     className={`w-5 h-5 ${loading ? "animate-spin" : ""}`}
                   />
                   Refresh
@@ -324,24 +290,13 @@ function ProductFilters() {
                   disabled={loading}
                   className='bg-blue-600 text-white px-4 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 flex items-center gap-2 shadow-lg disabled:opacity-50'
                   title='Sync all changes to server'>
-                  <svg
-                    className='w-5 h-5'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15'
-                    />
-                  </svg>
+                  <FiRotateCw className='w-5 h-5' />
                   Sync
                 </button>
                 <button
                   onClick={() => setShowAddModal(true)}
                   className='bg-app-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-app-primary/90 transition-all duration-300 flex items-center gap-2 shadow-lg'>
-                  <PlusIcon className='w-5 h-5' />
+                  <FiPlus className='w-5 h-5' />
                   Add New Filter
                 </button>
               </div>
@@ -403,13 +358,13 @@ function ProductFilters() {
                                 onClick={() => handleEdit(category, item)}
                                 className='p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200'
                                 title='Edit'>
-                                <EditIcon className='w-4 h-4' />
+                                <FiEdit2 className='w-4 h-4' />
                               </button>
                               <button
                                 onClick={() => handleDelete(category, item.id)}
                                 className='p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200'
                                 title='Delete'>
-                                <TrashIcon className='w-4 h-4' />
+                                <FiTrash2 className='w-4 h-4' />
                               </button>
                             </div>
                           </div>
@@ -433,7 +388,7 @@ function ProductFilters() {
               <button
                 onClick={() => setEditingItem(null)}
                 className='text-gray-500 hover:text-gray-700'>
-                <XMarkIcon className='w-6 h-6' />
+                <FiX className='w-6 h-6' />
               </button>
             </div>
 
@@ -546,7 +501,7 @@ function ProductFilters() {
                   setNewItem({ name: "", min: "", max: "", image: "" });
                 }}
                 className='text-gray-500 hover:text-gray-700'>
-                <XMarkIcon className='w-6 h-6' />
+                <FiX className='w-6 h-6' />
               </button>
             </div>
 
@@ -668,6 +623,81 @@ function ProductFilters() {
                   </>
                 ) : (
                   "Add Filter"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Dialog */}
+      {confirmDialog.show && (
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+          <div className='bg-white rounded-2xl p-6 w-full max-w-md'>
+            <div className='flex items-center gap-4 mb-4'>
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  confirmDialog.type === "delete"
+                    ? "bg-red-100 text-red-600"
+                    : "bg-blue-100 text-blue-600"
+                }`}>
+                {confirmDialog.type === "delete" ? (
+                  <FiAlertTriangle className='w-6 h-6' />
+                ) : (
+                  <FiEdit2 className='w-6 h-6' />
+                )}
+              </div>
+              <div>
+                <h3 className='text-lg font-bold text-gray-800'>
+                  {confirmDialog.type === "delete"
+                    ? "Confirm Delete"
+                    : "Confirm Edit"}
+                </h3>
+                <p className='text-sm text-gray-600 mt-1'>
+                  {confirmDialog.message}
+                </p>
+              </div>
+            </div>
+
+            <div className='flex gap-3 mt-6'>
+              <button
+                onClick={() =>
+                  setConfirmDialog({
+                    show: false,
+                    type: "",
+                    item: null,
+                    category: null,
+                  })
+                }
+                className='flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300'>
+                Cancel
+              </button>
+              <button
+                onClick={
+                  confirmDialog.type === "delete"
+                    ? handleConfirmDelete
+                    : handleConfirmEdit
+                }
+                disabled={actionLoading.delete}
+                className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2 ${
+                  confirmDialog.type === "delete"
+                    ? "bg-red-600 text-white hover:bg-red-700"
+                    : "bg-app-primary text-white hover:bg-app-primary/90"
+                }`}>
+                {actionLoading.delete && confirmDialog.type === "delete" ? (
+                  <>
+                    <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    {confirmDialog.type === "delete" ? (
+                      <FiTrash2 className='w-4 h-4' />
+                    ) : (
+                      <FiCheck className='w-4 h-4' />
+                    )}
+                    {confirmDialog.type === "delete" ? "Delete" : "Confirm"}
+                  </>
                 )}
               </button>
             </div>
