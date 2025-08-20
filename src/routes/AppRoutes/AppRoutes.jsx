@@ -7,7 +7,7 @@ import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import NotFound from "../../Pages/NotFound/NotFound";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
-import VendorRegistration from "../../Pages/vindorRegisteration/VendorRegistration";
+import VendorRegistration from "../../Pages/Auth/VendorRegistration";
 import AboutUs from "../../Pages/AboutUs/AboutUs";
 import ContactUs from "../../Pages/ContactUs/ContactUs";
 import ResetPassword from "../../Pages/Auth/ResetPassword";
@@ -15,11 +15,11 @@ import Products from "../../dashboard/pages/Products";
 import Orders from "@/dashboard/pages/Orders";
 import Messages from "@/dashboard/pages/messages";
 import AddProducts from "@/dashboard/pages/AddProducts";
-import Users from "@/dashboard/pages/Users"
+import Users from "@/dashboard/pages/Users";
 import VendorList from "@/dashboard/pages/VendorList";
 import VendorsApplications from "@/dashboard/pages/VendorsApplications";
 
-const Role = lazy(() => import("../../Pages/role/Role"));
+const Role = lazy(() => import("../../Pages/Auth/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
 const Shop = lazy(() => import("../../Pages/Shop/Shop"));
 const ProductDetails = lazy(() =>
@@ -36,7 +36,7 @@ const OrderDetails = lazy(() =>
 const WishList = lazy(() => import("../../Pages/wishlist/WishList"));
 const MyProfile = lazy(() => import("../../Pages/MyProfile/MyProfile"));
 const VendorRegisteration = lazy(() =>
-  import("../../Pages/vindorRegisteration/VendorRegistration")
+  import("../../Pages/Auth/VendorRegistration")
 );
 const SearchPage = lazy(() => import("../../Pages/search/SearchPage"));
 
@@ -111,7 +111,7 @@ export default function AppRoutes() {
           element: <Register />,
         },
         {
-          path: "vendorRegisteration",
+          path: "register/vendor",
           element: <VendorRegisteration />,
         },
         {
@@ -155,9 +155,9 @@ export default function AppRoutes() {
             { path: "products", element: <Products /> },
             { path: "orders", element: <Orders /> },
             { path: "messages", element: <Messages /> },
-            { path: "addProducts", element: < AddProducts /> },
-            { path: "users", element: < Users /> },
-            { path: "vendorList", element: < VendorList /> },
+            { path: "addProducts", element: <AddProducts /> },
+            { path: "users", element: <Users /> },
+            { path: "vendorList", element: <VendorList /> },
             { path: "vendorApplications", element: <VendorsApplications /> },
           ],
         },

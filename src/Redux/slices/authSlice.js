@@ -1,19 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  getCurrentUser,
+  setCurrentUser,
+  removeCurrentUser,
+} from "../../lib/storage";
 
-// Load user from localStorage if available
-const loadUserFromStorage = () => {
-  try {
-    const storedUser = localStorage.getItem("currentUser");
-    return storedUser ? JSON.parse(storedUser) : null;
-  } catch (error) {
-    console.error("Error loading user from localStorage:", error);
-    return null;
-  }
-};
+const initialUser = getCurrentUser();
 
 const initialState = {
-  user: loadUserFromStorage(),
-  isAuthenticated: !!loadUserFromStorage(),
+  user: initialUser,
+  isAuthenticated: !!initialUser,
   loading: false,
   error: null,
 };
@@ -31,7 +27,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       // Save to localStorage
-      localStorage.setItem("currentUser", JSON.stringify(action.payload));
+      setCurrentUser(action.payload);
     },
     registerFailure(state, action) {
       state.loading = false;
@@ -46,7 +42,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       // Save to localStorage
-      localStorage.setItem("currentUser", JSON.stringify(action.payload));
+      setCurrentUser(action.payload);
     },
     loginFailure(state, action) {
       state.loading = false;
@@ -56,7 +52,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
       // Remove from localStorage
-      localStorage.removeItem("currentUser");
+      removeCurrentUser();
     },
     updateProfileStart(state) {
       state.loading = true;
@@ -66,7 +62,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.user = { ...state.user, ...action.payload };
       // Update localStorage
-      localStorage.setItem("currentUser", JSON.stringify(state.user));
+      setCurrentUser(state.user);
     },
     updateProfileFailure(state, action) {
       state.loading = false;
