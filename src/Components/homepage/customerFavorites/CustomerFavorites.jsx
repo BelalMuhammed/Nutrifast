@@ -69,9 +69,9 @@ export default function CustomerFavorites() {
             {favorites.map((fav, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, delay: idx * 0.2 }}
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.25 }}
                 viewport={{ once: true }}
                 className="px-2 sm:px-3 md:px-4 flex justify-center"
               >
