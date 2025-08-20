@@ -17,6 +17,7 @@ import NotFound from "../../Pages/NotFound/NotFound";
 import Products from "../../dashboard/pages/Products";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import AdminLogin from "@/Pages/Auth/AdminLogin";
+import ProductFilters from "@/dashboard/pages/ProductFilters";
 
 const Role = lazy(() => import("../../Pages/Auth/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -139,6 +140,7 @@ export default function AppRoutes() {
             { path: "users", element: <Users /> },
             { path: "vendorList", element: <VendorList /> },
             { path: "vendorApplications", element: <VendorsApplications /> },
+            { path: "productsFilters", element: <ProductFilters /> },
           ],
         },
 

@@ -285,13 +285,13 @@ export default function TableDashboard({
       : Object.keys(data[0] || {})[0];
 
   return (
-    <div className='space-y-6 bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen pt-4 sm:pt-6 lg:pt-8 px-4 sm:px-6 lg:px-8'>
+    <div className='space-y-6 bg-gradient-to-br  via-white  min-h-screen pt-4 sm:pt-6 lg:pt-8 px-4 sm:px-6 lg:px-8'>
       {/* Header Section */}
-      <div className='bg-gradient-to-r from-app-primary to-app-secondary rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg'>
+      <div className='bg-gradient-to-r from-app-primary to-app-secondary rounded-xl sm:rounded-2xl p-4 sm:p-6  shadow-lg'>
         <h2 className='text-xl sm:text-2xl font-bold mb-2'>
           {type.charAt(0).toUpperCase() + type.slice(1)} Management
         </h2>
-        <p className='text-green-100 text-sm sm:text-base'>
+        <p className=' text-sm sm:text-base'>
           Manage your {type} efficiently with advanced filtering and actions
         </p>
       </div>
@@ -465,7 +465,7 @@ export default function TableDashboard({
                 {table.getHeaderGroups().map((hg) => (
                   <TableRow
                     key={hg.id}
-                    className='bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200'>
+                    className='bg-gradient-to-r border-b-2 border-gray-200'>
                     {hg.headers.map((header) => (
                       <TableHead
                         key={header.id}
