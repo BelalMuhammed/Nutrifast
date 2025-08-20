@@ -66,7 +66,7 @@ const ContactUs = () => {
         <div className='absolute top-20 left-10 w-32 h-32 bg-app-primary/10 rounded-full blur-3xl'></div>
         <div className='absolute bottom-20 right-10 w-40 h-40 bg-app-secondary/10 rounded-full blur-3xl'></div>
 
-        <div className='relative container mx-auto px-2 py-8 lg:py-10'>
+        <div className='relative container mx-auto px-2 py-5'>
           <div className='text-center'>
             {/* Icon */}
             <div className='mb-4'>
@@ -80,12 +80,12 @@ const ContactUs = () => {
 
             {/* Title */}
             <div className='mb-4'>
-              <h1 className='text-xl sm:text-2xl md:text-3xl font-extrabold text-app-secondary mb-2'>
+              <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2'>
                 Contact{" "}
                 <span className='text-app-primary bg-gradient-to-r from-app-primary to-app-secondary bg-clip-text text-transparent'>
                   Us
                 </span>
-              </h1>
+              </h2>
               <div className='w-10 h-1 bg-gradient-to-r from-app-primary to-app-secondary mx-auto rounded-full mb-3'></div>
             </div>
 
@@ -104,15 +104,15 @@ const ContactUs = () => {
         </div>
       </section>
       {/* Contact Form Section */}
-      <section className='flex items-center justify-center min-h-[60vh] py-8 lg:py-12'>
+      <section className='flex items-center justify-center min-h-[60vh] py-5 text-base sm:text-lg'>
         <div className='w-full max-w-3xl flex justify-center'>
           <div className='w-full'>
             <div className='bg-white rounded-2xl shadow border border-gray-100 p-4 sm:p-6'>
               <div className='mb-4'>
-                <h2 className='text-lg lg:text-xl font-bold text-app-secondary mb-2'>
+                <h2 className='text-xl lg:text-2xl font-bold text-app-secondary mb-2'>
                   Send us a Message
                 </h2>
-                <p className='text-gray-600 text-sm'>
+                <p className='text-gray-600 text-base'>
                   Fill out the form below and our team will get back to you
                   within 24 hours.
                 </p>
@@ -121,10 +121,10 @@ const ContactUs = () => {
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
-                className='space-y-4'>
+                className='space-y-4 text-base'>
                 {/* Name Input */}
                 <div className='group'>
-                  <label className='flex text-app-secondary font-semibold mb-1 items-center gap-2 text-xs'>
+                  <label className='flex text-app-secondary font-semibold mb-1 items-center gap-2 text-base'>
                     <FaUser className='text-app-primary' size={14} />
                     Your Name
                   </label>
@@ -132,7 +132,7 @@ const ContactUs = () => {
                     <input
                       type='text'
                       placeholder='Enter your full name'
-                      className={`w-full px-3 py-2 rounded-lg border text-xs transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-app-primary/20 ${
+                      className={`w-full px-3 py-2 rounded-lg border text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-app-primary/20 ${
                         errors.name
                           ? "border-red-500 focus:border-red-500"
                           : "border-gray-200 focus:border-app-primary group-hover:border-gray-300"
@@ -152,7 +152,7 @@ const ContactUs = () => {
                     )}
                   </div>
                   {errors.name && (
-                    <p className='text-red-500 text-xs mt-1 flex items-center gap-2'>
+                    <p className='text-red-500 text-sm mt-1 flex items-center gap-2'>
                       <HiX size={14} />
                       {errors.name.message}
                     </p>
@@ -161,7 +161,7 @@ const ContactUs = () => {
 
                 {/* Email Input */}
                 <div className='group'>
-                  <label className='flex text-app-secondary font-semibold mb-1 items-center gap-2 text-xs'>
+                  <label className='flex text-app-secondary font-semibold mb-1 items-center gap-2 text-base'>
                     <FaEnvelope className='text-app-primary' size={14} />
                     Your Email
                   </label>
@@ -169,7 +169,7 @@ const ContactUs = () => {
                     <input
                       type='email'
                       placeholder='Enter your email address'
-                      className={`w-full px-3 py-2 rounded-lg border text-xs transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-app-primary/20 ${
+                      className={`w-full px-3 py-2 rounded-lg border text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-app-primary/20 ${
                         errors.email
                           ? "border-red-500 focus:border-red-500"
                           : "border-gray-200 focus:border-app-primary group-hover:border-gray-300"
@@ -189,7 +189,7 @@ const ContactUs = () => {
                     )}
                   </div>
                   {errors.email && (
-                    <p className='text-red-500 text-xs mt-1 flex items-center gap-2'>
+                    <p className='text-red-500 text-sm mt-1 flex items-center gap-2'>
                       <HiX size={14} />
                       {errors.email.message}
                     </p>
@@ -198,14 +198,14 @@ const ContactUs = () => {
 
                 {/* Message Input */}
                 <div className='group'>
-                  <label className='block text-app-secondary font-semibold mb-1 text-xs'>
+                  <label className='block text-app-secondary font-semibold mb-1 text-base'>
                     Your Message
                   </label>
                   <div className='relative'>
                     <textarea
                       placeholder='Tell us how we can help you...'
                       rows={4}
-                      className={`w-full px-3 py-2 rounded-lg border text-xs transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-app-primary/20 resize-none ${
+                      className={`w-full px-3 py-2 rounded-lg border text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-app-primary/20 resize-none ${
                         errors.message
                           ? "border-red-500 focus:border-red-500"
                           : "border-gray-200 focus:border-app-primary group-hover:border-gray-300"
@@ -225,7 +225,7 @@ const ContactUs = () => {
                     )}
                   </div>
                   {errors.message && (
-                    <p className='text-red-500 text-xs mt-1 flex items-center gap-2'>
+                    <p className='text-red-500 text-sm mt-1 flex items-center gap-2'>
                       <HiX size={14} />
                       {errors.message.message}
                     </p>
@@ -237,10 +237,10 @@ const ContactUs = () => {
                   <button
                     type='submit'
                     disabled={isSubmitting}
-                    className={`w-full relative overflow-hidden font-semibold py-2 px-4 rounded-lg text-xs transition-all duration-300 transform ${
+                    className={`w-full relative overflow-hidden font-semibold py-2 px-4 rounded-lg text-base transition-all duration-300 transform ${
                       isSubmitting
-                        ? "bg-gray-400 cursor-not-allowed text-app-primary scale-95"
-                        : "bg-gradient-to-r from-app-primary to-app-secondary text-app-primary hover:shadow-lg hover:shadow-app-primary/30 hover:-translate-y-1 active:scale-95"
+                        ? "bg-app-primary cursor-not-allowed text-white scale-95"
+                        : "bg-app-primary text-white hover:bg-app-secondary hover:shadow-lg hover:shadow-app-primary/30 hover:-translate-y-1 active:scale-95"
                     }`}>
                     {isSubmitting && (
                       <div className='absolute inset-0 bg-white/20 animate-pulse'></div>
