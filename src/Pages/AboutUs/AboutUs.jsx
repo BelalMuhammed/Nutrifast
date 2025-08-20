@@ -9,7 +9,7 @@ const AboutUs = () => (
       <div className='absolute top-20 left-10 w-32 h-32 bg-app-primary/10 rounded-full blur-3xl'></div>
       <div className='absolute bottom-20 right-10 w-40 h-40 bg-app-secondary/10 rounded-full blur-3xl'></div>
 
-      <div className='relative container mx-auto px-4 py-16 lg:py-24'>
+      <div className='relative container mx-auto px-4 py-8 lg:py-12'>
         <div className='text-center'>
           {/* Logo */}
           <div className='mb-8'>
@@ -17,7 +17,7 @@ const AboutUs = () => (
               <img
                 src='/src/assets/banner.png'
                 alt='NutriFast Banner'
-                className='w-40 h-40 mx-auto rounded-full shadow-2xl border-4 border-white object-cover'
+                className='w-40 h-40 mx-auto rounded-full shadow border-4 border-white object-cover'
               />
               <div className='absolute -inset-4 bg-gradient-to-r from-app-primary/20 to-app-secondary/20 rounded-full blur-lg -z-10'></div>
             </div>
@@ -25,18 +25,17 @@ const AboutUs = () => (
 
           {/* Title */}
           <div className='mb-8'>
-            <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold text-app-secondary mb-4'>
-              About{" "}
-              <span className='text-app-primary bg-gradient-to-r from-app-primary to-app-secondary bg-clip-text text-transparent'>
+            <h1 className='text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2'>
+              <span className='text-app-primary'>About </span>
+              <span className='text-app-tertiary'>
                 NutriFast
               </span>
             </h1>
-            <div className='w-24 h-1 bg-gradient-to-r from-app-primary to-app-secondary mx-auto rounded-full mb-6'></div>
           </div>
 
           {/* Description */}
           <div className='max-w-4xl mx-auto mb-12'>
-            <p className='text-xl md:text-2xl text-gray-700 leading-relaxed mb-6'>
+            <p className='text-lg md:text-xl text-gray-700 leading-relaxed mb-4'>
               NutriFast is dedicated to providing{" "}
               <span className='font-bold text-app-primary'>
                 healthy, delicious meals
@@ -58,11 +57,11 @@ const AboutUs = () => (
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto'>
             {/* Feature 1 */}
             <div className='group'>
-              <div className='bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100'>
+              <div className='bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow hover:shadow-lg  border border-gray-100'>
                 <div className='mb-6'>
                   <div className='relative'>
-                    <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow-lg'>
-                      <FaLeaf className='h-8 w-8 text-white' />
+                    <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow'>
+                      <FaLeaf className='h-8 w-8 text-app-primary' />
                     </div>
                     <div className='absolute -inset-2 bg-gradient-to-br from-app-primary/20 to-app-secondary/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                   </div>
@@ -79,11 +78,11 @@ const AboutUs = () => (
 
             {/* Feature 2 */}
             <div className='group'>
-              <div className='bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100'>
+              <div className='bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow hover:shadow-lg  border border-gray-100'>
                 <div className='mb-6'>
                   <div className='relative'>
-                    <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow-lg'>
-                      <FaCheck className='h-8 w-8 text-white' />
+                    <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow'>
+                      <FaCheck className='h-8 w-8 text-app-primary' />
                     </div>
                     <div className='absolute -inset-2 bg-gradient-to-br from-app-primary/20 to-app-secondary/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                   </div>
@@ -100,11 +99,11 @@ const AboutUs = () => (
 
             {/* Feature 3 */}
             <div className='group'>
-              <div className='bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100'>
+              <div className='bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow hover:shadow-lg  border border-gray-100'>
                 <div className='mb-6'>
                   <div className='relative'>
-                    <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow-lg'>
-                      <FaHeart className='h-8 w-8 text-white' />
+                    <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow'>
+                      <FaHeart className='h-8 w-8 text-app-primary' />
                     </div>
                     <div className='absolute -inset-2 bg-gradient-to-br from-app-primary/20 to-app-secondary/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                   </div>
@@ -123,12 +122,12 @@ const AboutUs = () => (
       </div>
     </section>
     {/* Story Section */}
-    <section className='py-20'>
+    <section className='py-10'>
       <div className='container mx-auto px-4'>
         <div className='max-w-6xl mx-auto'>
           {/* Section Header */}
-          <div className='text-center mb-16'>
-            <h2 className='text-3xl md:text-4xl font-bold text-app-secondary mb-4'>
+          <div className='text-center mb-10'>
+            <h2 className='text-3xl md:text-4xl font-bold text-app-secondary mb-2'>
               Our Story
             </h2>
             <div className='w-16 h-1 bg-gradient-to-r from-app-primary to-app-secondary mx-auto rounded-full mb-6'></div>
@@ -140,10 +139,10 @@ const AboutUs = () => (
 
           {/* Story Card */}
           <div className='relative'>
-            <div className='bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100'>
+            <div className='bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100'>
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-0'>
                 {/* Image Side */}
-                <div className='relative p-8 lg:p-12 flex items-center justify-center bg-gradient-to-br from-app-primary/5 to-app-secondary/5'>
+                <div className='relative p-8  flex items-center justify-center bg-gradient-to-br from-app-primary/5 to-app-secondary/5'>
                   <div className='relative'>
                     <img
                       src='/logo.png'
