@@ -49,13 +49,13 @@ export default function VendorRegistration() {
         const response = await axios.get(
           "https://nutrifast-data.up.railway.app/filters"
         );
-        console.log("Full API Response:", response.data); // للتأكد من البيانات
+        console.log("Full API Response:", response.data); 
 
         if (response.data && response.data && response.data.Categories) {
           const categories = response.data.Categories.map(
             (category) => category.name
           );
-          console.log("Extracted categories:", categories); // للتأكد من التحويل
+          console.log("Extracted categories:", categories); 
           setBusinessTypes(categories);
         } else {
           console.log("No categories found in response");
@@ -90,7 +90,7 @@ export default function VendorRegistration() {
 
       dispatch(vendorRegisterStart());
       const response = await axios.post(
-        "https://nutrifast-data.up.railway.app/vendors",
+        "https://nutrifast-data.up.railway.app/vendorRegistrations",
         data
       );
       dispatch(vendorRegisterSuccess(response.data));
