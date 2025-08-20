@@ -16,6 +16,7 @@ import ContactUs from "../../Pages/ContactUs/ContactUs";
 import NotFound from "../../Pages/NotFound/NotFound";
 import Products from "../../dashboard/pages/Products";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+import AdminLogin from "@/Pages/Auth/AdminLogin";
 
 const Role = lazy(() => import("../../Pages/Auth/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -92,6 +93,10 @@ export default function AppRoutes() {
         {
           path: "login",
           element: <Login />,
+        },
+        {
+          path: "admin-login",
+          element: <AdminLogin />,
         },
         {
           path: "choose-role",

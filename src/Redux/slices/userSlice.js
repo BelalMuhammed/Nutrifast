@@ -53,6 +53,19 @@ export const updateUserById = createAsyncThunk(
   }
 );
 
+//  Get all admins
+export const fetchAdmins = createAsyncThunk(
+  "users/fetchAdmins",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axiosInstance.get("/admins");
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState: {
@@ -113,6 +126,19 @@ const userSlice = createSlice({
       })
       .addCase(updateUserById.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
+      })
+
+      // fetch admins
+      .addCase(fetchAdmins.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAdmins.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchAdmins.rejected, (state, action) => {
+        state.error = action.payload || action.error.message;
+        state.loading = false;
       });
   },
 });
