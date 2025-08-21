@@ -5,47 +5,68 @@ import { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import storyImg from "../../../assets/brandstory.jpg";
-import { HiStar } from "react-icons/hi2";
+import { HiStar, HiHeart, HiBookOpen } from "react-icons/hi2";
 
 export default function OurStory() {
   // Stats for animation
   const stats = [
-    { label: "Happy Customers", value: 1000, suffix: "+" },
-    { label: "Healthy Recipes", value: 50, suffix: "+" },
+    {
+      label: "Happy Customers",
+      value: 1000,
+      suffix: "+",
+      icon: <HiHeart className="text-red-500 w-5 h-5 ml-1" />,
+    },
+    {
+      label: "Healthy Recipes",
+      value: 50,
+      suffix: "+",
+      icon: <HiBookOpen className="text-green-500 w-5 h-5 ml-1" />,
+    },
     {
       label: "Customer Rating",
       value: 5,
-      icon: <HiStar className="inline text-app-accent w-6 h-6 ml-1" />,
+      suffix: "",
+      icon: <HiStar className="text-yellow-500 w-5 h-5 ml-1" />,
     },
   ];
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 60, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1, ease: "easeOut" }}
-      className="py-20 bg-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="py-20 bg-gradient-to-br from-white to-gray-50 overflow-hidden"
     >
-      <div className="app-container mx-auto flex flex-col sm:flex-row items-center gap-6 sm:gap-12 px-4 sm:px-6">
+      <div className="app-container mx-auto flex flex-col lg:flex-row items-center gap-8 px-4 sm:px-6 w-full max-w-full">
         {/* Left: Image */}
         <motion.div
-          initial={{ opacity: 0, x: -60, scale: 0.9 }}
-          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="basis-full md:basis-1/2 flex justify-center items-center overflow-hidden rounded-2xl"
+          viewport={{ once: true, margin: "-100px" }}
+          className="w-full lg:w-1/2 flex justify-center items-center overflow-hidden rounded-3xl shadow-2xl"
         >
-          <motion.img
-            src={storyImg}
-            alt="Our Story - NutriFast"
-            className="shadow-xl object-cover w-full h-full transition-transform duration-500 cursor-pointer"
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+          <motion.div
+            className="relative w-full h-80 md:h-96"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.5 }}
+          >
+            <motion.img
+              src={storyImg}
+              alt="Our Story - NutriFast"
+              className="object-cover w-full h-full rounded-3xl"
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 10, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-3xl"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              viewport={{ once: true }}
+            />
+          </motion.div>
         </motion.div>
 
         {/* Right: Content */}
@@ -53,35 +74,87 @@ export default function OurStory() {
           initial={{ opacity: 0, x: 60 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="basis-full md:basis-1/2"
+          viewport={{ once: true, margin: "-100px" }}
+          className="w-full lg:w-1/2"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-app-dark mb-4 md:mb-6">
-            Our Story
-          </h2>
-          <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed mb-4 md:mb-6">
-            At NutriFast, our journey started with a simple question: “How can
-            we make healthy living easier for everyone?” We noticed that busy
-            schedules often push people towards fast food and unhealthy habits.
-            That’s why we created NutriFast — not just to offer balanced,
-            ready-to-enjoy meals, but also to bring together the best healthy
-            local brands in one place. From fresh meals to wholesome snacks and
-            drinks, we make it simple to discover nutritious options that fit
-            into your busy lifestyle — whether you’re at work, at home, or on
-            the go.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mb-2"
+          >
+            <span className="text-app-primary font-semibold text-sm uppercase tracking-wider">
+              Our Journey
+            </span>
+          </motion.div>
+
+          <motion.h2
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-app-dark mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Our <span className="text-app-primary">Story</span>
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6">
+              At NutriFast, our journey started with a simple question:
+              <span className="font-medium text-app-dark">
+                {" "}
+                "How can we make healthy living easier for everyone?"
+              </span>
+            </p>
+
+            <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-8">
+              We noticed that busy schedules often push people towards fast food
+              and unhealthy habits. That's why we created NutriFast — not just
+              to offer balanced, ready-to-enjoy meals, but also to bring
+              together the best healthy local brands in one place.
+            </p>
+          </motion.div>
 
           {/* Interactive Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-xl bg-app-primary hover:!bg-app-primary text-white font-semibold shadow-lg transition-colors mb-10"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mb-12"
           >
-            Learn More
-          </motion.button>
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.3)",
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="px-8 py-4 rounded-xl bg-app-primary text-white font-semibold flex items-center gap-2 group"
+            >
+              Learn More
+              <motion.span
+                animate={{ x: [0, 4, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              >
+                →
+              </motion.span>
+            </motion.button>
+          </motion.div>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-3 gap-6 text-center">
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             {stats.map((stat, i) => (
               <CounterCard
                 key={i}
@@ -89,24 +162,28 @@ export default function OurStory() {
                 label={stat.label}
                 suffix={stat.suffix}
                 icon={stat.icon}
+                delay={i * 0.1}
               />
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </motion.section>
   );
 }
 
-/* Counter Component with animation */
-function CounterCard({ value, label, suffix, icon }) {
-  const { ref, inView } = useInView({ triggerOnce: true });
+/* Enhanced Counter Component */
+function CounterCard({ value, label, suffix, icon, delay = 0 }) {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
   const [count, setCount] = useState(0);
+  const controls = useAnimation();
 
   useEffect(() => {
     if (inView) {
+      controls.start("visible");
+
       let start = 0;
-      const duration = 2000; // 2 seconds
+      const duration = 2000;
       const stepTime = Math.abs(Math.floor(duration / value));
 
       const timer = setInterval(() => {
@@ -114,23 +191,41 @@ function CounterCard({ value, label, suffix, icon }) {
         setCount(start);
         if (start >= value) clearInterval(timer);
       }, stepTime);
+
+      return () => clearInterval(timer);
     }
-  }, [inView, value]);
+  }, [inView, value, controls]);
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: delay,
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="flex flex-col items-center"
+      variants={cardVariants}
+      initial="hidden"
+      animate={controls}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      className="bg-white p-4 sm:p-6 rounded-2xl shadow-md border border-gray-100 text-center w-full"
     >
-      <h3 className="text-3xl font-semibold text-app-accent flex items-center">
-        {count}
-        {suffix}
-        {icon && icon}
-      </h3>
-      <p className="text-gray-600">{label}</p>
+      <div className="flex justify-center items-baseline mb-2">
+        <h3 className="text-3xl sm:text-4xl font-bold text-app-dark">
+          {count}
+        </h3>
+        {suffix && <span className="text-app-dark text-xl ml-1">{suffix}</span>}
+        {icon}
+      </div>
+      <p className="text-gray-600 text-sm font-medium">{label}</p>
     </motion.div>
   );
 }
