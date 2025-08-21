@@ -1,82 +1,9 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import axios from "axios";
+import React from "react";
+import { FiUser, FiBox } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
-import { Toast, ToastToggle } from "flowbite-react";
-import {
-  HiCheck,
-  HiX,
-  HiEye,
-  HiEyeOff,
-  HiMail,
-  HiLockClosed,
-  HiPhone,
-  HiArrowRight,
-  HiShieldCheck,
-} from "react-icons/hi";
 
-export default function Register() {
+export default function Role() {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid, touchedFields, isSubmitted },
-    watch,
-    reset,
-  } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
-
-  const watchedFields = watch();
-  const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const showToastMessage = (message, type = "success") => {
-    setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 4000);
-  };
-
-  const onSubmit = async (data) => {
-    try {
-      setIsAnimating(true);
-      const usersResponse = await axios.get(
-        "https://nutrifast-data.up.railway.app/users"
-      );
-      const exists = usersResponse.data.find(
-        (user) =>
-          user.email.toLowerCase().trim() === data.email.toLowerCase().trim()
-      );
-      if (exists) {
-        showToastMessage(
-          "This email is already registered. Please login instead.",
-          "error"
-        );
-        setIsAnimating(false);
-        return;
-      }
-
-      const payload = {
-        username: data.fullName,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        role: "user",
-      };
-
-      await axios.post("https://nutrifast-data.up.railway.app/users", payload);
-      showToastMessage("Registration successful!", "success");
-      reset();
-      setTimeout(() => navigate("/login"), 1200);
-    } catch (error) {
-      console.error("Registration failed:", error);
-      showToastMessage(
-        error.response?.data?.message || "Registration failed",
-        "error"
-      );
-    } finally {
-      setIsAnimating(false);
-    }
-  };
-
   return (
     <div
       className='min-h-screen -mt-16 pt-24 flex items-center justify-center p-4 relative overflow-hidden'
@@ -86,271 +13,55 @@ export default function Register() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}>
-      {toast.show && (
-        <div className='fixed bottom-5 right-5 z-50'>
-          <Toast>
-            <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg 
-                ${
-                  toast.type === "success"
-                    ? "bg-green-100 text-green-500"
-                    : "bg-red-100 text-red-500"
-                }`}>
-              {toast.type === "success" ? (
-                <HiCheck className='h-5 w-5' />
-              ) : (
-                <HiX className='h-5 w-5' />
-              )}
-            </div>
-            <div className='ml-3 text-sm font-normal'>{toast.message}</div>
-            <ToastToggle
-              onClick={() => setToast({ show: false, message: "", type: "" })}
-            />
-          </Toast>
-        </div>
-      )}
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className='bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-6 w-full max-w-md'>
-        <h2 className='text-2xl sm:text-3xl md:text-4xl  text-center font-bold text-app-secondary tracking-tight mb-2'>
-          Create Account
-        </h2>
-        <p className='text-app-tertiary mb-6 text-center'>
-          Join NutriFast — choose healthy living.
-        </p>
-
-        {/* Full Name */}
-        <div className='space-y-1'>
-          <div className='relative group'>
-            <input
-              type='text'
-              placeholder='Full Name'
-              {...register("fullName", { required: "Full name is required" })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.fullName
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.fullName && !errors.fullName
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
-                }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiMail className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+      <div className='max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-6'>
+        <div className='flex flex-col items-center text-center bg-white/80 backdrop-blur-md rounded-3xl p-8 shadow-2xl'>
+          <div className='bg-green-100 p-4 rounded-full mb-4'>
+            <FiUser className='text-4xl text-green-500' />
           </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.fullName || isSubmitted) && errors.fullName)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.fullName || isSubmitted) && errors.fullName
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.fullName?.message}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Email */}
-        <div className='space-y-1 mt-2'>
-          <div className='relative group'>
-            <input
-              id='email'
-              type='email'
-              placeholder='Email'
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                  message: "Invalid email format",
-                },
-              })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.email
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.email && !errors.email
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
-                }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiMail className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
-          </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.email || isSubmitted) && errors.email)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.email || isSubmitted) && errors.email
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.email?.message}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Phone */}
-        <div className='space-y-1 mt-2'>
-          <div className='relative group'>
-            <input
-              id='phone'
-              type='text'
-              placeholder='Phone Number'
-              {...register("phone", {
-                required: "Phone is required",
-                pattern: {
-                  value: /^[0-9]{10,15}$/,
-                  message: "Phone number is not valid",
-                },
-              })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.phone
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.phone && !errors.phone
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
-                }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiPhone className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
-          </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.phone || isSubmitted) && errors.phone)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.phone || isSubmitted) && errors.phone
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.phone?.message}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Password */}
-        <div className='space-y-1 mt-2'>
-          <div className='relative group'>
-            <input
-              id='password'
-              type={showPassword ? "text" : "password"}
-              placeholder='Password (min 8 chars)'
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.password
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.password && !errors.password
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
-                }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiLockClosed className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
-
-            <button
-              type='button'
-              onClick={() => setShowPassword(!showPassword)}
-              className='absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-app-primary transition-colors p-1 rounded-lg hover:bg-gray-100'>
-              {showPassword ? (
-                <HiEyeOff className='text-lg' />
-              ) : (
-                <HiEye className='text-lg' />
-              )}
-            </button>
-          </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.password || isSubmitted) && errors.password)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.password || isSubmitted) && errors.password
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.password?.message}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Submit */}
-        <button
-          type='submit'
-          disabled={isAnimating || !isValid}
-          className={`w-full py-3 px-5 rounded-2xl font-semibold text-base text-white transition-all duration-300 
-            flex items-center justify-center gap-3 shadow-lg relative overflow-hidden group
-            ${
-              isAnimating || !isValid
-                ? "bg-gray-400 cursor-not-allowed opacity-60"
-                : "bg-app-primary hover:bg-app-secondary shadow-app-primary/30 hover:shadow-xl"
-            }`}>
-          <div
-            className={`absolute inset-0 bg-app-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-              isAnimating || !isValid ? "hidden" : ""
-            }`}></div>
-          <div className='relative z-10 flex items-center gap-3'>
-            {isAnimating ? (
-              <>
-                <div className='w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-                Creating Account...
-              </>
-            ) : (
-              <>
-                <HiShieldCheck className='text-xl' />
-                Sign Up
-                <HiArrowRight className='text-xl group-hover:translate-x-1 transition-transform' />
-              </>
-            )}
-          </div>
-        </button>
-
-        <div className='text-center bg-app-muted p-6 rounded-2xl border border-gray-100 mt-4'>
-          <p className='text-gray-600 text-base mb-3'>
-            Already have an account?
+          <h2 className='text-2xl font-semibold mb-2 text-app-tertiary'>
+            I’m a User
+          </h2>
+          <p className='text-app-tertiary mb-6'>
+            Browse products, make purchases, and enjoy a seamless shopping
+            experience.
           </p>
-          <Link
-            to='/login'
-            className='inline-flex items-center gap-2 font-bold text-app-tertiary hover:text-app-primary transition-colors text-lg group'>
-            <span className='text-app-primary'>Login</span>
-            <HiArrowRight className='text-app-primary group-hover:translate-x-1 transition-transform' />
-          </Link>
+          <button
+            onClick={() => navigate("/register")}
+            className='btn-app text-white py-3 px-6 rounded-lg flex items-center gap-2 hover:bg-gray-800 transition'>
+            Continue as a User →
+          </button>
+          <p className='mt-4 text-sm'>
+            Already have a user account?{" "}
+            <Link to='/login' className='text-app-tertiary underline'>
+              Login
+            </Link>
+          </p>
         </div>
-      </form>
+
+        <div className='flex flex-col items-center text-center bg-white/80 backdrop-blur-md rounded-3xl p-8 shadow-2xl'>
+          <div className='bg-green-100 p-4 rounded-full mb-4'>
+            <FiBox className='text-4xl text-green-500' />
+          </div>
+          <h2 className='text-2xl font-semibold mb-2 text-app-tertiary'>
+            I’m a Vendor
+          </h2>
+          <p className='text-app-tertiary mb-6'>
+            Sell your products, manage inventory, and grow your business with
+            our tools.
+          </p>
+          <button
+            onClick={() => navigate("/register/vendor")}
+            className='btn-app text-white py-3 px-6 rounded-lg flex items-center gap-2 hover:bg-gray-800 transition'>
+            Continue as a Vendor →
+          </button>
+          <p className='mt-4 text-sm'>
+            Already have a vendor account?{" "}
+            <Link to='/login' className='text-app-tertiary underline'>
+              Login
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -75,6 +75,15 @@ export default function DashboardSidebar() {
                     </SidebarItem>
                   )}
                 </NavLink>
+                
+                
+                <NavLink to="productsFilters">
+                {({ isActive }) => (
+                  <SidebarItem  className={isActive ? "bg-green-100 text-app-primary" : ""}>
+                    Product Filters
+                  </SidebarItem>
+                )}
+              </NavLink>
               </SidebarCollapse>
 
               {/* Vendors collapse */}
@@ -124,9 +133,9 @@ export default function DashboardSidebar() {
               </NavLink>
 
               {/* Example static item */}
-              <SidebarItem href="#" icon={HiInbox}>
-                Filters
-              </SidebarItem>
+
+         
+           
             </SidebarItemGroup>
           </SidebarItems>
         </Sidebar>

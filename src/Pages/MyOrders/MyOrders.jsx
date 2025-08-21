@@ -6,6 +6,7 @@ import {
   deleteOrder,
   clearOrders,
 } from "../../Redux/slices/ordersSlice";
+import { getCurrentUser } from "../../lib/storage";
 import {
   FiPackage,
   FiEye,
@@ -20,7 +21,7 @@ import { Spinner } from "flowbite-react";
 function MyOrders() {
   const dispatch = useDispatch();
   const { list: orders, loading } = useSelector((state) => state.orders);
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const user = getCurrentUser();
   const [activeTab, setActiveTab] = useState("All");
 
   useEffect(() => {
