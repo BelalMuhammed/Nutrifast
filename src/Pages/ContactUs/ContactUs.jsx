@@ -5,6 +5,7 @@ import { sendContactMessage } from "../../Api/apiService";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
 
+
 const ContactUs = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -203,11 +204,10 @@ const ContactUs = () => {
                         <input
                           type='text'
                           placeholder='Enter your full name'
-                          className={`w-full px-4 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-app-primary/20 ${
-                            errors.name
+                          className={`w-full px-4 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-app-primary/20 ${errors.name
                               ? "border-red-500 focus:border-red-500"
                               : "border-gray-200 focus:border-app-primary group-hover:border-gray-300"
-                          }`}
+                            }`}
                           {...register("name", {
                             required: "Name is required",
                             minLength: {
@@ -240,11 +240,10 @@ const ContactUs = () => {
                         <input
                           type='email'
                           placeholder='Enter your email address'
-                          className={`w-full px-4 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-app-primary/20 ${
-                            errors.email
+                          className={`w-full px-4 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-app-primary/20 ${errors.email
                               ? "border-red-500 focus:border-red-500"
                               : "border-gray-200 focus:border-app-primary group-hover:border-gray-300"
-                          }`}
+                            }`}
                           {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -276,11 +275,10 @@ const ContactUs = () => {
                         <textarea
                           placeholder='Tell us how we can help you...'
                           rows={6}
-                          className={`w-full px-4 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-app-primary/20 resize-none ${
-                            errors.message
+                          className={`w-full px-4 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-app-primary/20 resize-none ${errors.message
                               ? "border-red-500 focus:border-red-500"
                               : "border-gray-200 focus:border-app-primary group-hover:border-gray-300"
-                          }`}
+                            }`}
                           {...register("message", {
                             required: "Message is required",
                             minLength: {
@@ -308,11 +306,10 @@ const ContactUs = () => {
                       <button
                         type='submit'
                         disabled={isSubmitting}
-                        className={`w-full relative overflow-hidden font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform ${
-                          isSubmitting
+                        className={`w-full relative overflow-hidden font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform ${isSubmitting
                             ? "bg-gray-400 cursor-not-allowed text-white scale-95"
                             : "bg-gradient-to-r from-app-primary to-app-secondary text-white hover:shadow-2xl hover:shadow-app-primary/30 hover:-translate-y-1 active:scale-95"
-                        }`}>
+                          }`}>
                         {isSubmitting && (
                           <div className='absolute inset-0 bg-white/20 animate-pulse'></div>
                         )}
@@ -344,11 +341,10 @@ const ContactUs = () => {
         <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-sm w-full mx-4'>
           <Toast>
             <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                toastType === "error"
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${toastType === "error"
                   ? "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
                   : "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
-              }`}>
+                }`}>
               {toastType === "error" ? (
                 <HiX className='h-5 w-5' />
               ) : (

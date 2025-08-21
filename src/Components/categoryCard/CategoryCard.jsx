@@ -1,10 +1,23 @@
 "use client";
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export function CategoryCard({ category }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Navigate to shop with category filter as query param
+    navigate(`/shop?category=${encodeURIComponent(category.name)}`);
+  };
+
   return (
-    <div className="relative w-full max-w-[320px] mx-auto rounded-2xl overflow-hidden transition-all duration-300 group">
+    <div
+      className="relative w-full max-w-[320px] mx-auto rounded-2xl overflow-hidden transition-all duration-300 group cursor-pointer"
+      onClick={handleClick}
+      tabIndex={0}
+      role="button"
+      aria-label={`View products in ${category.name}`}
+    >
       <img
         src={category.image}
         alt={category.name}
@@ -15,14 +28,13 @@ export function CategoryCard({ category }) {
         <h5 className="text-base font-bold text-white mb-0.5 truncate mb-2">
           {category.name}
         </h5>
-        <a
-          href={`/category/${category.slug || category.id}`}
+        <span
           className="text-white text-xs mb-2 font-semibold bg-white/20 backdrop-blur-md px-4 py-1 rounded-full shadow 
              hover:bg-black/20 hover:text-app-primary transition-all duration-200 
              focus:outline-none focus:ring-2 focus:ring-app-primary"
         >
           Discover More
-        </a>
+        </span>
       </div>
     </div>
   );
