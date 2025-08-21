@@ -319,3 +319,10 @@ input[type="checkbox"] {
 .animate-progress {
   animation: progress 3s linear;
 }
+
+/* Queries */
+@media (max-width: 768px) {
+  nav {
+    background-color: var(--color-dark);
+  }
+}

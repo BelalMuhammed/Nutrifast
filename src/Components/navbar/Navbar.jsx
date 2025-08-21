@@ -83,21 +83,19 @@ function Navbar() {
   // Determine the background class based on scroll state and home page
   const navbarBackgroundClass = isHome
     ? scrolled || isOpen
-      ? "bg-black/80 backdrop-blur-md"
+      ? "bg-black/90 backdrop-blur-md"
       : "bg-transparent"
-    : "bg-black/80 backdrop-blur-md";
+    : "bg-black/90 backdrop-blur-md";
 
   return (
     <nav
-
       className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 text-white ${navbarBackgroundClass}`}
     >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-
           {/* Logo */}
-          <Link to='/' className='flex items-center flex-shrink-0'>
-            <img className='h-10 w-auto' src={logoImg} alt='Brand Logo' />
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <img className="h-10 w-auto" src={logoImg} alt="Brand Logo" />
           </Link>
 
           {/* Desktop Menu */}
@@ -109,26 +107,24 @@ function Navbar() {
               </NavLink>
             ))}
 
-
-            <div className='flex items-center space-x-6 ml-4'>
+            <div className="flex items-center space-x-6 ml-4">
               {/* Cart and Wishlist */}
 
               <Link to="/cart" className="relative text-white">
                 <FiShoppingCart className="w-5 h-5" />
 
                 {cartCount > 0 && (
-                  <span className='absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center'>
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
               </Link>
 
-
               <Link to="/wishList" className="relative text-white">
                 <FiHeart className="w-5 h-5" />
 
                 {wishlistCount > 0 && (
-                  <span className='absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center'>
+                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                     {wishlistCount > 9 ? "9+" : wishlistCount}
                   </span>
                 )}
@@ -136,24 +132,21 @@ function Navbar() {
 
               {/* Account */}
               {user ? (
-                <div className='relative'>
+                <div className="relative">
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-
                     className="flex items-center space-x-1 text-white"
                   >
                     <FiUser className="w-5 h-5" />
                     <span className="text-sm font-medium">
-
                       {userName?.username || "Account"}
                     </span>
                   </button>
 
                   {dropdownOpen && (
-                    <div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg text-gray-800 z-50'>
-                      <div className='py-1'>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg text-gray-800 z-50">
+                      <div className="py-1">
                         <Link
-
                           to="/myOrders"
                           className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${
                             isActiveLink("/myOrders") ? "text-app-primary" : ""
@@ -179,16 +172,13 @@ function Navbar() {
                             }`}
                           >
                             <FaUserShield className="mr-3" /> Admin Dashboard
-
                           </Link>
                         )}
                         <button
                           onClick={handleLogout}
-
                           className="w-full text-left flex items-center px-4 py-2 text-sm hover:bg-gray-100 text-gray-800"
                         >
                           <FaSignOutAlt className="mr-3" /> Logout
-
                         </button>
                       </div>
                     </div>
@@ -196,13 +186,11 @@ function Navbar() {
                 </div>
               ) : (
                 <Link
-
                   to="/login"
                   className={`text-sm font-medium hover:opacity-80 transition pb-1 relative text-white ${
                     isActiveLink("/login") ? "" : ""
                   }`}
                 >
-
                   Login
                   {isActiveLink("/login") && (
                     <span className="absolute bottom-0 left-0 w-full h-0.5 bg-app-primary"></span>
@@ -219,21 +207,19 @@ function Navbar() {
               <FiShoppingCart className="w-5 h-5" />
 
               {cartCount > 0 && (
-                <span className='absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center'>
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
-
               className="p-2 rounded-md hover:bg-white/10 focus:outline-none text-white"
             >
-
               {isOpen ? (
-                <FiX className='w-5 h-5' />
+                <FiX className="w-5 h-5" />
               ) : (
-                <FiMenu className='w-5 h-5' />
+                <FiMenu className="w-5 h-5" />
               )}
             </button>
           </div>
@@ -242,8 +228,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-
-        <div className={`md:hidden ${navbarBackgroundClass} text-white`}>
+        <div className={`md:hidden bg-app-dark text-white`}>
           <div className="px-4 py-3 space-y-3">
             {menuItems.map((item) => (
               <Link
@@ -258,12 +243,10 @@ function Navbar() {
               </Link>
             ))}
 
-
-            <div className='pt-4 border-t border-white/20'>
+            <div className="pt-4 border-t border-white/20">
               {user ? (
                 <>
                   <Link
-
                     to="/myOrders"
                     className={`flex items-center py-2 hover:bg-white/10 rounded px-2 text-white ${
                       isActiveLink("/myOrders") ? "text-app-primary" : ""
@@ -286,19 +269,16 @@ function Navbar() {
                     className="w-full text-left flex items-center py-2 hover:bg-white/10 rounded px-2 text-white"
                   >
                     <FaSignOutAlt className="mr-3" /> Logout
-
                   </button>
                 </>
               ) : (
                 <Link
-
                   to="/login"
                   className={`block py-2 hover:bg-white/10 rounded px-2 text-white ${
                     isActiveLink("/login") ? "text-app-primary" : ""
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
-
                   Login
                 </Link>
               )}
