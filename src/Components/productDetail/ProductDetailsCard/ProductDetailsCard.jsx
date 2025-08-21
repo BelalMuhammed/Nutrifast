@@ -41,7 +41,7 @@ const ProductDetailsCard = ({ selectedProduct }) => {
     setTimeout(() => setShowWishlistToast(false), 4000);
   };
   return (
-    <div className='bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden max-w-5xl mx-auto'>
+    <div className='bg-white rounded-2xl shadow border border-gray-100 overflow-hidden  mx-auto'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 lg:min-h-[600px] items-stretch'>
         {/* Product Image Section */}
         <div className='relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 h-full flex flex-col'>
@@ -307,7 +307,7 @@ const ProductDetailsCard = ({ selectedProduct }) => {
           <div className='mt-4 pt-4 border-t border-gray-100'>
             <AddButton
               product={selectedProduct}
-              className='w-full justify-center py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200'
+              className='w-full justify-center py-4 text-lg font-semibold rounded-xl shadow hover:shadow-xl transition-all duration-200'
             />
             <p className='text-sm text-gray-500 text-center mt-3'>
               30-day return policy • Secure payment • Fast delivery
