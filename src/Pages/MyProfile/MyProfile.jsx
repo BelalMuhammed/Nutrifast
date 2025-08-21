@@ -9,6 +9,7 @@ import {
   updateProfileFailure,
   logout,
 } from "../../Redux/slices/authSlice";
+import { getCurrentUser, setCurrentUser } from "../../lib/storage";
 import { FiEdit2, FiLogOut, FiKey, FiUser } from "react-icons/fi";
 
 const MyProfile = () => {
@@ -127,11 +128,11 @@ const MyProfile = () => {
       // Update Redux state with the new user data
       dispatch(updateProfileSuccess(res.data));
 
-      // Also update localStorage if it exists there (for navbar sync)
-      const storedUser = localStorage.getItem("currentUser");
+      // Also update central storage for navbar sync
+      const storedUser = getCurrentUser();
       if (storedUser) {
-        const updatedUser = { ...JSON.parse(storedUser), ...res.data };
-        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+        const updatedUser = { ...storedUser, ...res.data };
+        setCurrentUser(updatedUser);
       }
 
       setSuccess("Profile updated successfully.");
@@ -173,11 +174,11 @@ const MyProfile = () => {
       const res = await updateUserProfile(updatedUserData); // Update Redux state with the updated user data
       dispatch(updateProfileSuccess(res.data));
 
-      // Also update localStorage if it exists there (for navbar sync)
-      const storedUser = localStorage.getItem("currentUser");
+      // Also update central storage for navbar sync
+      const storedUser = getCurrentUser();
       if (storedUser) {
-        const updatedUser = { ...JSON.parse(storedUser), ...res.data };
-        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+        const updatedUser = { ...storedUser, ...res.data };
+        setCurrentUser(updatedUser);
       }
 
       setPasswordSuccess("Password changed successfully!");

@@ -17,6 +17,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import logoImg from "/logo-light.png";
+import { getCurrentUser, removeCurrentUser } from "../../lib/storage";
 import NavBarSearch from "../navbarSearch/NavBarSearch";
 
 // Helper NavLink component
@@ -51,8 +52,7 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const storedUser = localStorage.getItem("currentUser");
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const user = getCurrentUser();
   const userName = useSelector((state) => state.auth.user);
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
   const wishlistItems = useSelector((state) => state.wishlist?.items || []);
@@ -60,7 +60,7 @@ function Navbar() {
   const wishlistCount = wishlistItems.length;
 
   const handleLogout = () => {
-    localStorage.removeItem("currentUser");
+    removeCurrentUser();
     navigate("/");
     window.location.reload();
   };
@@ -99,6 +99,7 @@ function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
+
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
               <NavLink key={item.to} to={item.to}>
@@ -108,8 +109,10 @@ function Navbar() {
 
             <div className="flex items-center space-x-6 ml-4">
               {/* Cart and Wishlist */}
+
               <Link to="/cart" className="relative text-white">
                 <FiShoppingCart className="w-5 h-5" />
+
                 {cartCount > 0 && (
                   <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                     {cartCount > 9 ? "9+" : cartCount}
@@ -119,6 +122,7 @@ function Navbar() {
 
               <Link to="/wishList" className="relative text-white">
                 <FiHeart className="w-5 h-5" />
+
                 {wishlistCount > 0 && (
                   <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                     {wishlistCount > 9 ? "9+" : wishlistCount}
@@ -197,9 +201,11 @@ function Navbar() {
           </div>
 
           {/* Mobile menu button */}
+
           <div className="md:hidden flex items-center space-x-4">
             <Link to="/cart" className="relative text-white">
               <FiShoppingCart className="w-5 h-5" />
+
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                   {cartCount}

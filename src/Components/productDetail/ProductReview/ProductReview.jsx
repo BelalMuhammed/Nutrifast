@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../Api/Axios";
+import { getCurrentUser } from "../../../lib/storage";
 import { useForm } from "react-hook-form";
 import { FaStar } from "react-icons/fa";
 const ProductReview = ({ productId }) => {
@@ -7,12 +8,8 @@ const ProductReview = ({ productId }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const localUser = localStorage.getItem("currentUser");
-    if (localUser) {
-      setUser(JSON.parse(localUser));
-    } else {
-      setUser(null);
-    }
+    const localUser = getCurrentUser();
+    setUser(localUser);
   }, []);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);

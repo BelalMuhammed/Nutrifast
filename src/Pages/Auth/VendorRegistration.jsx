@@ -1,79 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import { Toast, ToastToggle } from "flowbite-react";
 import {
   HiCheck,
   HiX,
-  HiEye,
-  HiEyeOff,
   HiMail,
-  HiLockClosed,
   HiPhone,
+  HiOfficeBuilding,
+  HiUser,
+  HiGlobe,
   HiArrowRight,
   HiShieldCheck,
+  HiLocationMarker,
+  HiLockClosed,
+  HiEye,
+  HiEyeOff,
 } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  vendorRegisterStart,
+  vendorRegisterSuccess,
+  vendorRegisterFailure,
+} from "../../Redux/slices/vendorSlice";
 
-export default function Register() {
-  const navigate = useNavigate();
+export default function VendorRegistration() {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid, touchedFields, isSubmitted },
-    watch,
     reset,
+    trigger,
+    watch,
   } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
 
   const watchedFields = watch();
+
+  const [businessTypes, setBusinessTypes] = useState([]);
+  const dispatch = useDispatch();
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [showPassword, setShowPassword] = useState(false);
+  const { error } = useSelector((state) => state.vendor);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const showToastMessage = (message, type = "success") => {
+  // Fetch categories from JSON/API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://nutrifast-data.up.railway.app/filters"
+        );
+        console.log("Full API Response:", response.data); 
+
+        if (response.data && response.data && response.data.Categories) {
+          const categories = response.data.Categories.map(
+            (category) => category.name
+          );
+          console.log("Extracted categories:", categories); 
+          setBusinessTypes(categories);
+        } else {
+          console.log("No categories found in response");
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const showToastMessage = (message, type = "success", duration = 3000) => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 4000);
+    setTimeout(
+      () => setToast({ show: false, message: "", type: "" }),
+      duration
+    );
   };
 
   const onSubmit = async (data) => {
     try {
       setIsAnimating(true);
-      const usersResponse = await axios.get(
-        "https://nutrifast-data.up.railway.app/users"
+      const checkRes = await axios.get(
+        `https://nutrifast-data.up.railway.app/vendors?email=${data.email}`
       );
-      const exists = usersResponse.data.find(
-        (user) =>
-          user.email.toLowerCase().trim() === data.email.toLowerCase().trim()
-      );
-      if (exists) {
-        showToastMessage(
-          "This email is already registered. Please login instead.",
-          "error"
-        );
+      if (checkRes.data.length > 0) {
+        showToastMessage("This email is already registered", "error");
         setIsAnimating(false);
         return;
       }
 
-      const payload = {
-        username: data.fullName,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        role: "user",
-      };
-
-      await axios.post("https://nutrifast-data.up.railway.app/users", payload);
-      showToastMessage("Registration successful!", "success");
+      dispatch(vendorRegisterStart());
+      const response = await axios.post(
+        "https://nutrifast-data.up.railway.app/vendorRegistrations",
+        data
+      );
+      dispatch(vendorRegisterSuccess(response.data));
       reset();
-      setTimeout(() => navigate("/login"), 1200);
-    } catch (error) {
-      console.error("Registration failed:", error);
+      showToastMessage("Vendor registered successfully!", "success");
+      setIsAnimating(false);
+    } catch (err) {
+      setIsAnimating(false);
+      dispatch(vendorRegisterFailure(err.response?.data || err.message));
       showToastMessage(
-        error.response?.data?.message || "Registration failed",
+        err.response?.data || err.message || "Registration failed",
         "error"
       );
-    } finally {
-      setIsAnimating(false);
     }
   };
 
@@ -90,12 +120,11 @@ export default function Register() {
         <div className='fixed bottom-5 right-5 z-50'>
           <Toast>
             <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg 
-                ${
-                  toast.type === "success"
-                    ? "bg-green-100 text-green-500"
-                    : "bg-red-100 text-red-500"
-                }`}>
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                toast.type === "success"
+                  ? "bg-green-100 text-green-500"
+                  : "bg-red-100 text-red-500"
+              }`}>
               {toast.type === "success" ? (
                 <HiCheck className='h-5 w-5' />
               ) : (
@@ -103,207 +132,451 @@ export default function Register() {
               )}
             </div>
             <div className='ml-3 text-sm font-normal'>{toast.message}</div>
-            <ToastToggle
-              onClick={() => setToast({ show: false, message: "", type: "" })}
-            />
+            <ToastToggle onClick={() => setToast({ show: false })} />
           </Toast>
         </div>
       )}
-
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-6 w-full max-w-md'>
-        <h2 className='text-2xl sm:text-3xl md:text-4xl  text-center font-bold text-app-secondary tracking-tight mb-2'>
-          Create Account
+        className='bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 w-full max-w-4xl'>
+        <h2 className='text-xl sm:text-3xl md:text-4xl text-center font-bold text-app-secondary tracking-tight mb-2'>
+          Vendor Registration
         </h2>
         <p className='text-app-tertiary mb-6 text-center'>
-          Join NutriFast — choose healthy living.
+          Partner with us to deliver healthy food to more people!
         </p>
-
-        {/* Full Name */}
-        <div className='space-y-1'>
-          <div className='relative group'>
-            <input
-              type='text'
-              placeholder='Full Name'
-              {...register("fullName", { required: "Full name is required" })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.fullName
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.fullName && !errors.fullName
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+        {/* Business Information Row */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          {/* Business Name */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                type='text'
+                placeholder='Business Name'
+                {...register("businessName", {
+                  required: "Business name is required",
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.businessName
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.businessName && !errors.businessName
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiOfficeBuilding className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !(
+                    (touchedFields.businessName || isSubmitted) &&
+                    errors.businessName
+                  )
                 }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiMail className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.businessName || isSubmitted) &&
+                  errors.businessName
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>
+                  {errors.businessName?.message}
+                </span>
+              </p>
+            </div>
           </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.fullName || isSubmitted) && errors.fullName)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.fullName || isSubmitted) && errors.fullName
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.fullName?.message}</span>
-            </p>
+
+          {/* Business Type */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <select
+                {...register("businessType", {
+                  required: "Business type is required",
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50 appearance-none
+                  ${
+                    errors.businessType
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.businessType && !errors.businessType
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  text-app-tertiary`}
+                onChange={(e) => {
+                  const { onChange } = register("businessType");
+                  onChange(e);
+                  trigger("businessType");
+                }}>
+                <option value=''>Select Business Type</option>
+                {businessTypes.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+              <HiOfficeBuilding className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !(
+                    (touchedFields.businessType || isSubmitted) &&
+                    errors.businessType
+                  )
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.businessType || isSubmitted) &&
+                  errors.businessType
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>
+                  {errors.businessType?.message}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Email */}
-        <div className='space-y-1 mt-2'>
+        {/* Contact Information Row */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+          {/* First Name */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                type='text'
+                placeholder='First Name'
+                {...register("firstName", {
+                  required: "First name is required",
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.firstName
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.firstName && !errors.firstName
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiUser className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !(
+                    (touchedFields.firstName || isSubmitted) &&
+                    errors.firstName
+                  )
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.firstName || isSubmitted) && errors.firstName
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>
+                  {errors.firstName?.message}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Last Name */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                type='text'
+                placeholder='Last Name'
+                {...register("lastName", {
+                  required: "Last name is required",
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.lastName
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.lastName && !errors.lastName
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiUser className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !((touchedFields.lastName || isSubmitted) && errors.lastName)
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.lastName || isSubmitted) && errors.lastName
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>
+                  {errors.lastName?.message}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Details Row */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+          {/* Email */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                id='email'
+                type='email'
+                placeholder='Email'
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@ .]{2,}$/,
+                    message: "Please enter a valid email",
+                  },
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.email
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.email && !errors.email
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiMail className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !((touchedFields.email || isSubmitted) && errors.email)
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.email || isSubmitted) && errors.email
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>{errors.email?.message}</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Phone */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                type='tel'
+                placeholder='Phone Number'
+                {...register("phone", {
+                  required: "Phone number is required",
+                  pattern: {
+                    value: /^[0-9]{8,15}$/,
+                    message: "Please enter a valid phone number",
+                  },
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.phone
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.phone && !errors.phone
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiPhone className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !((touchedFields.phone || isSubmitted) && errors.phone)
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.phone || isSubmitted) && errors.phone
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>{errors.phone?.message}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Location and Website Row */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+          {/* Business Address */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                type='text'
+                placeholder='Business Address'
+                {...register("businessAddress", {
+                  required: "Business address is required",
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.businessAddress
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.businessAddress && !errors.businessAddress
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiLocationMarker className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !(
+                    (touchedFields.businessAddress || isSubmitted) &&
+                    errors.businessAddress
+                  )
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.businessAddress || isSubmitted) &&
+                  errors.businessAddress
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>
+                  {errors.businessAddress?.message}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Website */}
+          <div className='space-y-1'>
+            <div className='relative group'>
+              <input
+                type='url'
+                placeholder='Website (Optional)'
+                {...register("website", {
+                  pattern: {
+                    value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
+                    message: "Please enter a valid URL",
+                  },
+                })}
+                className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
+                  transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
+                  group-hover:bg-gray-100/50
+                  ${
+                    errors.website
+                      ? "border-red-300 focus:border-red-400 bg-red-50/50"
+                      : watchedFields.website && !errors.website
+                      ? "border-app-secondary focus:border-app-primary bg-green-50/30"
+                      : "border-gray-200 focus:border-app-primary hover:border-gray-300"
+                  }
+                  placeholder-gray-400 text-app-tertiary`}
+              />
+              <HiGlobe className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            </div>
+            <div className='min-h-[1rem]'>
+              <p
+                role='alert'
+                aria-live='polite'
+                aria-hidden={
+                  !((touchedFields.website || isSubmitted) && errors.website)
+                }
+                className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
+                  (touchedFields.website || isSubmitted) && errors.website
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
+                }`}>
+                <HiX className='text-xs flex-shrink-0' />
+                <span className='leading-tight'>{errors.website?.message}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* License URL (Full Width) */}
+        <div className='space-y-1 mt-4'>
           <div className='relative group'>
             <input
-              id='email'
-              type='email'
-              placeholder='Email'
-              {...register("email", {
-                required: "Email is required",
+              type='url'
+              placeholder='Commercial Registration License URL'
+              {...register("licenseUrl", {
+                required: "License URL is required",
                 pattern: {
-                  value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                  message: "Invalid email format",
+                  value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
+                  message: "Please enter a valid URL",
                 },
               })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
+              className={`w-full px-4 py-3 pl-12 pr-4 bg-gray-50 border-2 rounded-2xl 
                 transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
                 group-hover:bg-gray-100/50
                 ${
-                  errors.email
+                  errors.licenseUrl
                     ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.email && !errors.email
+                    : watchedFields.licenseUrl && !errors.licenseUrl
                     ? "border-app-secondary focus:border-app-primary bg-green-50/30"
                     : "border-gray-200 focus:border-app-primary hover:border-gray-300"
                 }
                 placeholder-gray-400 text-app-tertiary`}
             />
-            <HiMail className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
+            <HiGlobe className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
           </div>
           <div className='min-h-[1rem]'>
             <p
               role='alert'
               aria-live='polite'
               aria-hidden={
-                !((touchedFields.email || isSubmitted) && errors.email)
+                !(
+                  (touchedFields.licenseUrl || isSubmitted) &&
+                  errors.licenseUrl
+                )
               }
               className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.email || isSubmitted) && errors.email
+                (touchedFields.licenseUrl || isSubmitted) && errors.licenseUrl
                   ? "opacity-100 visible"
                   : "opacity-0 invisible"
               }`}>
               <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.email?.message}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Phone */}
-        <div className='space-y-1 mt-2'>
-          <div className='relative group'>
-            <input
-              id='phone'
-              type='text'
-              placeholder='Phone Number'
-              {...register("phone", {
-                required: "Phone is required",
-                pattern: {
-                  value: /^[0-9]{10,15}$/,
-                  message: "Phone number is not valid",
-                },
-              })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.phone
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.phone && !errors.phone
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
-                }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiPhone className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
-          </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.phone || isSubmitted) && errors.phone)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.phone || isSubmitted) && errors.phone
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.phone?.message}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Password */}
-        <div className='space-y-1 mt-2'>
-          <div className='relative group'>
-            <input
-              id='password'
-              type={showPassword ? "text" : "password"}
-              placeholder='Password (min 8 chars)'
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
-              className={`w-full px-4 py-3 pl-12 pr-12 bg-gray-50 border-2 rounded-2xl 
-                transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
-                group-hover:bg-gray-100/50
-                ${
-                  errors.password
-                    ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                    : watchedFields.password && !errors.password
-                    ? "border-app-secondary focus:border-app-primary bg-green-50/30"
-                    : "border-gray-200 focus:border-app-primary hover:border-gray-300"
-                }
-                placeholder-gray-400 text-app-tertiary`}
-            />
-            <HiLockClosed className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg group-focus-within:text-app-primary transition-colors' />
-
-            <button
-              type='button'
-              onClick={() => setShowPassword(!showPassword)}
-              className='absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-app-primary transition-colors p-1 rounded-lg hover:bg-gray-100'>
-              {showPassword ? (
-                <HiEyeOff className='text-lg' />
-              ) : (
-                <HiEye className='text-lg' />
-              )}
-            </button>
-          </div>
-          <div className='min-h-[1rem]'>
-            <p
-              role='alert'
-              aria-live='polite'
-              aria-hidden={
-                !((touchedFields.password || isSubmitted) && errors.password)
-              }
-              className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                (touchedFields.password || isSubmitted) && errors.password
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}>
-              <HiX className='text-xs flex-shrink-0' />
-              <span className='leading-tight'>{errors.password?.message}</span>
+              <span className='leading-tight'>
+                {errors.licenseUrl?.message}
+              </span>
             </p>
           </div>
         </div>
@@ -313,7 +586,7 @@ export default function Register() {
           type='submit'
           disabled={isAnimating || !isValid}
           className={`w-full py-3 px-5 rounded-2xl font-semibold text-base text-white transition-all duration-300 
-            flex items-center justify-center gap-3 shadow-lg relative overflow-hidden group
+            flex items-center justify-center gap-3 shadow-lg relative overflow-hidden group mt-6
             ${
               isAnimating || !isValid
                 ? "bg-gray-400 cursor-not-allowed opacity-60"
@@ -327,29 +600,18 @@ export default function Register() {
             {isAnimating ? (
               <>
                 <div className='w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-                Creating Account...
+                Registering...
               </>
             ) : (
               <>
                 <HiShieldCheck className='text-xl' />
-                Sign Up
+                Register Now
                 <HiArrowRight className='text-xl group-hover:translate-x-1 transition-transform' />
               </>
             )}
           </div>
         </button>
-
-        <div className='text-center bg-app-muted p-6 rounded-2xl border border-gray-100 mt-4'>
-          <p className='text-gray-600 text-base mb-3'>
-            Already have an account?
-          </p>
-          <Link
-            to='/login'
-            className='inline-flex items-center gap-2 font-bold text-app-tertiary hover:text-app-primary transition-colors text-lg group'>
-            <span className='text-app-primary'>Login</span>
-            <HiArrowRight className='text-app-primary group-hover:translate-x-1 transition-transform' />
-          </Link>
-        </div>
+        {error && <p className='text-red-500 text-center mt-4'>{error}</p>}
       </form>
     </div>
   );

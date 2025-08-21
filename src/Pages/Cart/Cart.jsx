@@ -32,11 +32,11 @@ function Cart() {
   if (cartItems.length === 0) {
     return (
       <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center px-4'>
-        <div className='bg-white rounded-3xl shadow-xl border border-gray-100 p-12 max-w-md w-full text-center'>
+        <div className='bg-white rounded-3xl shadow-sm border border-gray-100 p-12 max-w-md w-full text-center'>
           {/* Icon Section */}
           <div className='mb-8'>
             <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-8 w-24 h-24 mx-auto flex items-center justify-center mb-6'>
-              <FiShoppingCart className='text-app-primary' size={40} />
+              <FiShoppingCart className='bg-app-primary text-white rounded-full p-10' size={40} />
             </div>
           </div>
 
@@ -54,12 +54,7 @@ function Cart() {
           {/* Action Button */}
           <button
             onClick={() => navigate("/shop")}
-            className='w-full text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3'
-            style={{
-              backgroundColor: "#388e3c",
-            }}
-            onMouseEnter={(e) => (e.target.style.backgroundColor = "#4caf50")}
-            onMouseLeave={(e) => (e.target.style.backgroundColor = "#388e3c")}>
+            className='w-full bg-app-primary text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
             <FiShoppingBag size={20} />
             Start Shopping
             <FiArrowRight size={18} />
@@ -80,7 +75,7 @@ function Cart() {
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50'>
       <div className='container mx-auto px-4 py-8 lg:py-12'>
         {/* Header Section */}
-        <div className='text-center mb-12'>
+        <div className='text-center '>
           <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center mb-6'>
             <IoIosCart className='text-app-primary' size={32} />
           </div>
@@ -90,7 +85,7 @@ function Cart() {
           <p className='text-gray-600 max-w-2xl mx-auto'>
             Review your selected items and proceed to checkout when you're ready
           </p>
-          <div className='mt-6 bg-app-primary/5 rounded-full px-6 py-2 inline-flex items-center gap-2'>
+          <div className='mt-2 bg-app-primary/5 rounded-full px-6 py-2 inline-flex items-center gap-2'>
             <span className='text-app-primary font-semibold'>
               {cartItems.length}
             </span>
@@ -227,33 +222,10 @@ function Cart() {
               {/* Checkout Button */}
               <button
                 onClick={goToCheckout}
-                className='w-full text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3'
-                style={{
-                  backgroundColor: "#388e3c",
-                }}
-                onMouseEnter={(e) =>
-                  (e.target.style.backgroundColor = "#4caf50")
-                }
-                onMouseLeave={(e) =>
-                  (e.target.style.backgroundColor = "#388e3c")
-                }>
+                className='w-full bg-app-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-md transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
                 Proceed to Checkout
                 <FiArrowRight size={20} />
               </button>
-
-              {/* Security Badge */}
-              <div className='mt-6 bg-gray-50 rounded-2xl p-4 text-center'>
-                <div className='flex items-center justify-center gap-2 mb-2'>
-                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-sm font-semibold text-gray-700'>
-                    Secure Checkout
-                  </span>
-                </div>
-                <p className='text-xs text-gray-500'>
-                  Your payment information is protected with end-to-end
-                  encryption
-                </p>
-              </div>
 
               {/* Continue Shopping Link */}
               <div className='mt-6 text-center'>
