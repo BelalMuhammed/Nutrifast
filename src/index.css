@@ -115,6 +115,9 @@ button {
 .bg-app-light {
   background-color: var(--color-light);
 }
+.bg-app-dark {
+  background-color: var(--color-dark);
+}
 .bg-app-accent {
   background-color: var(--color-accent);
 }
@@ -315,4 +318,11 @@ input[type="checkbox"] {
 
 .animate-progress {
   animation: progress 3s linear;
+}
+
+/* Queries */
+@media (max-width: 768px) {
+  nav {
+    background-color: var(--color-dark);
+  }
 }
