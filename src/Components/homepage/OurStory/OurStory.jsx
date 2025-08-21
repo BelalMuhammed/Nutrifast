@@ -1,10 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import storyImg from "../../../assets/brandstory.jpg";
+import { HiStar } from "react-icons/hi2";
 
 export default function OurStory() {
+  // Stats for animation
+  const stats = [
+    { label: "Happy Customers", value: 1000, suffix: "+" },
+    { label: "Healthy Recipes", value: 50, suffix: "+" },
+    {
+      label: "Customer Rating",
+      value: 5,
+      icon: <HiStar className="inline text-app-accent w-6 h-6 ml-1" />,
+    },
+  ];
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 60, scale: 0.95 }}
@@ -12,7 +26,7 @@ export default function OurStory() {
       transition={{ duration: 1, ease: "easeOut" }}
       className="py-20 bg-white"
     >
-      <div className="app-container mx-auto flex flex-col md:flex-row items-center gap-12 px-6">
+      <div className="app-container mx-auto flex flex-col sm:flex-row items-center gap-6 sm:gap-12 px-4 sm:px-6">
         {/* Left: Image */}
         <motion.div
           initial={{ opacity: 0, x: -60, scale: 0.9 }}
@@ -20,13 +34,12 @@ export default function OurStory() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
           className="basis-full md:basis-1/2 flex justify-center items-center overflow-hidden rounded-2xl"
-          style={{ width: "100%", height: "100%" }}
         >
           <motion.img
             src={storyImg}
             alt="Our Story - NutriFast"
-            className=" shadow-xl object-cover w-full h-full transition-transform duration-500 cursor-pointer"
-            animate={{ scale: [1, 1.3, 1] }}
+            className="shadow-xl object-cover w-full h-full transition-transform duration-500 cursor-pointer"
+            animate={{ scale: [1, 1.1, 1] }}
             transition={{
               duration: 10,
               repeat: Infinity,
@@ -43,13 +56,10 @@ export default function OurStory() {
           viewport={{ once: true }}
           className="basis-full md:basis-1/2"
         >
-          <h2
-            className="text-3xl md:text-4xl font-bold text-app-dark mb-6
-          "
-          >
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-app-dark mb-4 md:mb-6">
             Our Story
           </h2>
-          <p className="text-gray-600 text-lg leading-relaxed mb-6">
+          <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed mb-4 md:mb-6">
             At NutriFast, our journey started with a simple question: “How can
             we make healthy living easier for everyone?” We noticed that busy
             schedules often push people towards fast food and unhealthy habits.
@@ -65,12 +75,62 @@ export default function OurStory() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-xl bg-app-accent hover:!bg-app-primary text-white font-semibold shadow-lg transition-colors"
+            className="px-6 py-3 rounded-xl bg-app-primary hover:!bg-app-primary text-white font-semibold shadow-lg transition-colors mb-10"
           >
             Learn More
           </motion.button>
+
+          {/* Stats Section */}
+          <div className="grid grid-cols-3 gap-6 text-center">
+            {stats.map((stat, i) => (
+              <CounterCard
+                key={i}
+                value={stat.value}
+                label={stat.label}
+                suffix={stat.suffix}
+                icon={stat.icon}
+              />
+            ))}
+          </div>
         </motion.div>
       </div>
     </motion.section>
+  );
+}
+
+/* Counter Component with animation */
+function CounterCard({ value, label, suffix, icon }) {
+  const { ref, inView } = useInView({ triggerOnce: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const duration = 2000; // 2 seconds
+      const stepTime = Math.abs(Math.floor(duration / value));
+
+      const timer = setInterval(() => {
+        start += 1;
+        setCount(start);
+        if (start >= value) clearInterval(timer);
+      }, stepTime);
+    }
+  }, [inView, value]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="flex flex-col items-center"
+    >
+      <h3 className="text-3xl font-semibold text-app-accent flex items-center">
+        {count}
+        {suffix}
+        {icon && icon}
+      </h3>
+      <p className="text-gray-600">{label}</p>
+    </motion.div>
   );
 }

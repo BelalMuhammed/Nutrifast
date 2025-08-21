@@ -83,9 +83,9 @@ function Navbar() {
   // Determine the background class based on scroll state and home page
   const navbarBackgroundClass = isHome
     ? scrolled || isOpen
-      ? "bg-black/80 backdrop-blur-md"
+      ? "bg-black/90 backdrop-blur-md"
       : "bg-transparent"
-    : "bg-black/80 backdrop-blur-md";
+    : "bg-black/90 backdrop-blur-md";
 
   return (
     <nav
@@ -222,7 +222,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className={`md:hidden ${navbarBackgroundClass} text-white`}>
+        <div className={`md:hidden bg-app-dark text-white`}>
           <div className="px-4 py-3 space-y-3">
             {menuItems.map((item) => (
               <Link

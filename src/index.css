@@ -325,3 +325,10 @@ input::placeholder {
 input.search-input::placeholder {
   color: #fff !important;
 }
+
+/* Queries */
+@media (max-width: 768px) {
+  nav {
+    background-color: var(--color-dark);
+  }
+}
