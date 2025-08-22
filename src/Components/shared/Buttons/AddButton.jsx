@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useCart } from "../../../hooks/useCart";
 
 function AddButton({ product }) {
-  const { isItemInCart, addItem, loading } = useCart();
+  const { isItemInCart, addItem } = useCart();
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("success");
 
@@ -47,14 +47,10 @@ function AddButton({ product }) {
     <>
       <button
         onClick={handleAddToCart}
-        disabled={loading}
-        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""} ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}>
+        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""}`}
+        disabled={isInCart}>
         <HiOutlineShoppingBag size={22} className='me-2' />
-        <span>
-          {loading ? "Adding..." : isInCart ? "In Cart" : "Add to cart"}
-        </span>
+        <span>{isInCart ? "In Cart" : "Add to cart"}</span>
       </button>
 
       {/* Flowbite Toast Notification */}

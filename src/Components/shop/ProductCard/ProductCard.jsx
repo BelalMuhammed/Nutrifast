@@ -19,7 +19,13 @@ function ProductCard({ product, viewMode = "grid" }) {
     description,
     tags = [],
     calories = 0,
+    category,
   } = product;
+
+  // Detect if product is a fresh diet meal (by category or tag)
+  const isFreshDietMeal =
+    (category && category.toLowerCase().includes("fresh diet")) ||
+    tags.some((tag) => tag.toLowerCase().includes("fresh diet"));
 
   const isInWishlist = isItemInWishlist(product.id);
 
@@ -55,6 +61,42 @@ function ProductCard({ product, viewMode = "grid" }) {
                 alt={name}
                 className='w-full h-full object-cover hover:scale-105 transition-transform duration-200'
               />
+              {/* Preorder Tag */}
+              {isFreshDietMeal && (
+                <div
+                  className='absolute top-2 left-2 bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-yellow-300 flex items-center gap-1 animate-fadeIn z-10'
+                  style={{
+                    letterSpacing: "0.5px",
+                    boxShadow: "0 2px 8px 0 rgba(255,180,0,0.15)",
+                  }}>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-4 w-4 mr-1 text-orange-600'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'>
+                    <circle
+                      cx='12'
+                      cy='12'
+                      r='10'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                      fill='#fff8e1'
+                    />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M12 7v5l3 1'
+                      stroke='#f59e42'
+                    />
+                  </svg>
+                  <span style={{ fontWeight: 600 }}>Preorder Required</span>
+                  <span className='ml-1 text-[10px] font-medium text-orange-700'>
+                    Order 1 Day Ahead
+                  </span>
+                </div>
+              )}
             </Link>
           </div>
 
@@ -150,6 +192,40 @@ function ProductCard({ product, viewMode = "grid" }) {
             alt={name}
             className='w-full h-full object-cover rounded-xl border border-gray-100 hover:scale-105 transition-transform duration-200'
           />
+          {/* Preorder Tag */}
+          {isFreshDietMeal && (
+            <div
+              className='absolute top-3 left-3 bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-yellow-300 flex items-center gap-1 animate-fadeIn z-10'
+              style={{
+                letterSpacing: "0.5px",
+                boxShadow: "0 2px 8px 0 rgba(255,180,0,0.15)",
+              }}>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-4 w-4 mr-1 text-orange-600'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'>
+                <circle
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='2'
+                  fill='#fff8e1'
+                />
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M12 7v5l3 1'
+                  stroke='#f59e42'
+                />
+              </svg>
+              <span style={{ fontWeight: 600 }}>Preorder Required</span>
+              
+            </div>
+          )}
         </Link>
         <button
           onClick={handleWishlistToggle}
