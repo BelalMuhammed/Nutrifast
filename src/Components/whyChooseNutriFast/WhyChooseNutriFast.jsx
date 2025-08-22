@@ -44,7 +44,7 @@ export default function WhyChooseNutriFast() {
       <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading Section */}
         <div className="mb-8 sm:mb-10 md:mb-12 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
             Why Choose NutriFast
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-white max-w-xl leading-relaxed mx-auto">
