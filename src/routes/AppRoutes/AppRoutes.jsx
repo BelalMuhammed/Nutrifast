@@ -8,7 +8,6 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "../../Components/layout/LayOut";
 import LoaderSpinner from "../../Components/shared/Loaders/Loader";
-import AboutUs from "../../Pages/AboutUs/AboutUs";
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 import ResetPassword from "../../Pages/Auth/ResetPassword";
@@ -43,7 +42,6 @@ const VendorRegisteration = lazy(() =>
 const DashboardLayout = lazy(() => import("../../dashboard/DashboardLayout"));
 const Dashboard = lazy(() => import("../../dashboard/pages/Dashboard"));
 
-
 export default function AppRoutes() {
   const routes = createBrowserRouter([
     {
@@ -59,10 +57,7 @@ export default function AppRoutes() {
           path: "/",
           element: <Home />,
         },
-        {
-          path: "about",
-          element: <AboutUs />,
-        },
+
         {
           path: "reset-password",
           element: <ResetPassword />,
