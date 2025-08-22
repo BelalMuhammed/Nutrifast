@@ -486,13 +486,13 @@ export default function VendorRegistration() {
             </div>
           </div>
 
-          {/* Website */}
+          {/* Page */}
           <div className='space-y-1'>
             <div className='relative group'>
               <input
                 type='url'
-                placeholder='Website (Optional)'
-                {...register("website", {
+                placeholder='Page (Optional)'
+                {...register("page", {
                   pattern: {
                     value: /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
                     message: "Please enter a valid URL",
@@ -502,9 +502,9 @@ export default function VendorRegistration() {
                   transition-all duration-300 focus:outline-none focus:ring-0 text-base font-medium
                   group-hover:bg-gray-100/50
                   ${
-                    errors.website
+                    errors.page
                       ? "border-red-300 focus:border-red-400 bg-red-50/50"
-                      : watchedFields.website && !errors.website
+                      : watchedFields.page && !errors.page
                       ? "border-app-secondary focus:border-app-primary bg-green-50/30"
                       : "border-gray-200 focus:border-app-primary hover:border-gray-300"
                   }
@@ -517,15 +517,15 @@ export default function VendorRegistration() {
                 role='alert'
                 aria-live='polite'
                 aria-hidden={
-                  !((touchedFields.website || isSubmitted) && errors.website)
+                  !((touchedFields.page || isSubmitted) && errors.page)
                 }
                 className={`text-red-500 text-sm flex items-center gap-1 font-medium transition-opacity duration-150 ${
-                  (touchedFields.website || isSubmitted) && errors.website
+                  (touchedFields.page || isSubmitted) && errors.page
                     ? "opacity-100 visible"
                     : "opacity-0 invisible"
                 }`}>
                 <HiX className='text-xs flex-shrink-0' />
-                <span className='leading-tight'>{errors.website?.message}</span>
+                <span className='leading-tight'>{errors.page?.message}</span>
               </p>
             </div>
           </div>
