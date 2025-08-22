@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../Api/Axios";
 import { getCurrentUser } from "../../../lib/storage";
 import { useForm } from "react-hook-form";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaUserCircle } from "react-icons/fa";
 const ProductReview = ({ productId }) => {
   // Only use localStorage for user authentication
   const [user, setUser] = useState(null);
@@ -83,11 +83,9 @@ const ProductReview = ({ productId }) => {
         {error && <p className='text-red-500 mb-2'>{error}</p>}
         {!loading && (!reviews || reviews.length === 0) && (
           <div className='flex flex-col items-center justify-center py-8'>
-            <img
-              src='https://cdn-icons-png.flaticon.com/512/747/747376.png'
-              alt='No reviews'
-              className='w-16 h-16 mb-2 opacity-60'
-            />
+            <span className='mb-2 opacity-60'>
+              <FaUserCircle size={64} className='mx-auto text-gray-400' />
+            </span>
             <p className='text-gray-400 text-lg'>No reviews yet.</p>
           </div>
         )}

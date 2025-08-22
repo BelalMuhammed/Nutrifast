@@ -113,7 +113,7 @@ export default function OrderDetails() {
   }
 
   return (
-    <div className='min-h-[100vh] bg-gradient-to-b from-white to-app-quaternary/20'>
+    <div className='min-h-[100vh] bg-gradient-to-br from-gray-50 via-white to-gray-50'>
       <div className='max-w-6xl mx-auto px-4 sm:px-6 py-8'>
         {/* Header Section */}
         <div className='mb-8'>

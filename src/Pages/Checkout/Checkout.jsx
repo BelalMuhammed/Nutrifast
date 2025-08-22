@@ -296,7 +296,7 @@ export default function Checkout() {
           {/* Order Summary - Left Side */}
           <div className='xl:col-span-5 space-y-6'>
             {/* Header */}
-            <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
               <h2 className='text-2xl font-bold text-app-tertiary mb-2'>
                 Order Summary
               </h2>
@@ -304,7 +304,7 @@ export default function Checkout() {
             </div>
 
             {/* Cart Items */}
-            <div className='bg-white rounded-2xl shadow-lg border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow border border-gray-100'>
               <div className='p-6 border-b border-gray-100'>
                 <h3 className='text-lg font-semibold text-app-tertiary'>
                   Items ({cartItems.length})
@@ -400,7 +400,7 @@ export default function Checkout() {
             </div>
 
             {/* Promo Code */}
-            <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
               <h3 className='text-lg font-semibold text-app-tertiary mb-4'>
                 Promo Code
               </h3>
@@ -445,7 +445,7 @@ export default function Checkout() {
             </div>
 
             {/* Order Total */}
-            <div className='bg-white rounded-2xl shadow-lg border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow border border-gray-100'>
               <div className='p-6 space-y-4'>
                 <div className='flex justify-between text-gray-600'>
                   <span>Subtotal</span>
@@ -489,7 +489,7 @@ export default function Checkout() {
               onSubmit={handleSubmit(handlePlaceOrder)}
               className='space-y-6'>
               {/* Customer Information */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <h3 className='text-xl font-bold text-app-tertiary mb-6 flex items-center gap-2'>
                   <HiUser className='text-app-primary' />
                   Customer Information
@@ -606,7 +606,7 @@ export default function Checkout() {
               </div>
 
               {/* Shipping Information */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <h3 className='text-xl font-bold text-app-tertiary mb-6 flex items-center gap-2'>
                   <HiLocationMarker className='text-app-primary' />
                   Shipping Information
@@ -743,7 +743,7 @@ export default function Checkout() {
               </div>
 
               {/* Payment Information */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <h3 className='text-xl font-bold text-app-tertiary mb-6 flex items-center gap-2'>
                   <HiCreditCard className='text-app-primary' />
                   Payment Information
@@ -1046,7 +1046,7 @@ export default function Checkout() {
               </div>
 
               {/* Submit Button */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <button
                   type='submit'
                   disabled={isProcessing || cartItems.length === 0}
@@ -1057,7 +1057,7 @@ export default function Checkout() {
                       await validateForm();
                     }
                   }}
-                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 shadow-lg relative overflow-hidden group ${
+                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 shadow relative overflow-hidden group ${
                     isProcessing || cartItems.length === 0
                       ? "bg-gray-400 cursor-not-allowed opacity-60"
                       : "bg-app-primary hover:bg-app-secondary text-white shadow-app-primary/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
@@ -1135,9 +1135,9 @@ export default function Checkout() {
             <div className='bg-gradient-to-r from-app-primary to-app-secondary px-6 py-4'>
               <div className='flex items-center gap-3'>
                 <div className='w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center'>
-                  <HiExclamation className='w-5 h-5 text-white' />
+                  <HiExclamation className='w-5 h-5 text-app-primary' />
                 </div>
-                <h3 className='text-lg font-bold text-white'>
+                <h3 className='text-lg font-bold text-app-primary'>
                   Confirm Your Order
                 </h3>
               </div>

@@ -137,7 +137,7 @@ function ProductCard({ product, viewMode = "grid" }) {
 
   // Default Grid View Layout
   return (
-    <div className='product bg-white rounded-2xl p-5 shadow-sm w-full max-w-[300px] md:max-w-[320px] md:w-[320px] min-w-0 relative transition-transform duration-200 hover:shadow-md group border border-gray-100 flex flex-col'>
+    <div className='product bg-white rounded-2xl p-5 shadow-sm w-full   md:w-[320px] min-w-0 relative transition-transform duration-200 hover:shadow-md group border border-gray-100 flex flex-col'>
       {/* Image and heart button */}
       <div className='relative h-[160px] rounded-xl overflow-hidden mb-4'>
         <Link to={`/product/${id}`}>
