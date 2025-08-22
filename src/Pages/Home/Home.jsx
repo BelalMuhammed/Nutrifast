@@ -12,12 +12,8 @@ function Home() {
       <Categories />
       <CustomerFavorites />
       <WhyChooseNutriFast />
-<<<<<<< HEAD
-      <OurStory id="about" />
-=======
-      <OurStory />
+      <OurStory id='about' />
       <VendorsLogo />
->>>>>>> development
     </>
   );
 }
