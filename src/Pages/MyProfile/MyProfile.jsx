@@ -9,6 +9,8 @@ import {
   updateProfileFailure,
   logout,
 } from "../../Redux/slices/authSlice";
+import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
+import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 import { getCurrentUser, setCurrentUser } from "../../lib/storage";
 import { FiEdit2, FiLogOut, FiKey, FiUser } from "react-icons/fi";
 
@@ -144,7 +146,25 @@ const MyProfile = () => {
   };
 
   const handleLogout = () => {
+    // Clear cart and wishlist data from Redux state first
+    dispatch(clearCartData());
+    dispatch(clearWishlistData());
+
+    // Clear user authentication (this also clears localStorage)
     dispatch(logout());
+
+    // Additional cleanup to ensure data is cleared
+    setTimeout(() => {
+      // Force clear localStorage items if they still exist
+      try {
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("wishlist");
+        localStorage.removeItem("currentUser");
+      } catch {
+        // ignore errors
+      }
+    }, 100);
+
     navigate("/login");
   };
 

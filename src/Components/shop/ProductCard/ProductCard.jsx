@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import AddButton from "../../shared/Buttons/AddButton";
 import { FaHeart } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleWishlistItem } from "../../../Redux/slices/wishListSlice";
 import { Toast, ToastToggle } from "flowbite-react";
 import { HiCheck, HiX } from "react-icons/hi";
 import { useState } from "react";
+import { useWishlist } from "../../../hooks/useWishlist";
 
 function ProductCard({ product, viewMode = "grid" }) {
-  const dispatch = useDispatch();
+  const { isItemInWishlist, toggleItem } = useWishlist();
   const [showWishlistToast, setShowWishlistToast] = useState(false);
   const [wishlistToastType, setWishlistToastType] = useState("success");
 
@@ -21,21 +20,26 @@ function ProductCard({ product, viewMode = "grid" }) {
     tags = [],
     calories = 0,
   } = product;
-  const wishlistItems = useSelector((state) => state.wishlist.items);
-  const isInWishlist = wishlistItems.some((item) => item.id === product.id);
 
-  const handleWishlistToggle = () => {
-    if (isInWishlist) {
-      // Removing from wishlist
-      setWishlistToastType("removed");
-    } else {
-      // Adding to wishlist
-      setWishlistToastType("added");
+  const isInWishlist = isItemInWishlist(product.id);
+
+  const handleWishlistToggle = async () => {
+    try {
+      if (isInWishlist) {
+        // Removing from wishlist
+        setWishlistToastType("removed");
+      } else {
+        // Adding to wishlist
+        setWishlistToastType("added");
+      }
+
+      await toggleItem(product);
+      setShowWishlistToast(true);
+      setTimeout(() => setShowWishlistToast(false), 4000);
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+      // You could show an error toast here
     }
-
-    dispatch(toggleWishlistItem(product));
-    setShowWishlistToast(true);
-    setTimeout(() => setShowWishlistToast(false), 4000);
   };
 
   // List View Layout
