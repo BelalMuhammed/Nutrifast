@@ -277,7 +277,10 @@ export default function Checkout() {
       const orderData = {
         userId: user?.id,
         orderNumber: `ORD-${Date.now()}`,
-        items: orderItems,
+        items: orderItems.map((item) => ({
+          ...item,
+          status: item.stock, // Include product status
+        })),
         customer: {
           fullName: data.fullName,
           email: data.email,
