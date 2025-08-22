@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import AddButton from "../../shared/Buttons/AddButton";
 import { FaHeart } from "react-icons/fa";
 import { Toast, ToastToggle } from "flowbite-react";
-import { HiCheck, HiX } from "react-icons/hi";
+import { HiCheck, HiX, HiOutlineClock } from "react-icons/hi";
 import { useState } from "react";
 import { useWishlist } from "../../../hooks/useWishlist";
 
@@ -69,32 +69,8 @@ function ProductCard({ product, viewMode = "grid" }) {
                     letterSpacing: "0.5px",
                     boxShadow: "0 2px 8px 0 rgba(255,180,0,0.15)",
                   }}>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-4 w-4 mr-1 text-orange-600'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'>
-                    <circle
-                      cx='12'
-                      cy='12'
-                      r='10'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      fill='#fff8e1'
-                    />
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M12 7v5l3 1'
-                      stroke='#f59e42'
-                    />
-                  </svg>
-                  <span style={{ fontWeight: 600 }}>Preorder Required</span>
-                  <span className='ml-1 text-[10px] font-medium text-orange-700'>
-                    Order 1 Day Ahead
-                  </span>
+                  <HiOutlineClock className='h-4 w-4 mr-1 text-orange-600 bg-yellow-100 rounded-full p-[2px]' />
+                  <span style={{ fontWeight: 600 }}>Preorder</span>
                 </div>
               )}
             </Link>
@@ -200,30 +176,8 @@ function ProductCard({ product, viewMode = "grid" }) {
                 letterSpacing: "0.5px",
                 boxShadow: "0 2px 8px 0 rgba(255,180,0,0.15)",
               }}>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='h-4 w-4 mr-1 text-orange-600'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'>
-                <circle
-                  cx='12'
-                  cy='12'
-                  r='10'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  fill='#fff8e1'
-                />
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M12 7v5l3 1'
-                  stroke='#f59e42'
-                />
-              </svg>
-              <span style={{ fontWeight: 600 }}>Preorder Required</span>
-              
+              <HiOutlineClock className='h-4 w-4 mr-1 text-orange-600 bg-yellow-100 rounded-full p-[2px]' />
+                  <span style={{ fontWeight: 600 }}>Preorder required</span>
             </div>
           )}
         </Link>
