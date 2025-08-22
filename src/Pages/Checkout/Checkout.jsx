@@ -33,6 +33,7 @@ import {
   removeFromCartAsync,
   clearCartAsync,
 } from "../../Redux/slices/cartSlice";
+import { updateProfileSuccess } from "../../Redux/slices/authSlice";
 import { getCurrentUser, setCurrentUser } from "../../lib/storage";
 
 export default function Checkout() {
@@ -59,7 +60,10 @@ export default function Checkout() {
       fullName: currentUser?.username || currentUser?.name || "",
       email: currentUser?.email || "",
       phoneNumber: currentUser?.phone || "",
-      address: currentUser?.address || "",
+      address: currentUser?.shipping?.address || currentUser?.address || "",
+      city: currentUser?.shipping?.city || "",
+      state: currentUser?.shipping?.state || "",
+      zipCode: currentUser?.shipping?.zipCode || "",
     },
   });
 
@@ -214,7 +218,7 @@ export default function Checkout() {
     try {
       setIsProcessing(true);
 
-      // Update user data in localStorage if changed
+      // Update user data in both localStorage and database if changed
       const currentUser = getCurrentUser();
       if (currentUser) {
         const updatedUser = {
@@ -222,9 +226,34 @@ export default function Checkout() {
           username: data.fullName,
           email: data.email,
           phone: data.phoneNumber,
+          // Save shipping as an object
+          shipping: {
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            zipCode: data.zipCode,
+          },
+          // Keep backward compatibility for address field
           address: data.address,
         };
+
+        // Update localStorage first
         setCurrentUser(updatedUser);
+
+        // Update database if user data has changed
+        try {
+          // Import the API function
+          const { updateUserProfile } = await import("../../Api/apiService");
+          await updateUserProfile(updatedUser);
+
+          // Update Redux state to sync with navbar
+          dispatch(updateProfileSuccess(updatedUser));
+
+          console.log("User profile updated successfully");
+        } catch (error) {
+          console.error("Failed to update user profile:", error);
+          // Continue with order processing even if profile update fails
+        }
       }
 
       // Simulate payment processing
@@ -249,7 +278,17 @@ export default function Checkout() {
         userId: user?.id,
         orderNumber: `ORD-${Date.now()}`,
         items: orderItems,
-        customer: data,
+        customer: {
+          fullName: data.fullName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+        },
+        shippingAddress: {
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zipCode: data.zipCode,
+        },
         subtotal: orderSubtotal.toFixed(2),
         shipping: shippingCost.toFixed(2),
         discount: orderDiscountAmount.toFixed(2),
