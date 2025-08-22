@@ -3,12 +3,11 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
 import { FaSignOutAlt, FaList, FaUserShield, FaUser } from "react-icons/fa";
-import { getCurrentUser } from "../../lib/storage";
 import { logout } from "../../Redux/slices/authSlice";
 import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
 import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 import logoImg from "/logo-light.png";
-import { getCurrentUser, removeCurrentUser } from "../../lib/storage";
+import { getCurrentUser} from "../../lib/storage";
 // Import components
 import DesktopMenu from "./DesktopMenu";
 import CartWishlistIcons from "./CartWishlistIcons";
