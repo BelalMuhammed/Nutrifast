@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  FiShoppingCart,
-  FiMenu,
-  FiX,
-  FiHeart,
-  FiUser,
-  FiSearch,
-} from "react-icons/fi";
+import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
 import {
   FaSignOutAlt,
   FaCog,
@@ -18,22 +11,32 @@ import {
 } from "react-icons/fa";
 import logoImg from "/logo-light.png";
 import { getCurrentUser, removeCurrentUser } from "../../lib/storage";
-import NavBarSearch from "../navbarSearch/NavBarSearch";
+import { HashLink } from "react-router-hash-link";
 
-// Helper NavLink component
-function NavLink({ to, children }) {
+// Updated NavLink component to handle hash links
+function NavLink({ to, children, isHashLink = false, onClick }) {
   const location = useLocation();
-  const isActive = location.pathname === to;
+
+  // Check if this is the active link
+  const isActive = isHashLink
+    ? location.pathname === to.split("#")[0] &&
+      location.hash === `#${to.split("#")[1]}`
+    : location.pathname === to && !location.hash;
+
+  const LinkComponent = isHashLink ? HashLink : Link;
+
   return (
-    <Link
+    <LinkComponent
       to={to}
+      smooth={isHashLink ? "true" : undefined}
       className={`text-sm hover:opacity-80 transition pb-1 relative text-white`}
+      onClick={onClick}
     >
       {children}
       {isActive && (
         <span className="absolute bottom-0 left-0 w-full h-0.5 bg-app-primary"></span>
       )}
-    </Link>
+    </LinkComponent>
   );
 }
 
@@ -69,14 +72,31 @@ function Navbar() {
 
   // Helper function to check if a link is active
   const isActiveLink = (path) => {
-    return location.pathname === path;
+    if (path.includes("#")) {
+      const [pathname, hash] = path.split("#");
+      return location.pathname === pathname && location.hash === `#${hash}`;
+    }
+    return location.pathname === path && !location.hash;
+  };
+
+  // Function to handle Home link click
+  const handleHomeClick = () => {
+    if (location.pathname === "/") {
+      // If we're already on the home page, scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // If we're on another page, navigate to home
+      navigate("/");
+    }
+    // Close mobile menu if open
+    setIsOpen(false);
   };
 
   // Menu items array
   const menuItems = [
-    { to: "/", label: "Home" },
+    { to: "/", label: "Home", onClick: handleHomeClick },
     { to: "/shop", label: "Shop" },
-    { to: "/about", label: "About Us" },
+    { to: "/#about", label: "About Us", isHashLink: true },
     { to: "/contact", label: "Contact" },
   ];
 
@@ -94,7 +114,11 @@ function Navbar() {
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center flex-shrink-0">
+          <Link
+            to="/"
+            className="flex items-center flex-shrink-0"
+            onClick={handleHomeClick}
+          >
             <img className="h-10 w-auto" src={logoImg} alt="Brand Logo" />
           </Link>
 
@@ -102,7 +126,13 @@ function Navbar() {
 
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
-              <NavLink key={item.to} to={item.to}>
+              <NavLink
+                key={item.to}
+                to={item.to}
+                isHashLink={item.isHashLink}
+                className="px-4 py-2"
+                onClick={item.onClick}
+              >
                 {item.label}
               </NavLink>
             ))}
@@ -230,19 +260,38 @@ function Navbar() {
       {isOpen && (
         <div className={`md:hidden bg-app-dark text-white`}>
           <div className="px-4 py-3 space-y-3">
-            {menuItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`block py-2 hover:bg-white/10 rounded px-2 text-white ${
-                  isActiveLink(item.to) ? "text-app-primary" : ""
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-
+            {menuItems.map((item) =>
+              item.isHashLink ? (
+                <HashLink
+                  key={item.to}
+                  smooth
+                  to={item.to}
+                  className={`block py-2 hover:bg-white/10 rounded px-2 text-white ${
+                    isActiveLink(item.to) ? "text-app-primary" : ""
+                  }`}
+                  onClick={() => {
+                    if (item.onClick) item.onClick();
+                    else setIsOpen(false);
+                  }}
+                >
+                  {item.label}
+                </HashLink>
+              ) : (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`block py-2 hover:bg-white/10 rounded px-2 text-white ${
+                    isActiveLink(item.to) ? "text-app-primary" : ""
+                  }`}
+                  onClick={() => {
+                    if (item.onClick) item.onClick();
+                    else setIsOpen(false);
+                  }}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
             <div className="pt-4 border-t border-white/20">
               {user ? (
                 <>

@@ -9,7 +9,7 @@ import TimelineItem from "./TimelineItem";
 import StatsSection from "./StatsSection";
 import StoryImage from "./StoryImage";
 
-export default function OurStory() {
+export default function OurStory({ id }) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-15%" });
   const controls = useAnimation();
@@ -20,6 +20,7 @@ export default function OurStory() {
 
   return (
     <section
+      id={id}
       ref={sectionRef}
       className="app-container relative py-16 md:py-20 lg:py-24 bg-white overflow-hidden"
     >
