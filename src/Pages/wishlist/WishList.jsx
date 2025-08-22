@@ -1,12 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import ProductCard from "../../Components/shop/ProductCard/ProductCard";
 import { FiHeart, FiArrowRight, FiShoppingBag } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useWishlist } from "../../hooks/useWishlist";
 
 export default function WishList() {
-  const { items } = useSelector((state) => state.wishlist);
+  const { items } = useWishlist();
   const navigate = useNavigate();
 
   if (items.length === 0) {

@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
 import { FaSignOutAlt, FaList, FaUserShield, FaUser } from "react-icons/fa";
 import logoImg from "/logo-light.png";
-import { getCurrentUser, removeCurrentUser } from "../../lib/storage";
+import { getCurrentUser } from "../../lib/storage";
+import { logout } from "../../Redux/slices/authSlice";
+import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
+import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 // Helper NavLink component
 function NavLink({ to, children }) {
   const location = useLocation();
@@ -27,6 +30,7 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,9 +48,26 @@ function Navbar() {
   const wishlistCount = wishlistItems.length;
 
   const handleLogout = () => {
-    removeCurrentUser();
-    navigate("/");
-    window.location.reload();
+    // Clear cart and wishlist data from Redux state first
+    dispatch(clearCartData());
+    dispatch(clearWishlistData());
+
+    // Clear user authentication (this also clears localStorage)
+    dispatch(logout());
+
+    // Additional cleanup to ensure data is cleared
+    setTimeout(() => {
+      // Force clear localStorage items if they still exist
+      try {
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("wishlist");
+        localStorage.removeItem("currentUser");
+      } catch {
+        // ignore errors
+      }
+    }, 100);
+
+    navigate("/login");
   };
 
   const isHome = location.pathname === "/";
