@@ -113,14 +113,14 @@ function Footer() {
                 INFORMATION
               </h3>
               <ul className="space-y-1 sm:space-y-2">
-                {/* <li>
+                 <li>
                   <Link
-                    to="#"
+                    to="/#about"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     About us
                   </Link>
-                </li> */}
+                </li> 
                 {/* <li>
                   <Link
                     to="#"
@@ -128,7 +128,7 @@ function Footer() {
                   >
                     Blog
                   </Link>
-                </li> */}
+                </li>  */}
                 <li>
                   <Link
                     to="/checkout"
