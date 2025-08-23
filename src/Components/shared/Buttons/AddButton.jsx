@@ -3,7 +3,7 @@ import ToastNotification from "../../shared/ToastNotification";
 import { useState } from "react";
 import { useCart } from "../../../hooks/useCart";
 
-function AddButton({ product, ...props }) {
+function AddButton({ product, className = "" }) {
   const { isItemInCart, addItem } = useCart();
   const [toast, setToast] = useState({
     show: false,
@@ -59,11 +59,11 @@ function AddButton({ product, ...props }) {
     <>
       <button
         onClick={handleAddToCart}
-        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""} ${
-          props.className
-        }`}
-        disabled={isInCart}>
-        <HiOutlineShoppingBag size={22} className='me-2' />
+        className={`btn-app flex items-center ${
+          isInCart ? "opacity-70" : ""
+        } ${className}`}
+      >
+        <HiOutlineShoppingBag size={22} className="me-2" />
         <span>{isInCart ? "In Cart" : "Add to cart"}</span>
       </button>
       <ToastNotification
