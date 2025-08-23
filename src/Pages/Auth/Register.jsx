@@ -23,7 +23,7 @@ export default function Register() {
     formState: { errors, isValid, touchedFields, isSubmitted },
     watch,
     reset,
-  } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
+  } = useForm({ mode: "onChange", reValidateMode: "onChange" });
 
   const watchedFields = watch();
   const [toast, setToast] = useState({ show: false, message: "", type: "" });

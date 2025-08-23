@@ -32,7 +32,7 @@ export default function VendorRegistration() {
     reset,
     trigger,
     watch,
-  } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
+  } = useForm({ mode: "onChange", reValidateMode: "onChange" });
 
   const watchedFields = watch();
 
