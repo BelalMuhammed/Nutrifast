@@ -14,9 +14,8 @@ function loadCart() {
 
 function saveCart(cartItems) {
   try {
-    // Only save if user is authenticated
-    const currentUser = localStorage.getItem("currentUser");
-    if (currentUser && cartItems) {
+    // Always save cart, even for guests
+    if (cartItems) {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
   } catch {
