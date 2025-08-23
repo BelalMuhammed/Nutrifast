@@ -36,10 +36,13 @@ function MyOrders() {
     }
   }, [dispatch, user?.id]);
 
-  const filteredOrders =
+  const filteredOrders = (
     activeTab === "All"
       ? orders
-      : orders.filter((order) => order.status === activeTab);
+      : orders.filter((order) => order.status === activeTab)
+  )
+    .slice()
+    .reverse();
 
   const getStatusIcon = (status) => {
     switch (status) {

@@ -32,6 +32,8 @@ import {
   removeFromCart,
   removeFromCartAsync,
   clearCartAsync,
+  setProcessingPartialOrder,
+  setCartItems,
 } from "../../Redux/slices/cartSlice";
 import { updateProfileSuccess } from "../../Redux/slices/authSlice";
 import { getCurrentUser, setCurrentUser } from "../../lib/storage";
@@ -88,10 +90,7 @@ export default function Checkout() {
   // Check for fresh diet meals in cart
   useEffect(() => {
     const freshMeals = cartItems.filter(
-      (item) =>
-        item.category?.toLowerCase().includes("fresh") ||
-        item.name?.toLowerCase().includes("fresh") ||
-        item.name?.toLowerCase().includes("diet")
+      (item) => item.category?.toLowerCase() === "fresh diet meals"
     );
     setFreshMealsInCart(freshMeals);
   }, [cartItems]);
@@ -211,6 +210,7 @@ export default function Checkout() {
     setShowConfirmation(false);
     setPendingOrderData(null);
     setIsProcessingPartialOrder(false); // Reset flag if order is cancelled
+    dispatch(setProcessingPartialOrder(false)); // Reset Redux flag
   };
 
   // Process the actual order
@@ -322,8 +322,68 @@ export default function Checkout() {
           // If server fails, at least clear locally for better UX
           // The cart slice will handle this automatically
         }
+      } else {
+        // Partial order - update cart to contain only fresh meals
+        try {
+          // Calculate what should remain in cart after order (only fresh meals)
+          const freshMealsOnly = cartItems.filter(
+            (cartItem) =>
+              cartItem.category?.toLowerCase() === "fresh diet meals"
+          );
+
+          console.log("=== PARTIAL ORDER CART UPDATE ===");
+          console.log(
+            "All cart items before:",
+            cartItems.map((item) => `${item.name} (ID: ${item.id})`)
+          );
+          console.log(
+            "Order items being removed:",
+            data.orderItems.map((item) => `${item.name} (ID: ${item.id})`)
+          );
+          console.log(
+            "Fresh meals that should remain:",
+            freshMealsOnly.map((item) => `${item.name} (ID: ${item.id})`)
+          );
+
+          // Atomic operation: set cart to contain only fresh meals
+          dispatch(setCartItems(freshMealsOnly));
+          console.log("Cart updated to contain only fresh meals");
+
+          // Try to sync with server in background (don't wait for it)
+          setTimeout(async () => {
+            try {
+              console.log("Starting background server sync...");
+              for (const orderItem of data.orderItems) {
+                try {
+                  await dispatch(removeFromCartAsync(orderItem.id)).unwrap();
+                  console.log(`Server sync success: removed ${orderItem.name}`);
+                } catch (serverError) {
+                  console.warn(
+                    `Server sync failed for ${orderItem.name}:`,
+                    serverError
+                  );
+                }
+              }
+              console.log("Background server sync completed");
+            } catch (error) {
+              console.warn("Background server sync failed:", error);
+            }
+          }, 500);
+
+          showToastMessage(
+            `${data.orderItems.length} item${
+              data.orderItems.length > 1 ? "s" : ""
+            } removed from cart. Fresh meals remain for next-day delivery.`,
+            "info"
+          );
+        } catch (error) {
+          console.error("Failed to update cart after order:", error);
+          showToastMessage(
+            "Order placed successfully, but cart sync failed.",
+            "warning"
+          );
+        }
       }
-      // For partial orders, items were already removed in handleFreshMealDeliveryOption
 
       reset();
 
@@ -366,8 +426,9 @@ export default function Checkout() {
           setTimeout(() => {
             setOrderCompleted(false);
             setIsProcessingPartialOrder(false); // Reset partial order processing flag
-          }, 100);
-        }, 1500);
+            dispatch(setProcessingPartialOrder(false)); // Reset Redux flag
+          }, 200); // Increased delay to ensure cart updates are complete
+        }, 2000); // Increased delay for better UX
       }
     } catch (error) {
       console.error("Order placement failed:", error);
@@ -400,14 +461,19 @@ export default function Checkout() {
         }
       }
 
-      // Check for fresh meals and show modal if any exist
-      if (freshMealsInCart.length > 0) {
+      // Check for fresh meals and show modal only if there are BOTH fresh and non-fresh items
+      const nonFreshMeals = cartItems.filter(
+        (item) => item.category?.toLowerCase() !== "fresh diet meals"
+      );
+
+      if (freshMealsInCart.length > 0 && nonFreshMeals.length > 0) {
+        // Mixed cart: has both fresh meals and regular items
         setPendingOrderData(data);
         setShowFreshMealModal(true);
         return;
       }
 
-      // If no fresh meals, proceed with regular confirmation
+      // If cart has only fresh meals OR only regular items, proceed with regular confirmation
       setPendingOrderData(data);
       setShowConfirmation(true);
     } catch (error) {
@@ -426,10 +492,7 @@ export default function Checkout() {
     } else if (option === "separate") {
       // Remove non-fresh items and proceed with them, keep fresh meals in cart
       const nonFreshMeals = cartItems.filter(
-        (item) =>
-          !item.category?.toLowerCase().includes("fresh") &&
-          !item.name?.toLowerCase().includes("fresh") &&
-          !item.name?.toLowerCase().includes("diet")
+        (item) => item.category?.toLowerCase() !== "fresh diet meals"
       );
 
       if (nonFreshMeals.length === 0) {
@@ -441,32 +504,9 @@ export default function Checkout() {
         return;
       }
 
-      // Set processing partial order flag to prevent redirects
+      // Set processing partial order flag to prevent redirects and cart refetching
       setIsProcessingPartialOrder(true);
-
-      // Remove non-fresh meals from cart (they will be ordered now)
-      const removePromises = nonFreshMeals.map(async (nonFreshMeal) => {
-        try {
-          await dispatch(removeFromCartAsync(nonFreshMeal.id)).unwrap();
-        } catch (error) {
-          console.error(
-            `Failed to remove ${nonFreshMeal.name} from server:`,
-            error
-          );
-          // Fallback to local removal
-          dispatch(removeFromCart(nonFreshMeal.id));
-        }
-      });
-
-      // Wait for all removals to complete
-      await Promise.all(removePromises);
-
-      showToastMessage(
-        `Proceeding with ${nonFreshMeals.length} item${
-          nonFreshMeals.length > 1 ? "s" : ""
-        }. Fresh meals remain in your cart for next-day delivery.`,
-        "info"
-      );
+      dispatch(setProcessingPartialOrder(true));
 
       // Update pending order data to include only non-fresh items
       const updatedOrderData = {
@@ -475,10 +515,8 @@ export default function Checkout() {
       };
       setPendingOrderData(updatedOrderData);
 
-      // Show regular confirmation for non-fresh items
-      setTimeout(() => {
-        setShowConfirmation(true);
-      }, 1000);
+      // Show confirmation dialog BEFORE removing items
+      setShowConfirmation(true);
     }
   };
 
@@ -1394,7 +1432,7 @@ export default function Checkout() {
             {/* Modal Header */}
             <div className='bg-gradient-to-r from-orange-400 to-yellow-400 px-6 py-4 flex-shrink-0'>
               <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0'>
+                <div className='h-1 bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0'>
                   <HiOutlineClock className='w-6 h-6 text-white' />
                 </div>
                 <div>
@@ -1486,12 +1524,6 @@ export default function Checkout() {
                           </p>
                         </div>
                       </div>
-                      <div className='text-right flex-shrink-0 ml-3'>
-                        <p className='text-sm font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full'>
-                          FREE
-                        </p>
-                        <p className='text-xs text-green-600 mt-1'>Next-day</p>
-                      </div>
                     </div>
                   </button>
 
@@ -1513,12 +1545,6 @@ export default function Checkout() {
                             separately
                           </p>
                         </div>
-                      </div>
-                      <div className='text-right flex-shrink-0 ml-3'>
-                        <p className='text-sm font-bold text-blue-700 bg-blue-100 px-3 py-1 rounded-full'>
-                          Standard
-                        </p>
-                        <p className='text-xs text-blue-600 mt-1'>2-3 days</p>
                       </div>
                     </div>
                   </button>

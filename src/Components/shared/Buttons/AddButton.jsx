@@ -4,7 +4,7 @@ import { HiCheck, HiExclamation } from "react-icons/hi";
 import { useState } from "react";
 import { useCart } from "../../../hooks/useCart";
 
-function AddButton({ product }) {
+function AddButton({ product, ...props }) {
   const { isItemInCart, addItem } = useCart();
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("success");
@@ -47,8 +47,9 @@ function AddButton({ product }) {
     <>
       <button
         onClick={handleAddToCart}
-        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""}`}
-        disabled={isInCart}>
+        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""} ${props.className}`}
+        disabled={isInCart}
+        >
         <HiOutlineShoppingBag size={22} className='me-2' />
         <span>{isInCart ? "In Cart" : "Add to cart"}</span>
       </button>

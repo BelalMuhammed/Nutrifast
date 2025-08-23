@@ -24,25 +24,32 @@ import { getCurrentUser } from "../lib/storage";
 export const useCart = () => {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cart);
-  const { cartItems, loading, error, isOnline, lastSyncTime } = cartState;
+  const {
+    cartItems,
+    loading,
+    error,
+    isOnline,
+    lastSyncTime,
+    isProcessingPartialOrder,
+  } = cartState;
 
   // Check if user is authenticated
   const isAuthenticated = !!getCurrentUser()?.id;
 
   // Initialize cart (fetch from API if online and authenticated)
   useEffect(() => {
-    if (isAuthenticated && isOnline) {
+    if (isAuthenticated && isOnline && !isProcessingPartialOrder) {
       dispatch(fetchCart());
     }
     // Do NOT clear cart for guests; only clear on explicit logout
-  }, [dispatch, isAuthenticated, isOnline]);
+  }, [dispatch, isAuthenticated, isOnline, isProcessingPartialOrder]);
 
   // Monitor online status
   useEffect(() => {
     const handleOnline = () => {
       dispatch(setOnlineStatus(true));
       // Sync cart when coming back online
-      if (isAuthenticated) {
+      if (isAuthenticated && !isProcessingPartialOrder) {
         dispatch(fetchCart());
       }
     };
@@ -61,7 +68,7 @@ export const useCart = () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, isAuthenticated, isProcessingPartialOrder]);
 
   // Cart actions with fallback to local storage
   const addItem = useCallback(

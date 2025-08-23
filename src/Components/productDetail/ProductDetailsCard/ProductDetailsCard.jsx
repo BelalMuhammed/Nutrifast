@@ -177,16 +177,13 @@ const ProductDetailsCard = ({ selectedProduct }) => {
             </p>
 
             {/* Price */}
-            <div className='bg-gradient-to-r from-app-primary/5 to-app-secondary/5 rounded-lg p-3 border border-app-primary/10'>
+            <div className='bg-gradient-to-r from-app-primary/5 to-app-secondary/5 rounded-lg py-3 border-app-primary/10'>
               <div className='flex items-baseline gap-2'>
                 <span className='text-2xl lg:text-3xl font-bold text-app-primary'>
                   {selectedProduct.price}
                 </span>
                 <span className='text-base font-medium text-gray-600'>EGP</span>
               </div>
-              <p className='text-sm text-gray-500 mt-1'>
-                Free delivery on orders over 200 EGP
-              </p>
             </div>
 
             {/* Key Features Grid */}
@@ -265,7 +262,7 @@ const ProductDetailsCard = ({ selectedProduct }) => {
                   <h4 className='font-semibold text-gray-900 text-sm'>
                     Ingredients
                   </h4>
-                  <div className='bg-gray-50 rounded-lg p-3 max-h-24 overflow-y-auto'>
+                  <div className='bg-gray-50 p-3 rounded-lg'>
                     <div className='space-y-1'>
                       {selectedProduct.ingredients.slice(0, 6).map((ing, i) => (
                         <div key={i} className='flex items-start gap-1.5'>
