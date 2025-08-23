@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { sendContactMessage } from "../../Api/apiService";
-import { Toast, ToastToggle } from "flowbite-react";
-import { HiCheck, HiX } from "react-icons/hi";
-
+import ToastNotification from "../../Components/shared/ToastNotification";
+import { HiX } from "react-icons/hi";
 const ContactUs = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -266,29 +265,13 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* Toast Notification for success and error */}
-      {showToast && (
-        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-sm w-full mx-4'>
-          <Toast>
-            <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                toastType === "error"
-                  ? "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
-                  : "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
-              }`}>
-              {toastType === "error" ? (
-                <HiX className='h-5 w-5' />
-              ) : (
-                <HiCheck className='h-5 w-5' />
-              )}
-            </div>
-            <div className='ml-3 text-sm font-normal text-gray-700'>
-              {toastMessage}
-            </div>
-            <ToastToggle onDismiss={() => setShowToast(false)} />
-          </Toast>
-        </div>
-      )}
+      {/* Centralized Toast Notification */}
+      <ToastNotification
+        show={showToast}
+        message={toastMessage}
+        type={toastType}
+        onClose={() => setShowToast(false)}
+      />
     </div>
   );
 };

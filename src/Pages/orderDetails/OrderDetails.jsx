@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatDateTime } from "../../lib/dateFormat";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelOrder, fetchOrders } from "@/Redux/slices/ordersSlice";
@@ -140,7 +141,7 @@ export default function OrderDetails() {
                   </h1>
                   <div className="flex items-center gap-2 mt-1 text-gray-600">
                     <FiCalendar size={16} />
-                    <span>Placed on {order.date || "N/A"}</span>
+                    <span>Placed on {formatDateTime(order.date)}</span>
                   </div>
                 </div>
               </div>
@@ -184,10 +185,18 @@ export default function OrderDetails() {
               <div className="flex items-start gap-3">
                 <FiMapPin className="text-gray-400 mt-1" size={16} />
                 <div>
-                  <p className="text-sm text-gray-500 font-medium">Address</p>
-                  <p className="text-app-tertiary">
-                    {order.customer.address}, {order.customer.city},{" "}
-                    {order.customer.state}
+                  <p className='text-sm text-gray-500 font-medium'>Address</p>
+                  <p className='text-app-tertiary'>
+                    {order.shippingAddress?.address}
+                    {order.shippingAddress?.city
+                      ? `, ${order.shippingAddress.city}`
+                      : ""}
+                    {order.shippingAddress?.state
+                      ? `, ${order.shippingAddress.state}`
+                      : ""}
+                    {order.shippingAddress?.zipCode
+                      ? `, ${order.shippingAddress.zipCode}`
+                      : ""}
                   </p>
                 </div>
               </div>
@@ -210,7 +219,7 @@ export default function OrderDetails() {
                   <p className="text-sm text-gray-500 font-medium">
                     Payment Method
                   </p>
-                  <span className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                  <span className='inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 mt-2 uppercase rounded-full text-sm font-medium'>
                     <FiCheck size={14} />
                     {order.customer.paymentMethod}
                   </span>
@@ -276,21 +285,10 @@ export default function OrderDetails() {
                 <h2 className="text-2xl font-bold text-app-secondary">
                   Order Summary
                 </h2>
-                <p className="text-gray-500">
-                  Order placed on {order.date || "N/A"}
+                <p className='text-gray-500'>
+                  Order placed on {formatDateTime(order.date)}
                 </p>
               </div>
-            </div>
-            <div className="text-right">
-              <div className="flex items-center gap-2 mb-2">
-                <FiClock className="text-gray-400" size={16} />
-                <span className="text-sm text-gray-500">
-                  Estimated Delivery
-                </span>
-              </div>
-              <p className="font-semibold text-app-tertiary">
-                3-5 Business Days
-              </p>
             </div>
           </div>
 

@@ -69,7 +69,7 @@ function UserDropdown({ user, userName, onLogout, isActiveLink }) {
             <p className="text-sm font-semibold">
               {userName?.username || "User"}
             </p>
-            <p className="text-sm text-gray-500 truncate">
+            <p className="text-sm text-gray-500 truncate lowercase">
               {user.email || "user@example.com"}
             </p>
           </div>

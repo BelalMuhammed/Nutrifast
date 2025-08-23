@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
@@ -115,7 +117,10 @@ function Navbar() {
     : "bg-black/90 backdrop-blur-md";
 
   return (
-    <nav
+    <motion.nav
+      initial={{ opacity: 0, y: -40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
       className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 text-white ${navbarBackgroundClass}`}
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -185,7 +190,7 @@ function Navbar() {
         cartCount={cartCount}
         wishlistCount={wishlistCount}
       />
-    </nav>
+    </motion.nav>
   );
 }
 

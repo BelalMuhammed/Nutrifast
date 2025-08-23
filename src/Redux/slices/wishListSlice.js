@@ -12,9 +12,8 @@ const loadFromLocalStorage = () => {
 
 const saveToLocalStorage = (items) => {
   try {
-    // Only save if user is authenticated
-    const currentUser = localStorage.getItem("currentUser");
-    if (currentUser && items) {
+    // Always save wishlist, even for guests
+    if (items) {
       localStorage.setItem("wishlist", JSON.stringify(items));
     }
   } catch {

@@ -11,7 +11,7 @@ import { fetchCart } from "../../Redux/slices/cartSlice";
 import { fetchWishlist } from "../../Redux/slices/wishListSlice";
 import { setCurrentUser, getCurrentUser } from "../../lib/storage";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { Toast, ToastToggle } from "flowbite-react";
+import ToastNotification from "../../Components/shared/ToastNotification";
 import {
   HiCheck,
   HiX,
@@ -20,7 +20,6 @@ import {
   HiMail,
   HiLockClosed,
   HiArrowRight,
-  HiSparkles,
   HiShieldCheck,
 } from "react-icons/hi";
 import { FaLeaf } from "react-icons/fa";
@@ -46,7 +45,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors, isValid, touchedFields, isSubmitted },
     watch,
-  } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
+  } = useForm({ mode: "onChange", reValidateMode: "onChange" });
 
   const watchedFields = watch();
 
@@ -125,33 +124,13 @@ export default function Login() {
         backgroundRepeat: "no-repeat",
       }}>
       {/* Toast Notification */}
-      {toast.show && (
-        <div className='fixed top-6 right-6 z-50 animate-in slide-in-from-right-full duration-300'>
-          <Toast className='shadow-2xl border-0 bg-white backdrop-blur-lg'>
-            <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl 
-              ${
-                toast.type === "success"
-                  ? "bg-app-secondary text-white"
-                  : "bg-red-500 text-white"
-              }`}>
-              {toast.type === "success" ? (
-                <HiCheck className='h-5 w-5' />
-              ) : (
-                <HiX className='h-5 w-5' />
-              )}
-            </div>
-            <div className='ml-3 text-sm font-semibold text-app-tertiary'>
-              {toast.message}
-            </div>
-            <ToastToggle
-              className='text-app-primary hover:bg-app-light/50 rounded-lg'
-              onClick={() => setToast({ show: false, message: "", type: "" })}
-            />
-          </Toast>
-        </div>
-      )}
-
+      {/* Toast Notification */}
+      <ToastNotification
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ show: false, message: "", type: "" })}
+      />
       {/* Main Login Container */}
       <div className='w-full max-w-lg relative z-10'>
         {/* Enhanced Card with Modern Design */}
@@ -289,17 +268,7 @@ export default function Login() {
                   </p>
                 </div>
               </div>
-
-              {/* Remember Me & Forgot Password */}
-              <div className='flex items-center justify-between pt-2'>
-                <Link
-                  to='/forgot-password'
-                  className='text-app-primary hover:text-app-tertiary transition-colors font-bold text-sm hover:underline'>
-                  Forgot Password?
-                </Link>
-              </div>
-
-              {/* Enhanced Submit Button */}
+              {/* Submit Button */}
               <button
                 type='submit'
                 disabled={loading || isAnimating || !isValid}
