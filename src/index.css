@@ -1,3 +1,328 @@
 @import "tailwindcss";
+/*  ---break--- */
+@custom-variant dark (&:is(.dark *));
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
+
+/*  global styles */
+
+* {
+  @apply box-border;
+}
+
+li {
+  list-style: none;
+}
+a {
+  @apply no-underline hover:no-underline;
+}
+button {
+  @apply cursor-pointer;
+}
+
+.app-container {
+  @apply max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8;
+  width: 100%;
+}
+
+/* Css Variables */
+:root {
+  --color-primary: #388e3c; /* Deep Leafy Green */
+  --color-secondary: #4caf50; /* Main Button/Check Green */
+  --color-tertiary: #0a472e; /* Deep Forest Green */
+  --color-light: #b6e388; /* Light Lettuce Green */
+  --color-dark: #121712;
+  --color-muted: #e9f5dbeb; /* Soft Background Green */
+  --color-softest: rgba(252, 255, 253, 0.8); /* Softest Background Green */
+  /* --color-muted: #f8fafc; Misty White */
+  --color-white: #fff;
+  --color-accent: #f05e15; /* Deep Orange Accent */
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* Text colors */
+.placeholder-app-primary::placeholder {
+  color: var(--color-tertiary);
+}
+.text-app-primary {
+  color: var(--color-primary);
+}
+
+.text-app-secondary {
+  color: var(--color-secondary);
+}
+
+.text-app-tertiary {
+  color: var(--color-tertiary);
+}
+.text-app-accent {
+  color: var(--color-accent);
+}
+.text-app-dark {
+  color: var(--color-dark);
+}
+/* Background colors */
+.bg-app-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-app-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-app-tertiary {
+  background-color: var(--color-tertiary);
+}
+
+.bg-app-quaternary {
+  background-color: var(--color-quaternary);
+}
+
+.bg-app-muted {
+  background-color: var(--color-muted);
+}
+.bg-app-light {
+  background-color: var(--color-light);
+}
+.bg-app-dark {
+  background-color: var(--color-dark);
+}
+.bg-app-accent {
+  background-color: var(--color-accent);
+}
+.bg-app-softest {
+  background-color: var(--color-softest);
+}
+
+/* Buttons */
+.btn-app {
+  @apply px-4 py-2 font-medium rounded cursor-pointer;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.btn-app-secondary {
+  @apply px-4 py-2 font-medium rounded cursor-pointer;
+  color: var(--color-white);
+  background-color: var(--color-secondary);
+}
+
+.btn-app-tertiary {
+  @apply px-4 py-2 font-medium rounded cursor-pointer;
+  color: var(--color-white);
+  background-color: var(--color-tertiary);
+}
+
+.btn-app:hover,
+.btn-app-secondary:hover,
+.btn-app-tertiary:hover {
+  opacity: 0.9;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+button {
+  cursor: pointer;
+}
+/* Global checkbox style */
+.checkbox-app {
+  @apply w-5 h-5 rounded border-2  focus:ring-2  transition duration-150;
+  accent-color: var(--color-accent);
+}
+
+/* Custom checkbox styling for Flowbite */
+input[type="checkbox"]:checked {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px var(--color-light) !important;
+  border-color: var(--color-primary) !important;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 1.8s ease-in-out infinite;
+}
+
+/* Toast animations */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.toast-enter {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+.toast-enter-top {
+  animation: slideInFromTop 0.4s ease-out forwards;
+}
+
+.toast-exit {
+  animation: slideOutToRight 0.3s ease-out forwards;
+}
+
+.toast-exit-top {
+  animation: slideOutToTop 0.3s ease-out forwards;
+}
+
+/* Unified Slider Dots Styling */
+.app-slider .slick-dots {
+  bottom: -60px !important;
+}
+
+.app-slider .slick-dots li button:before {
+  font-size: 8px !important;
+}
+
+.app-slider .slick-dots li.slick-active button:before {
+  color: var(--color-primary) !important;
+}
+
+/* Order Confirmation Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 0.7;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.animate-progress {
+  animation: progress 3s linear;
+}
+
+/* Queries */
+@media (max-width: 768px) {
+  nav {
+    background-color: var(--color-dark);
+  }
+}

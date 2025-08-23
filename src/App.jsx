@@ -1,9 +1,13 @@
 import "./App.css";
-import SideFilter from "./Components/shop/SideFilter/SideFilter";
+import AppRoutes from "./routes/AppRoutes/AppRoutes";
+import CartWishlistInitializer from "./Components/shared/CartWishlistInitializer";
 
 function App() {
   return (
-<SideFilter/>
+    <>
+      <CartWishlistInitializer />
+      <AppRoutes />
+    </>
   );
 }
 
