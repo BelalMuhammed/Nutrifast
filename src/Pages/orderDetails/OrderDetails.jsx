@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelOrder, fetchOrders } from "@/Redux/slices/ordersSlice";
 import { getCurrentUser } from "@/lib/storage";
+import CancelConfirmDialog from "@/Components/CancelConfirmDialog/CancelConfirmDialog";
 import {
   FiPackage,
   FiUser,
@@ -42,11 +43,11 @@ export default function OrderDetails() {
 
   const order = orders.find((o) => o.id.toString() === id);
 
-  const handleCancel = () => {
-    if (window.confirm("Are you sure you want to cancel this order?")) {
-      dispatch(cancelOrder(order.id));
-    }
-  };
+  // const handleCancel = () => {
+  //   if (window.confirm("Are you sure you want to cancel this order?")) {
+  //     dispatch(cancelOrder(order.id));
+  //   }
+  // };
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -349,7 +350,7 @@ export default function OrderDetails() {
                   </>
                 )}
 
-                {(order.status === "pending" ||
+                {/* {(order.status === "pending" ||
                   order.status === "processing" ||
                   order.status === "Pending" ||
                   order.status === "Processing") && (
@@ -360,6 +361,16 @@ export default function OrderDetails() {
                     <FiX size={18} />
                     Cancel Order
                   </button>
+                )} */}
+
+                {(order.status === "pending" ||
+                  order.status === "processing" ||
+                  order.status === "Pending" ||
+                  order.status === "Processing") && (
+                  <CancelConfirmDialog
+                    orderId={order.id}
+                    onConfirm={(id) => dispatch(cancelOrder(id))}
+                  />
                 )}
 
                 <button className="w-full bg-gray-500 hover:bg-gray-600 text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-3">
