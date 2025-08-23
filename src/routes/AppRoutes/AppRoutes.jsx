@@ -3,7 +3,7 @@ import Orders from "@/dashboard/pages/Orders";
 import Users from "@/dashboard/pages/Users";
 import VendorList from "@/dashboard/pages/VendorList";
 import VendorsApplications from "@/dashboard/pages/VendorsApplications";
-import Messages from "@/dashboard/pages/messages";
+import Messages from "@/dashboard/pages/Messages";
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "../../Components/layout/LayOut";
