@@ -1,25 +1,23 @@
+import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 import { useEffect, useState } from "react";
+import {
+  FiChevronDown,
+  FiGrid,
+  FiList,
+  FiSearch,
+  FiShoppingBag,
+  FiX,
+} from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import Loader from "../../Components/shared/Loaders/Loader";
+import MobileFilterButton from "../../Components/shop/MobileFilterButton/MobileFilterButton";
+import ProductCard from "../../Components/shop/ProductCard/ProductCard";
+import SideFilter from "../../Components/shop/SideFilter/SideFilter";
 import {
   fetchProducts,
   searchProductsByName,
 } from "../../Redux/slices/productSlice";
-import SideFilter from "../../Components/shop/SideFilter/SideFilter";
-import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
-import MobileFilterButton from "../../Components/shop/MobileFilterButton/MobileFilterButton";
-import {
-  FiSearch,
-  FiGrid,
-  FiList,
-  FiChevronDown,
-  FiX,
-  FiSliders,
-  FiShoppingBag,
-} from "react-icons/fi";
-import ProductCard from "../../Components/shop/ProductCard/ProductCard";
-import Loader from "../../Components/shared/Loaders/Loader";
-import EmptyState from "../../Components/shared/EmptyState/EmptyState";
 import filterLogic from "../../utlis/filterLogic";
 
 function Shop() {
@@ -34,7 +32,6 @@ function Shop() {
   const [isMobile, setIsMobile] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [viewMode, setViewMode] = useState("grid");
-  const [showFilters, setShowFilters] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [displayedCount, setDisplayedCount] = useState(12);
   const [initialFilters, setInitialFilters] = useState({});
@@ -126,7 +123,7 @@ function Shop() {
 
   const handleClearSearch = () => {
     setLocalSearchTerm("");
-    setDisplayedCount(12); // Reset displayed count
+    setDisplayedCount(12);
     navigate("/shop");
   };
 
@@ -140,7 +137,7 @@ function Shop() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-app-quaternary/20 overflow-x-hidden">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="app-container  mx-auto px-4 sm:px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
@@ -170,7 +167,7 @@ function Shop() {
               </div>
             </div>
 
-            {/* Enhanced Search Bar */}
+            {/* Search Bar */}
             <div className="w-full lg:max-w-md">
               <div className="flex items-center gap-2 bg-white rounded-2xl shadow-lg border border-gray-200 px-3 lg:px-4 py-3">
                 <FiSearch
@@ -207,28 +204,13 @@ function Shop() {
         {/* Controls Bar */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 lg:p-4 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            {/* Results Count & Filter Toggle */}
+            {/* Results Count (no filter toggle) */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between lg:justify-start gap-4">
               <span className="text-gray-600 font-medium text-sm lg:text-base">
                 {loading
                   ? "Loading..."
                   : `Showing ${displayedProducts.length} of ${sortedProducts.length} products`}
               </span>
-              {!isMobile && (
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="flex items-center gap-2 text-app-primary hover:text-app-tertiary transition-colors duration-200 font-medium text-sm lg:text-base"
-                >
-                  <FiSliders size={16} />
-                  Filters
-                  <FiChevronDown
-                    className={`transition-transform duration-200 ${
-                      showFilters ? "rotate-180" : ""
-                    }`}
-                    size={16}
-                  />
-                </button>
-              )}
             </div>
 
             {/* View Controls */}
@@ -356,20 +338,13 @@ function Shop() {
             </>
           ) : (
             <div
-              className={`transition-all duration-300 ${
-                showFilters
-                  ? "w-full lg:w-[300px] xl:w-[320px] opacity-100"
-                  : "w-0 opacity-0 overflow-hidden"
-              }`}
+              className={`transition-all duration-300 w-full lg:w-[300px] xl:w-[320px] opacity-100`}
             >
-              {showFilters && (
-                <SideFilter
-                  products={products}
-                  onFilter={setFilteredProducts}
-                  onClose={() => setShowFilters(false)}
-                  initialFilters={initialFilters}
-                />
-              )}
+              <SideFilter
+                products={products}
+                onFilter={setFilteredProducts}
+                initialFilters={initialFilters}
+              />
             </div>
           )}
 

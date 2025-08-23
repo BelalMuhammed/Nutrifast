@@ -18,7 +18,6 @@ const HandleWithTooltip = ({ value, ...restProps }) => (
 function SideFilter({
   products = [],
   onFilter,
-  onClose = null,
   initialFilters = {},
 }) {
   // Filter groups (excluding CaloriesRange)
@@ -92,15 +91,7 @@ function SideFilter({
   return (
     <Sidebar className="bg-white rounded-xl shadow-sm w-full  border border-gray-100">
       <div className="px-6 pt-6 pb-2 relative">
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="absolute top-0 right-0 p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 group"
-            aria-label="Close filters"
-          >
-            <FiX className="text-xl text-gray-500 group-hover:text-gray-700" />
-          </button>
-        )}
+    
         <h2 className="text-2xl font-bold text-app-secondary mb-6 text-center tracking-tight">
           Product Filters
         </h2>
