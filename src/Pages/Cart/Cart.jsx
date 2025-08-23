@@ -1,10 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
-import {
-  increaseQty,
-  decreaseQty,
-  removeFromCart,
-} from "../../Redux/slices/cartSlice";
-import { useNavigate } from "react-router-dom";
 import {
   FiShoppingCart,
   FiTrash2,
@@ -14,20 +7,24 @@ import {
   FiShoppingBag,
 } from "react-icons/fi";
 import { IoIosCart } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../../hooks/useCart";
 
 function Cart() {
-  const { cartItems } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+  const {
+    cartItems,
+    removeItem,
+    increaseQuantity,
+    decreaseQuantity,
+    getCartSummary,
+  } = useCart();
   const navigate = useNavigate();
 
   const goToCheckout = () => {
     navigate("/checkout");
   };
 
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const { totalPrice: subtotal } = getCartSummary();
 
   if (cartItems.length === 0) {
     return (
@@ -35,8 +32,8 @@ function Cart() {
         <div className='bg-white rounded-3xl shadow-sm border border-gray-100 p-12 max-w-md w-full text-center'>
           {/* Icon Section */}
           <div className='mb-8'>
-            <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-8 w-24 h-24 mx-auto flex items-center justify-center mb-6'>
-              <FiShoppingCart className='bg-app-primary text-white rounded-full p-10' size={40} />
+            <div className='bg-app-primary rounded-full p-8 w-24 h-24 mx-auto flex items-center justify-center mb-6'>
+              <FiShoppingCart className='text-white' size={40} />
             </div>
           </div>
 
@@ -50,22 +47,14 @@ function Cart() {
               products!
             </p>
           </div>
-
           {/* Action Button */}
           <button
             onClick={() => navigate("/shop")}
-            className='w-full bg-app-primary text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
+            className='w-full bg-app-primary text-white px-8 py-4 rounded-xl font-semibold shadow hover:shadow-xl transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
             <FiShoppingBag size={20} />
             Start Shopping
             <FiArrowRight size={18} />
           </button>
-
-          {/* Decorative Elements */}
-          <div className='mt-8 flex justify-center space-x-2'>
-            <div className='w-2 h-2 bg-app-primary/30 rounded-full animate-pulse'></div>
-            <div className='w-2 h-2 bg-app-secondary/30 rounded-full animate-pulse delay-75'></div>
-            <div className='w-2 h-2 bg-app-primary/30 rounded-full animate-pulse delay-150'></div>
-          </div>
         </div>
       </div>
     );
@@ -73,15 +62,15 @@ function Cart() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50'>
-      <div className='container mx-auto px-4 py-8 lg:py-12'>
+      <div className='container mx-auto px-4 py-5'>
         {/* Header Section */}
         <div className='text-center '>
-          <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center mb-6'>
+          <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center '>
             <IoIosCart className='text-app-primary' size={32} />
           </div>
-          <h1 className='text-3xl lg:text-4xl font-bold text-app-secondary mb-4'>
+          <h2 className='text-3xl lg:text-4xl font-bold text-app-secondary mb-4'>
             Shopping Cart
-          </h1>
+          </h2>
           <p className='text-gray-600 max-w-2xl mx-auto'>
             Review your selected items and proceed to checkout when you're ready
           </p>
@@ -96,7 +85,7 @@ function Cart() {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto'>
           {/* Cart Items Section */}
           <div className='lg:col-span-2'>
-            <div className='bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden'>
+            <div className='bg-white rounded-3xl shadow border border-gray-100 overflow-hidden'>
               <div className='bg-gradient-to-r from-app-primary/5 to-app-secondary/5 px-8 py-6 border-b border-gray-100'>
                 <h2 className='text-xl font-bold text-app-tertiary'>
                   Your Items
@@ -145,7 +134,7 @@ function Cart() {
                       <div className='flex items-center gap-4'>
                         <div className='flex items-center bg-gray-100 rounded-xl p-1'>
                           <button
-                            onClick={() => dispatch(decreaseQty(item.id))}
+                            onClick={() => decreaseQuantity(item.id)}
                             className='w-10 h-10 flex items-center justify-center rounded-lg bg-white text-gray-600 hover:text-app-primary hover:bg-app-primary/10 transition-all duration-200 shadow-sm'
                             aria-label='Decrease quantity'>
                             <FiMinus size={16} />
@@ -154,7 +143,7 @@ function Cart() {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => dispatch(increaseQty(item.id))}
+                            onClick={() => increaseQuantity(item.id)}
                             className='w-10 h-10 flex items-center justify-center rounded-lg bg-app-primary text-white hover:bg-app-secondary transition-all duration-200 shadow-sm'
                             aria-label='Increase quantity'>
                             <FiPlus size={16} />
@@ -163,7 +152,7 @@ function Cart() {
 
                         {/* Remove Button */}
                         <button
-                          onClick={() => dispatch(removeFromCart(item.id))}
+                          onClick={() => removeItem(item.id)}
                           className='p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200'
                           aria-label='Remove from cart'>
                           <FiTrash2 size={20} />
@@ -179,7 +168,7 @@ function Cart() {
           <div className='lg:col-span-1'>
             <div className='sticky top-8'>
               {/* Order Summary */}
-              <div className='bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden mb-6'>
+              <div className='bg-white rounded-3xl shadow border border-gray-100 overflow-hidden mb-6'>
                 <div className='bg-gradient-to-r from-app-secondary/5 to-app-accent/5 px-6 py-4 border-b border-gray-100'>
                   <h3 className='text-lg font-bold text-app-tertiary'>
                     Order Summary
@@ -222,7 +211,7 @@ function Cart() {
               {/* Checkout Button */}
               <button
                 onClick={goToCheckout}
-                className='w-full bg-app-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-md transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
+                className='w-full bg-app-primary text-white py-4 rounded-2xl font-semibold text-md shadow hover:shadow-md transition-all duration-300 transform hover:translate-x-1 flex items-center justify-center gap-3'>
                 Proceed to Checkout
                 <FiArrowRight size={20} />
               </button>

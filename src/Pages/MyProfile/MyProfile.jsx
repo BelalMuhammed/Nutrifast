@@ -9,8 +9,11 @@ import {
   updateProfileFailure,
   logout,
 } from "../../Redux/slices/authSlice";
+import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
+import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 import { getCurrentUser, setCurrentUser } from "../../lib/storage";
 import { FiEdit2, FiLogOut, FiKey, FiUser } from "react-icons/fi";
+import { HiLocationMarker } from "react-icons/hi";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -31,6 +34,9 @@ const MyProfile = () => {
       email: "",
       phone: "",
       address: "",
+      city: "",
+      state: "",
+      zipCode: "",
       avatar: "",
       role: "user",
       password: "",
@@ -67,7 +73,10 @@ const MyProfile = () => {
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
-        address: user.address || "",
+        address: user.shipping?.address || user.address || "",
+        city: user.shipping?.city || "",
+        state: user.shipping?.state || "",
+        zipCode: user.shipping?.zipCode || "",
         avatar: user.avatar || "",
         role: user.role || "user",
         password: user.password || "",
@@ -84,7 +93,10 @@ const MyProfile = () => {
               username: res.data.username || "",
               email: res.data.email || "",
               phone: res.data.phone || "",
-              address: res.data.address || "",
+              address: res.data.shipping?.address || res.data.address || "",
+              city: res.data.shipping?.city || "",
+              state: res.data.shipping?.state || "",
+              zipCode: res.data.shipping?.zipCode || "",
               avatar: res.data.avatar || "",
               role: res.data.role || "user",
               password: res.data.password || "",
@@ -110,7 +122,10 @@ const MyProfile = () => {
         username: user.username || "",
         email: user.email || "",
         phone: user.phone || "",
-        address: user.address || "",
+        address: user.shipping?.address || user.address || "",
+        city: user.shipping?.city || "",
+        state: user.shipping?.state || "",
+        zipCode: user.shipping?.zipCode || "",
         avatar: user.avatar || "",
         role: user.role || "user",
         password: user.password || "",
@@ -123,7 +138,21 @@ const MyProfile = () => {
     setSuccess("");
     dispatch(updateProfileStart());
     try {
-      const res = await updateUserProfile({ ...data, id: user.id });
+      // Prepare user data with shipping object
+      const updatedUserData = {
+        ...data,
+        id: user.id,
+        shipping: {
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zipCode: data.zipCode,
+        },
+        // Keep backward compatibility
+        address: data.address,
+      };
+
+      const res = await updateUserProfile(updatedUserData);
 
       // Update Redux state with the new user data
       dispatch(updateProfileSuccess(res.data));
@@ -144,7 +173,25 @@ const MyProfile = () => {
   };
 
   const handleLogout = () => {
+    // Clear cart and wishlist data from Redux state first
+    dispatch(clearCartData());
+    dispatch(clearWishlistData());
+
+    // Clear user authentication (this also clears localStorage)
     dispatch(logout());
+
+    // Additional cleanup to ensure data is cleared
+    setTimeout(() => {
+      // Force clear localStorage items if they still exist
+      try {
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("wishlist");
+        localStorage.removeItem("currentUser");
+      } catch {
+        // ignore errors
+      }
+    }, 100);
+
     navigate("/login");
   };
 
@@ -224,10 +271,10 @@ const MyProfile = () => {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50'>
-      <div className='container mx-auto px-4 py-8 lg:py-12'>
+      <div className='container mx-auto px-4 py-5'>
         {/* Header Section */}
-        <div className='text-center mb-12'>
-          <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center mb-6'>
+        <div className='text-center mb-5'>
+          <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center '>
             <FiUser className='text-app-primary' size={32} />
           </div>
           <h1 className='text-3xl lg:text-4xl font-bold text-app-secondary mb-4'>
@@ -395,20 +442,149 @@ const MyProfile = () => {
                       </div>
                     </div>
 
-                    <div>
-                      <label className='block text-sm font-semibold text-app-secondary mb-2'>
-                        Address
-                      </label>
-                      <input
-                        type='text'
-                        {...registerProfile("address")}
-                        disabled={!editMode}
-                        className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 ${
-                          editMode
-                            ? "border-app-primary/20 focus:border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary/20 bg-white text-app-secondary"
-                            : "border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
-                        }`}
-                      />
+                    {/* Shipping Information Section */}
+                    <div className='space-y-4'>
+                      <h3 className='text-lg font-bold text-app-tertiary flex items-center gap-2'>
+                        <HiLocationMarker className='text-app-primary' />
+                        Shipping Information
+                      </h3>
+
+                      {/* Street Address */}
+                      <div>
+                        <label className='block text-sm font-semibold text-app-secondary mb-2'>
+                          Street Address
+                        </label>
+                        <div className='relative group'>
+                          <input
+                            type='text'
+                            {...registerProfile("address", {
+                              minLength: {
+                                value: 10,
+                                message: "Please provide a complete address",
+                              },
+                            })}
+                            disabled={!editMode}
+                            placeholder={
+                              editMode
+                                ? "Street Address"
+                                : "No address provided"
+                            }
+                            className={`w-full px-4 py-3 pl-12 border-2 rounded-xl transition-all duration-300 ${
+                              editMode
+                                ? "border-app-primary/20 focus:border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary/20 bg-white text-app-secondary placeholder-gray-400 hover:border-app-primary/40"
+                                : "border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
+                            }`}
+                          />
+                          <HiLocationMarker
+                            className={`absolute left-4 top-1/2 transform -translate-y-1/2 text-lg transition-colors ${
+                              editMode
+                                ? "text-gray-400 group-focus-within:text-app-primary"
+                                : "text-gray-400"
+                            }`}
+                          />
+                        </div>
+                        {profileErrors?.address && (
+                          <p className='text-red-500 text-sm mt-1 font-medium'>
+                            {profileErrors.address.message}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* City, State, Zip Code */}
+                      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                        {/* City */}
+                        <div>
+                          <label className='block text-sm font-semibold text-app-secondary mb-2'>
+                            City
+                          </label>
+                          <input
+                            type='text'
+                            {...registerProfile("city", {
+                              required: editMode ? "City is required" : false,
+                            })}
+                            disabled={!editMode}
+                            placeholder={editMode ? "City" : "Not specified"}
+                            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 ${
+                              editMode
+                                ? "border-app-primary/20 focus:border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary/20 bg-white text-app-secondary placeholder-gray-400 hover:border-app-primary/40"
+                                : "border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
+                            }`}
+                          />
+                          {profileErrors?.city && (
+                            <p className='text-red-500 text-sm mt-1 font-medium'>
+                              {profileErrors.city.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* State/Province */}
+                        <div>
+                          <label className='block text-sm font-semibold text-app-secondary mb-2'>
+                            State/Province
+                          </label>
+                          <input
+                            type='text'
+                            {...registerProfile("state", {
+                              required: editMode ? "State is required" : false,
+                            })}
+                            disabled={!editMode}
+                            placeholder={
+                              editMode ? "State/Province" : "Not specified"
+                            }
+                            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 ${
+                              editMode
+                                ? "border-app-primary/20 focus:border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary/20 bg-white text-app-secondary placeholder-gray-400 hover:border-app-primary/40"
+                                : "border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
+                            }`}
+                          />
+                          {profileErrors?.state && (
+                            <p className='text-red-500 text-sm mt-1 font-medium'>
+                              {profileErrors.state.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Postal Code */}
+                        <div>
+                          <label className='block text-sm font-semibold text-app-secondary mb-2'>
+                            Postal Code
+                          </label>
+                          <input
+                            type='text'
+                            {...registerProfile("zipCode", {
+                              required: editMode
+                                ? "Postal code is required"
+                                : false,
+                              pattern: editMode
+                                ? {
+                                    value: /^[0-9]{5}(-[0-9]{4})?$/,
+                                    message: "Invalid postal code format",
+                                  }
+                                : undefined,
+                            })}
+                            disabled={!editMode}
+                            placeholder={
+                              editMode ? "Postal Code" : "Not specified"
+                            }
+                            className={`w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 ${
+                              editMode
+                                ? "border-app-primary/20 focus:border-app-primary focus:outline-none focus:ring-2 focus:ring-app-primary/20 bg-white text-app-secondary placeholder-gray-400 hover:border-app-primary/40"
+                                : "border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
+                            }`}
+                          />
+                          {profileErrors?.zipCode && (
+                            <p className='text-red-500 text-sm mt-1 font-medium'>
+                              {profileErrors.zipCode.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <p className='text-xs text-gray-500'>
+                        {editMode
+                          ? "This information will be used for your order deliveries"
+                          : "Your default shipping information"}
+                      </p>
                     </div>
 
                     <div>

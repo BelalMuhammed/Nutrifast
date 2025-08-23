@@ -21,13 +21,19 @@ import {
   HiInformationCircle,
   HiLockClosed,
   HiExclamation,
+  HiOutlineClock,
+  HiTruck,
+  HiCalendar,
+  HiOutlineExclamationCircle,
 } from "react-icons/hi";
 import { FiPackage } from "react-icons/fi";
 import {
-  clearCart,
   updateQuantity,
   removeFromCart,
+  removeFromCartAsync,
+  clearCartAsync,
 } from "../../Redux/slices/cartSlice";
+import { updateProfileSuccess } from "../../Redux/slices/authSlice";
 import { getCurrentUser, setCurrentUser } from "../../lib/storage";
 
 export default function Checkout() {
@@ -54,7 +60,10 @@ export default function Checkout() {
       fullName: currentUser?.username || currentUser?.name || "",
       email: currentUser?.email || "",
       phoneNumber: currentUser?.phone || "",
-      address: currentUser?.address || "",
+      address: currentUser?.shipping?.address || currentUser?.address || "",
+      city: currentUser?.shipping?.city || "",
+      state: currentUser?.shipping?.state || "",
+      zipCode: currentUser?.shipping?.zipCode || "",
     },
   });
 
@@ -71,13 +80,43 @@ export default function Checkout() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingOrderData, setPendingOrderData] = useState(null);
   const [orderCompleted, setOrderCompleted] = useState(false);
+  const [showFreshMealModal, setShowFreshMealModal] = useState(false);
+  const [freshMealsInCart, setFreshMealsInCart] = useState([]);
+  const [isProcessingPartialOrder, setIsProcessingPartialOrder] =
+    useState(false);
 
-  // Redirect if cart is empty (but not after order completion)
+  // Check for fresh diet meals in cart
   useEffect(() => {
-    if (cartItems.length === 0 && !orderCompleted) {
-      navigate("/shop");
+    const freshMeals = cartItems.filter(
+      (item) =>
+        item.category?.toLowerCase().includes("fresh") ||
+        item.name?.toLowerCase().includes("fresh") ||
+        item.name?.toLowerCase().includes("diet")
+    );
+    setFreshMealsInCart(freshMeals);
+  }, [cartItems]);
+
+  // Redirect if cart is empty (but not after order completion or during processing)
+  useEffect(() => {
+    if (
+      cartItems.length === 0 &&
+      !orderCompleted &&
+      !isProcessing &&
+      !isProcessingPartialOrder
+    ) {
+      const timer = setTimeout(() => {
+        navigate("/shop");
+      }, 500); // Small delay to prevent premature redirects
+
+      return () => clearTimeout(timer);
     }
-  }, [cartItems, navigate, orderCompleted]);
+  }, [
+    cartItems,
+    navigate,
+    orderCompleted,
+    isProcessing,
+    isProcessingPartialOrder,
+  ]);
 
   // Toast helper
   const showToastMessage = (message, type = "success", duration = 4000) => {
@@ -104,9 +143,16 @@ export default function Checkout() {
     }
   };
 
-  const handleRemoveItem = (id) => {
-    dispatch(removeFromCart(id));
-    showToastMessage("Item removed from cart", "info");
+  const handleRemoveItem = async (id) => {
+    try {
+      await dispatch(removeFromCartAsync(id)).unwrap();
+      showToastMessage("Item removed from cart", "info");
+    } catch (error) {
+      console.error("Failed to remove item from server:", error);
+      // Fallback to local removal if server fails
+      dispatch(removeFromCart(id));
+      showToastMessage("Item removed from cart", "info");
+    }
   };
 
   // Promo code handler
@@ -164,6 +210,7 @@ export default function Checkout() {
   const handleCancelOrder = () => {
     setShowConfirmation(false);
     setPendingOrderData(null);
+    setIsProcessingPartialOrder(false); // Reset flag if order is cancelled
   };
 
   // Process the actual order
@@ -171,7 +218,7 @@ export default function Checkout() {
     try {
       setIsProcessing(true);
 
-      // Update user data in localStorage if changed
+      // Update user data in both localStorage and database if changed
       const currentUser = getCurrentUser();
       if (currentUser) {
         const updatedUser = {
@@ -179,9 +226,34 @@ export default function Checkout() {
           username: data.fullName,
           email: data.email,
           phone: data.phoneNumber,
+          // Save shipping as an object
+          shipping: {
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            zipCode: data.zipCode,
+          },
+          // Keep backward compatibility for address field
           address: data.address,
         };
+
+        // Update localStorage first
         setCurrentUser(updatedUser);
+
+        // Update database if user data has changed
+        try {
+          // Import the API function
+          const { updateUserProfile } = await import("../../Api/apiService");
+          await updateUserProfile(updatedUser);
+
+          // Update Redux state to sync with navbar
+          dispatch(updateProfileSuccess(updatedUser));
+
+          console.log("User profile updated successfully");
+        } catch (error) {
+          console.error("Failed to update user profile:", error);
+          // Continue with order processing even if profile update fails
+        }
       }
 
       // Simulate payment processing
@@ -189,18 +261,45 @@ export default function Checkout() {
 
       const user = getCurrentUser();
 
+      // Determine which items to include in the order
+      const orderItems = data.orderItems || cartItems; // Use specific items if available, otherwise all cart items
+
+      // Calculate totals for the actual order items
+      const orderSubtotal = orderItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
+      const orderDiscountAmount = promoApplied
+        ? (orderSubtotal * discount) / 100
+        : 0;
+      const orderTotal = orderSubtotal + shippingCost - orderDiscountAmount;
+
       const orderData = {
         userId: user?.id,
         orderNumber: `ORD-${Date.now()}`,
-        items: cartItems,
-        customer: data,
-        subtotal: subtotal.toFixed(2),
+        items: orderItems.map((item) => ({
+          ...item,
+          status: item.stock, // Include product status
+        })),
+        customer: {
+          fullName: data.fullName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+        },
+        shippingAddress: {
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zipCode: data.zipCode,
+        },
+        subtotal: orderSubtotal.toFixed(2),
         shipping: shippingCost.toFixed(2),
-        discount: discountAmount.toFixed(2),
-        total: total.toFixed(2),
+        discount: orderDiscountAmount.toFixed(2),
+        total: orderTotal.toFixed(2),
         promoCode: promoApplied ? promoCode : null,
         status: "pending",
         date: new Date().toISOString(),
+        orderType: data.orderItems ? "partial" : "complete", // Track if this is a partial order
       };
 
       // Save to API
@@ -212,17 +311,64 @@ export default function Checkout() {
       // Save locally for receipt
       localStorage.setItem("lastOrder", JSON.stringify(orderData));
 
-      // Clear cart and reset form
-      dispatch(clearCart());
+      // Clear entire cart only if it's a complete order, not a partial one
+      if (!data.orderItems) {
+        // Complete order - clear entire cart
+        try {
+          await dispatch(clearCartAsync()).unwrap();
+          console.log("Cart cleared successfully from server and localStorage");
+        } catch (error) {
+          console.error("Failed to clear cart from server:", error);
+          // If server fails, at least clear locally for better UX
+          // The cart slice will handle this automatically
+        }
+      }
+      // For partial orders, items were already removed in handleFreshMealDeliveryOption
+
       reset();
 
       // Mark order as completed to prevent redirect to shop
       setOrderCompleted(true);
 
-      showToastMessage("Order placed successfully! 🎉", "success");
+      const orderMessage = data.orderItems
+        ? `Order placed successfully! Fresh meals remain in your cart for next-day delivery. 🎉`
+        : `Order placed successfully! 🎉`;
 
-      // Redirect to orders page
-      setTimeout(() => navigate("/myOrders"), 1500);
+      showToastMessage(orderMessage, "success");
+
+      // Only redirect to orders page if cart is empty or this is a complete order
+      if (!data.orderItems) {
+        // Complete order - redirect to orders page
+        setTimeout(() => navigate("/myOrders"), 1500);
+      } else {
+        // Partial order - stay on checkout page with remaining items
+        // Don't reset orderCompleted immediately to prevent unwanted redirects
+        setTimeout(() => {
+          // Reset the processing state and allow user to continue with fresh meals
+          setShowConfirmation(false);
+          setPendingOrderData(null);
+
+          // Reset promo code if it was used for the partial order
+          if (promoApplied) {
+            setPromoApplied(false);
+            setPromoCode("");
+            setDiscount(0);
+          }
+
+          // Optional: Show a message about remaining items
+          showToastMessage(
+            "You can now proceed with your fresh meals or add more items!",
+            "info",
+            3000
+          );
+
+          // Reset orderCompleted after showing the message to allow future checkouts
+          setTimeout(() => {
+            setOrderCompleted(false);
+            setIsProcessingPartialOrder(false); // Reset partial order processing flag
+          }, 100);
+        }, 1500);
+      }
     } catch (error) {
       console.error("Order placement failed:", error);
       showToastMessage("Failed to place order. Please try again.", "error");
@@ -232,7 +378,7 @@ export default function Checkout() {
     }
   };
 
-  // Form submission - now shows confirmation first
+  // Form submission - now checks for fresh meals first
   const handlePlaceOrder = async (data) => {
     try {
       // Validate all fields manually to ensure proper error display
@@ -254,12 +400,85 @@ export default function Checkout() {
         }
       }
 
-      // Store order data and show confirmation
+      // Check for fresh meals and show modal if any exist
+      if (freshMealsInCart.length > 0) {
+        setPendingOrderData(data);
+        setShowFreshMealModal(true);
+        return;
+      }
+
+      // If no fresh meals, proceed with regular confirmation
       setPendingOrderData(data);
       setShowConfirmation(true);
     } catch (error) {
       console.error("Order validation failed:", error);
       showToastMessage("Failed to validate order. Please try again.", "error");
+    }
+  };
+
+  // Handle fresh meal delivery option selection
+  const handleFreshMealDeliveryOption = async (option) => {
+    setShowFreshMealModal(false);
+
+    if (option === "proceed") {
+      // Proceed with fresh meals - show regular confirmation
+      setShowConfirmation(true);
+    } else if (option === "separate") {
+      // Remove non-fresh items and proceed with them, keep fresh meals in cart
+      const nonFreshMeals = cartItems.filter(
+        (item) =>
+          !item.category?.toLowerCase().includes("fresh") &&
+          !item.name?.toLowerCase().includes("fresh") &&
+          !item.name?.toLowerCase().includes("diet")
+      );
+
+      if (nonFreshMeals.length === 0) {
+        showToastMessage(
+          "All items in your cart are fresh meals. Please choose 'Proceed with Next-Day Delivery' option.",
+          "info"
+        );
+        setShowFreshMealModal(true);
+        return;
+      }
+
+      // Set processing partial order flag to prevent redirects
+      setIsProcessingPartialOrder(true);
+
+      // Remove non-fresh meals from cart (they will be ordered now)
+      const removePromises = nonFreshMeals.map(async (nonFreshMeal) => {
+        try {
+          await dispatch(removeFromCartAsync(nonFreshMeal.id)).unwrap();
+        } catch (error) {
+          console.error(
+            `Failed to remove ${nonFreshMeal.name} from server:`,
+            error
+          );
+          // Fallback to local removal
+          dispatch(removeFromCart(nonFreshMeal.id));
+        }
+      });
+
+      // Wait for all removals to complete
+      await Promise.all(removePromises);
+
+      showToastMessage(
+        `Proceeding with ${nonFreshMeals.length} item${
+          nonFreshMeals.length > 1 ? "s" : ""
+        }. Fresh meals remain in your cart for next-day delivery.`,
+        "info"
+      );
+
+      // Update pending order data to include only non-fresh items
+      const updatedOrderData = {
+        ...pendingOrderData,
+        orderItems: nonFreshMeals, // Store the items being ordered
+      };
+      setPendingOrderData(updatedOrderData);
+
+      // Show regular confirmation for non-fresh items
+      setTimeout(() => {
+        setShowConfirmation(true);
+      }, 1000);
     }
   };
 
@@ -296,7 +515,7 @@ export default function Checkout() {
           {/* Order Summary - Left Side */}
           <div className='xl:col-span-5 space-y-6'>
             {/* Header */}
-            <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
               <h2 className='text-2xl font-bold text-app-tertiary mb-2'>
                 Order Summary
               </h2>
@@ -304,11 +523,40 @@ export default function Checkout() {
             </div>
 
             {/* Cart Items */}
-            <div className='bg-white rounded-2xl shadow-lg border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow border border-gray-100'>
               <div className='p-6 border-b border-gray-100'>
                 <h3 className='text-lg font-semibold text-app-tertiary'>
                   Items ({cartItems.length})
                 </h3>
+                {freshMealsInCart.length > 0 && (
+                  <div className='mt-4 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 border-l-4 border-orange-400 rounded-lg shadow-sm'>
+                    <div className='flex items-start gap-3'>
+                      <div className='w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5'>
+                        <HiOutlineClock className='w-4 h-4 text-orange-600' />
+                      </div>
+                      <div>
+                        <p className='font-semibold text-orange-800 mb-1 text-sm'>
+                          Fresh Diet Meals Detected!
+                        </p>
+                        <p className='text-xs text-orange-700 leading-relaxed'>
+                          You have{" "}
+                          <strong>
+                            {freshMealsInCart.length} fresh meal
+                            {freshMealsInCart.length > 1 ? "s" : ""}
+                          </strong>{" "}
+                          in your cart. These items require next-day delivery
+                          for freshness.
+                        </p>
+                        <div className='mt-2 inline-flex items-center gap-2 text-xs text-orange-600 bg-orange-100 px-2 py-1 rounded-md'>
+                          <HiTruck className='w-3 h-3' />
+                          <span className='font-medium'>
+                            Next-day delivery available
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className='max-h-96 overflow-y-auto'>
@@ -336,6 +584,18 @@ export default function Checkout() {
                         <h4 className='font-semibold text-app-tertiary text-base mb-1 line-clamp-2'>
                           {item.name}
                         </h4>
+
+                        {/* Fresh Diet Meal Badge */}
+                        {(item.category?.toLowerCase().includes("fresh") ||
+                          item.name?.toLowerCase().includes("fresh") ||
+                          item.name?.toLowerCase().includes("diet")) && (
+                          <div className='flex items-center gap-1 mb-2'>
+                            <span className='inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-700 text-xs font-medium rounded-full border border-orange-200 shadow-sm'>
+                              <HiOutlineClock className='w-3 h-3' />
+                              Next-Day Delivery Required
+                            </span>
+                          </div>
+                        )}
 
                         {item.description && (
                           <p className='text-sm text-gray-500 mb-3 line-clamp-1'>
@@ -400,7 +660,7 @@ export default function Checkout() {
             </div>
 
             {/* Promo Code */}
-            <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
               <h3 className='text-lg font-semibold text-app-tertiary mb-4'>
                 Promo Code
               </h3>
@@ -445,7 +705,7 @@ export default function Checkout() {
             </div>
 
             {/* Order Total */}
-            <div className='bg-white rounded-2xl shadow-lg border border-gray-100'>
+            <div className='bg-white rounded-2xl shadow border border-gray-100'>
               <div className='p-6 space-y-4'>
                 <div className='flex justify-between text-gray-600'>
                   <span>Subtotal</span>
@@ -489,7 +749,7 @@ export default function Checkout() {
               onSubmit={handleSubmit(handlePlaceOrder)}
               className='space-y-6'>
               {/* Customer Information */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <h3 className='text-xl font-bold text-app-tertiary mb-6 flex items-center gap-2'>
                   <HiUser className='text-app-primary' />
                   Customer Information
@@ -606,7 +866,7 @@ export default function Checkout() {
               </div>
 
               {/* Shipping Information */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <h3 className='text-xl font-bold text-app-tertiary mb-6 flex items-center gap-2'>
                   <HiLocationMarker className='text-app-primary' />
                   Shipping Information
@@ -743,7 +1003,7 @@ export default function Checkout() {
               </div>
 
               {/* Payment Information */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <h3 className='text-xl font-bold text-app-tertiary mb-6 flex items-center gap-2'>
                   <HiCreditCard className='text-app-primary' />
                   Payment Information
@@ -1046,7 +1306,7 @@ export default function Checkout() {
               </div>
 
               {/* Submit Button */}
-              <div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+              <div className='bg-white rounded-2xl shadow p-6 border border-gray-100'>
                 <button
                   type='submit'
                   disabled={isProcessing || cartItems.length === 0}
@@ -1057,7 +1317,7 @@ export default function Checkout() {
                       await validateForm();
                     }
                   }}
-                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 shadow-lg relative overflow-hidden group ${
+                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 shadow relative overflow-hidden group ${
                     isProcessing || cartItems.length === 0
                       ? "bg-gray-400 cursor-not-allowed opacity-60"
                       : "bg-app-primary hover:bg-app-secondary text-white shadow-app-primary/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
@@ -1127,6 +1387,175 @@ export default function Checkout() {
         </div>
       </div>
 
+      {/* Fresh Meal Delivery Modal */}
+      {showFreshMealModal && freshMealsInCart.length > 0 && (
+        <div className='fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto'>
+          <div className='bg-white rounded-2xl shadow-2xl w-full max-w-lg my-8 mx-4 transform transition-all duration-300 scale-100 overflow-hidden max-h-[90vh] flex flex-col'>
+            {/* Modal Header */}
+            <div className='bg-gradient-to-r from-orange-400 to-yellow-400 px-6 py-4 flex-shrink-0'>
+              <div className='flex items-center gap-3'>
+                <div className='w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0'>
+                  <HiOutlineClock className='w-6 h-6 text-white' />
+                </div>
+                <div>
+                  <h3 className='text-xl font-bold text-white'>
+                    Fresh Diet Meals in Your Cart
+                  </h3>
+                  <p className='text-orange-100 text-sm'>
+                    Special delivery requirements
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Content - Scrollable */}
+            <div className='flex-1 overflow-y-auto'>
+              <div className='p-6'>
+                {/* Fresh Meals List */}
+                <div className='mb-6'>
+                  <h4 className='font-semibold text-gray-800 mb-3 flex items-center gap-2'>
+                    <HiOutlineExclamationCircle className='text-orange-500' />
+                    Fresh Diet Meals ({freshMealsInCart.length})
+                  </h4>
+                  <div className='bg-orange-50 rounded-lg p-4 max-h-24 overflow-y-auto border border-orange-100'>
+                    {freshMealsInCart.map((meal) => (
+                      <div
+                        key={meal.id}
+                        className='flex items-center gap-3 mb-2 last:mb-0'>
+                        <img
+                          src={meal.image || "/api/placeholder/40/40"}
+                          alt={meal.name}
+                          className='w-10 h-10 rounded-lg object-cover border-2 border-white shadow-sm flex-shrink-0'
+                        />
+                        <div className='flex-1 min-w-0'>
+                          <p className='text-sm font-medium text-gray-800 line-clamp-1'>
+                            {meal.name}
+                          </p>
+                          <p className='text-xs text-orange-600 font-medium'>
+                            Qty: {meal.quantity}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Delivery Information */}
+                <div className='mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl'>
+                  <div className='flex items-start gap-3'>
+                    <HiTruck className='w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0' />
+                    <div className='flex-1 min-w-0'>
+                      <h5 className='font-semibold text-blue-800 mb-1'>
+                        Next-Day Delivery Required
+                      </h5>
+                      <p className='text-sm text-blue-700 mb-3 leading-relaxed'>
+                        Fresh diet meals must be delivered within 24 hours to
+                        maintain quality and freshness.
+                      </p>
+                      <div className='flex items-center gap-2 text-sm text-blue-600 bg-blue-100 px-3 py-2 rounded-lg'>
+                        <HiCalendar className='w-4 h-4 flex-shrink-0' />
+                        <span className='font-medium'>
+                          Expected delivery: Tomorrow between 9 AM - 6 PM
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Delivery Options */}
+                <div className='space-y-3 mb-6'>
+                  <h5 className='font-semibold text-gray-800 mb-3'>
+                    Choose an option:
+                  </h5>
+
+                  {/* Option 1: Proceed with fresh meals */}
+                  <button
+                    onClick={() => handleFreshMealDeliveryOption("proceed")}
+                    className='w-full p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl text-left hover:border-green-300 hover:from-green-100 hover:to-emerald-100 transition-all group hover:shadow-md'>
+                    <div className='flex items-center justify-between'>
+                      <div className='flex items-center gap-3'>
+                        <div className='w-10 h-10 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors flex-shrink-0'>
+                          <HiCheck className='w-5 h-5 text-green-600' />
+                        </div>
+                        <div className='min-w-0 flex-1'>
+                          <p className='font-semibold text-green-800 mb-1'>
+                            Proceed with Next-Day Delivery
+                          </p>
+                          <p className='text-sm text-green-600'>
+                            Continue with all items (including fresh meals)
+                          </p>
+                        </div>
+                      </div>
+                      <div className='text-right flex-shrink-0 ml-3'>
+                        <p className='text-sm font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full'>
+                          FREE
+                        </p>
+                        <p className='text-xs text-green-600 mt-1'>Next-day</p>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Option 2: Order other items separately */}
+                  <button
+                    onClick={() => handleFreshMealDeliveryOption("separate")}
+                    className='w-full p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl text-left hover:border-blue-300 hover:from-blue-100 hover:to-indigo-100 transition-all group hover:shadow-md'>
+                    <div className='flex items-center justify-between'>
+                      <div className='flex items-center gap-3'>
+                        <div className='w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors flex-shrink-0'>
+                          <FiPackage className='w-5 h-5 text-blue-600' />
+                        </div>
+                        <div className='min-w-0 flex-1'>
+                          <p className='font-semibold text-blue-800 mb-1'>
+                            Order Other Items Now
+                          </p>
+                          <p className='text-sm text-blue-600'>
+                            Keep fresh meals in cart, order other items
+                            separately
+                          </p>
+                        </div>
+                      </div>
+                      <div className='text-right flex-shrink-0 ml-3'>
+                        <p className='text-sm font-bold text-blue-700 bg-blue-100 px-3 py-1 rounded-full'>
+                          Standard
+                        </p>
+                        <p className='text-xs text-blue-600 mt-1'>2-3 days</p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Additional Info */}
+                <div className='p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg mb-4'>
+                  <div className='flex items-start gap-3'>
+                    <HiInformationCircle className='w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0' />
+                    <div className='min-w-0'>
+                      <p className='text-sm text-yellow-800 leading-relaxed'>
+                        <strong>Note:</strong> Fresh diet meals will remain in
+                        your cart for next-day delivery. Only the other items
+                        will be ordered now with standard delivery.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer - Fixed at bottom */}
+            <div className='border-t border-gray-200 p-4 flex-shrink-0 bg-gray-50'>
+              <button
+                onClick={() => {
+                  setShowFreshMealModal(false);
+                  setPendingOrderData(null);
+                  setIsProcessingPartialOrder(false); // Reset flag when cancelling
+                }}
+                className='w-full p-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-200 border border-gray-300 hover:border-gray-400'>
+                Cancel & Review Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Confirmation Modal */}
       {showConfirmation && pendingOrderData && (
         <div className='fixed inset-0 bg-black/70 bg-opacity-60 z-50 flex items-center justify-center p-4'>
@@ -1135,9 +1564,9 @@ export default function Checkout() {
             <div className='bg-gradient-to-r from-app-primary to-app-secondary px-6 py-4'>
               <div className='flex items-center gap-3'>
                 <div className='w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center'>
-                  <HiExclamation className='w-5 h-5 text-white' />
+                  <HiExclamation className='w-5 h-5 text-app-primary' />
                 </div>
-                <h3 className='text-lg font-bold text-white'>
+                <h3 className='text-lg font-bold text-app-primary'>
                   Confirm Your Order
                 </h3>
               </div>
@@ -1155,16 +1584,48 @@ export default function Checkout() {
                 <div className='flex justify-between items-center'>
                   <span className='text-sm text-gray-600'>Items</span>
                   <span className='font-semibold text-gray-900'>
-                    {cartItems.length} item{cartItems.length > 1 ? "s" : ""}
+                    {pendingOrderData.orderItems
+                      ? `${pendingOrderData.orderItems.length} item${
+                          pendingOrderData.orderItems.length > 1 ? "s" : ""
+                        }`
+                      : `${cartItems.length} item${
+                          cartItems.length > 1 ? "s" : ""
+                        }`}
                   </span>
                 </div>
 
                 <div className='flex justify-between items-center'>
                   <span className='text-sm text-gray-600'>Total Amount</span>
                   <span className='font-bold text-app-primary text-xl'>
-                    {total.toFixed(2)} EGP
+                    {pendingOrderData.orderItems
+                      ? (
+                          pendingOrderData.orderItems.reduce(
+                            (acc, item) => acc + item.price * item.quantity,
+                            0
+                          ) -
+                          (promoApplied
+                            ? (pendingOrderData.orderItems.reduce(
+                                (acc, item) => acc + item.price * item.quantity,
+                                0
+                              ) *
+                                discount) /
+                              100
+                            : 0)
+                        ).toFixed(2)
+                      : total.toFixed(2)}{" "}
+                    EGP
                   </span>
                 </div>
+
+                {pendingOrderData.orderItems && (
+                  <div className='border-t pt-3 mt-3'>
+                    <p className='text-sm text-blue-600 bg-blue-50 px-3 py-2 rounded-lg'>
+                      <strong>Note:</strong> Fresh meals (
+                      {freshMealsInCart.length}) remain in your cart for
+                      next-day delivery.
+                    </p>
+                  </div>
+                )}
 
                 <div className='flex justify-between items-center'>
                   <span className='text-sm text-gray-600'>Payment Method</span>

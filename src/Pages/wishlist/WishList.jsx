@@ -1,12 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import ProductCard from "../../Components/shop/ProductCard/ProductCard";
 import { FiHeart, FiArrowRight, FiShoppingBag } from "react-icons/fi";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useWishlist } from "../../hooks/useWishlist";
 
 export default function WishList() {
-  const { items } = useSelector((state) => state.wishlist);
+  const { items } = useWishlist();
   const navigate = useNavigate();
 
   if (items.length === 0) {
@@ -15,8 +15,8 @@ export default function WishList() {
         <div className='bg-white rounded-3xl shadow-sm border border-gray-100 p-12 max-w-md w-full text-center'>
           {/* Icon Section */}
           <div className='mb-8'>
-            <div className='bg-gradient-to-br from-red-50 to-pink-50 rounded-full p-8 w-24 h-24 mx-auto flex items-center justify-center mb-6'>
-              <FiHeart className='text-red-500' size={40} />
+            <div className='bg-app-primary rounded-full p-8 w-24 h-24 mx-auto flex items-center justify-center mb-6'>
+              <FiHeart className='text-white' size={40} />
             </div>
           </div>
 
@@ -39,8 +39,6 @@ export default function WishList() {
             Discover Products
             <FiArrowRight size={18} />
           </button>
-
-        
         </div>
       </div>
     );
@@ -50,36 +48,38 @@ export default function WishList() {
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50'>
       <div className='container mx-auto px-4 py-8 lg:py-12'>
         {/* Header Section */}
-        <div className='text-center mb-12'>
-          <div className='bg-gradient-to-br from-red-50 to-pink-50 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center mb-6'>
-            <BsSuitHeartFill className='text-red-500' size={32} />
+        <div className='text-center mb-6'>
+          <div className='bg-app-primary/10 rounded-full p-3 w-14 h-14 mx-auto flex items-center justify-center mb-3'>
+            <BsSuitHeartFill className='text-app-primary' size={24} />
           </div>
-          <h1 className='text-3xl lg:text-4xl font-bold text-app-secondary mb-4'>
+          <h2 className='text-3xl lg:text-4xl font-bold text-app-secondary mb-4'>
             Your Wishlist
-          </h1>
-          <p className='text-gray-600 max-w-2xl mx-auto mb-6'>
+          </h2>
+          <p className='text-gray-600 max-w-xl mx-auto mb-3 text-sm'>
             Keep track of all your favorite products in one place
           </p>
-          <div className='bg-red-50 rounded-full px-6 py-2 inline-flex items-center gap-2'>
-            <BsSuitHeartFill className='text-red-500' size={16} />
-            <span className='text-red-600 font-semibold'>{items.length}</span>
-            <span className='text-gray-600'>saved items</span>
+          <div className='bg-app-primary/10 rounded-full px-3 py-1 inline-flex items-center gap-1'>
+            <BsSuitHeartFill className='text-app-primary' size={12} />
+            <span className='text-app-primary font-semibold text-sm'>
+              {items.length}
+            </span>
+            <span className='text-gray-600 text-xs'>saved items</span>
           </div>
         </div>
 
         {/* Products Grid */}
         <div className='max-w-7xl mx-auto'>
-          <div className='bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden mb-8'>
-            <div className='bg-gradient-to-r from-red-50/50 to-pink-50/50 px-8 py-6 border-b border-gray-100'>
-              <h2 className='text-xl font-bold text-app-tertiary flex items-center gap-3'>
-                <FiHeart className='text-red-500' size={20} />
+          <div className='bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-4'>
+            <div className='bg-app-primary/5 px-4 py-3 border-b border-gray-100'>
+              <h2 className='text-lg font-bold text-app-tertiary flex items-center gap-2'>
+                <FiHeart className='text-app-primary' size={16} />
                 Saved Products
               </h2>
             </div>
-            <div className='p-8'>
-              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center'>
+            <div className='p-4'>
+              <div className='flex flex-col gap-4'>
                 {items.map((item) => (
-                  <ProductCard key={item.id} product={item} />
+                  <ProductCard key={item.id} product={item} viewMode='list' />
                 ))}
               </div>
             </div>

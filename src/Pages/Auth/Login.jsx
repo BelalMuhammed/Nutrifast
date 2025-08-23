@@ -7,6 +7,8 @@ import {
   loginSuccess,
   loginFailure,
 } from "../../Redux/slices/authSlice";
+import { fetchCart } from "../../Redux/slices/cartSlice";
+import { fetchWishlist } from "../../Redux/slices/wishListSlice";
 import { setCurrentUser, getCurrentUser } from "../../lib/storage";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Toast, ToastToggle } from "flowbite-react";
@@ -53,6 +55,9 @@ export default function Login() {
       const savedUser = getCurrentUser();
       if (savedUser && location.pathname !== "/login") {
         dispatch(loginSuccess(savedUser));
+        // Fetch cart and wishlist data for existing logged-in user
+        dispatch(fetchCart());
+        dispatch(fetchWishlist());
         navigate("/");
       }
     } catch {
@@ -92,6 +97,11 @@ export default function Login() {
 
       setCurrentUser(user);
       dispatch(loginSuccess(user));
+
+      // Immediately fetch cart and wishlist data after successful login
+      dispatch(fetchCart());
+      dispatch(fetchWishlist());
+
       showToastMessage("Welcome back! Login successful", "success");
 
       setTimeout(() => {
