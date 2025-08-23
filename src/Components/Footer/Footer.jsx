@@ -12,6 +12,7 @@ import {
   FaPinterest,
   FaHeart,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -92,7 +93,7 @@ function Footer() {
               {/* Logo */}
               <div className="flex items-center mb-4 sm:mb-6">
                 <img
-                  src="/logo.png"
+                  src="../../../public/Group 12 (1).png"
                   alt="NutriFast Logo"
                   className="h-10 sm:h-12 w-auto"
                 />
@@ -112,46 +113,46 @@ function Footer() {
                 INFORMATION
               </h3>
               <ul className="space-y-1 sm:space-y-2">
-                <li>
-                  <a
-                    href="#"
+                {/* <li>
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     About us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
+                  </Link>
+                </li> */}
+                {/* <li>
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Blog
-                  </a>
-                </li>
+                  </Link>
+                </li> */}
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/checkout"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Check Out
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/contact"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
-                <li>
-                  <a
-                    href="#"
+                {/* <li>
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Service
-                  </a>
-                </li>
+                  </Link>
+                </li> */}
               </ul>
             </div>
 
@@ -162,44 +163,52 @@ function Footer() {
               </h3>
               <ul className="space-y-1 sm:space-y-2">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/shop?category=${encodeURIComponent(
+                      "Fresh Diet Meals"
+                    )}`}
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
-                    Fruits & Vegetables
-                  </a>
+                    Fresh Diet Meals
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/shop?category=${encodeURIComponent(
+                      "Dairy Products"
+                    )}`}
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Dairy Products
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/shop?category=${encodeURIComponent(
+                      "Healthy Bakery"
+                    )}`}
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Healthy Bakery
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/shop?category=${encodeURIComponent("Fresh Juices")}`}
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Fresh Juices
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/shop?category=${encodeURIComponent(
+                      "Healthy Snacks"
+                    )}`}
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Healthy Snacks
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -211,44 +220,44 @@ function Footer() {
               </h3>
               <ul className="space-y-1 sm:space-y-2">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/myProfile"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     My Account
-                  </a>
+                  </Link>
                 </li>
-                <li>
-                  <a
-                    href="#"
+                {/* <li>
+                  <Link
+                    to="#"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Shipping
-                  </a>
-                </li>
+                  </Link>
+                </li> */}
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/myOrders"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Order Status
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/cart"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Shopping Cart
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/shop"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     Our Shop
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -261,31 +270,31 @@ function Footer() {
 
               {/* Social Media Icons */}
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="bg-gray-100 hover:bg-app-accent p-2 rounded-xl transition flex-shrink-0 group"
                 >
                   <FaFacebookF className="text-gray-600 group-hover:text-green text-base sm:text-lg" />
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="#"
                   className="bg-gray-100 hover:bg-app-accent p-2 rounded-xl transition flex-shrink-0 group"
                 >
                   <FaTwitter className="text-gray-600 group-hover:text-green text-base sm:text-lg" />
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="#"
                   className="bg-gray-100 hover:bg-app-accent p-2 rounded-xl transition flex-shrink-0 group"
                 >
                   <FaInstagram className="text-gray-600 group-hover:text-green text-base sm:text-lg" />
-                </a>
+                </Link>
 
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="bg-gray-100 hover:bg-app-accent p-2 rounded-xl transition flex-shrink-0 group"
                 >
                   <FaYoutube className="text-gray-600 group-hover:text-green text-base sm:text-lg" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -317,14 +326,14 @@ function Footer() {
             {/* Links */}
             <div className="flex gap-4 sm:gap-6 text-xs sm:text-sm">
               <a
-                href="#"
+                to="#"
                 className="text-gray-600 hover:text-app-accent transition whitespace-nowrap"
               >
                 Privacy & Cookie Policy
               </a>
               <span className="text-gray-400">|</span>
               <a
-                href="#"
+                to="#"
                 className="text-gray-600 hover:text-app-accent transition whitespace-nowrap"
               >
                 Terms of Service

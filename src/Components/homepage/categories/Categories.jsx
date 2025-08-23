@@ -8,8 +8,7 @@ import { motion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import HomeCard from "../../categoryCard/CategoryCard";
-import { getCategories } from "../../../api/apiService";
-
+import { getCategories } from "../../../Api/apiService";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
