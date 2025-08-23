@@ -4,8 +4,8 @@ import { HiCheck, HiExclamation } from "react-icons/hi";
 import { useState } from "react";
 import { useCart } from "../../../hooks/useCart";
 
-function AddButton({ product, ...props }) {
-  const { isItemInCart, addItem } = useCart();
+function AddButton({ product }) {
+  const { isItemInCart, addItem, loading } = useCart();
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("success");
 
@@ -47,11 +47,14 @@ function AddButton({ product, ...props }) {
     <>
       <button
         onClick={handleAddToCart}
-        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""} ${props.className}`}
-        disabled={isInCart}
-        >
+        disabled={loading}
+        className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""} ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}>
         <HiOutlineShoppingBag size={22} className='me-2' />
-        <span>{isInCart ? "In Cart" : "Add to cart"}</span>
+        <span>
+          {loading ? "Adding..." : isInCart ? "In Cart" : "Add to cart"}
+        </span>
       </button>
 
       {/* Flowbite Toast Notification */}

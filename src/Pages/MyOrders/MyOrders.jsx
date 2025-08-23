@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { formatDateTime } from "../../lib/dateFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -23,6 +24,12 @@ function MyOrders() {
   const { list: orders, loading } = useSelector((state) => state.orders);
   const user = getCurrentUser();
   const [activeTab, setActiveTab] = useState("All");
+  const [deleteModal, setDeleteModal] = useState({
+    open: false,
+    orderId: null,
+    type: null, // 'single' or 'all'
+  });
+  const cancelButtonRef = useRef();
 
   useEffect(() => {
     if (user?.id) {
@@ -30,10 +37,13 @@ function MyOrders() {
     }
   }, [dispatch, user?.id]);
 
-  const filteredOrders =
+  const filteredOrders = (
     activeTab === "All"
       ? orders
-      : orders.filter((order) => order.status === activeTab);
+      : orders.filter((order) => order.status === activeTab)
+  )
+    .slice()
+    .reverse();
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -91,6 +101,62 @@ function MyOrders() {
 
   return (
     <div className='min-h-[100vh] bg-gradient-to-b from-white to-app-quaternary/20'>
+      {/* Delete/Clear Confirmation Modal */}
+      {deleteModal.open && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/30'>
+          <div className='bg-white rounded-2xl shadow-xl p-8 max-w-md w-full border border-gray-100 flex flex-col items-center'>
+            <div
+              className={`rounded-full p-4 mb-4 ${
+                deleteModal.type === "all" ? "bg-orange-100" : "bg-red-100"
+              }`}>
+              <FiTrash2
+                className={
+                  deleteModal.type === "all"
+                    ? "text-orange-500"
+                    : "text-red-500"
+                }
+                size={32}
+              />
+            </div>
+            <h2 className='text-xl font-bold text-app-secondary mb-2 text-center'>
+              {deleteModal.type === "all"
+                ? "Clear All Orders?"
+                : "Delete Order?"}
+            </h2>
+            <p className='text-gray-600 mb-6 text-center'>
+              {deleteModal.type === "all"
+                ? "Are you sure you want to clear all your orders? This action cannot be undone."
+                : "Are you sure you want to delete this order? This action cannot be undone."}
+            </p>
+            <div className='flex gap-4 w-full'>
+              <button
+                className='flex-1 bg-gray-100 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200'
+                onClick={() =>
+                  setDeleteModal({ open: false, orderId: null, type: null })
+                }
+                ref={cancelButtonRef}>
+                Cancel
+              </button>
+              <button
+                className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                  deleteModal.type === "all"
+                    ? "bg-orange-500 hover:bg-orange-600 text-white"
+                    : "bg-red-500 hover:bg-red-600 text-white"
+                }`}
+                onClick={() => {
+                  if (deleteModal.type === "all") {
+                    dispatch(clearOrders(user.id));
+                  } else {
+                    dispatch(deleteOrder(deleteModal.orderId));
+                  }
+                  setDeleteModal({ open: false, orderId: null, type: null });
+                }}>
+                {deleteModal.type === "all" ? "Clear All" : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className='max-w-6xl mx-auto px-4 sm:px-6 py-8'>
         {/* Header Section */}
         <div className='text-center mb-12'>
@@ -145,11 +211,16 @@ function MyOrders() {
                       <FiPackage className='text-app-primary' size={20} />
                     </div>
                     <div>
-                      <h3 className='font-bold text-app-secondary text-lg'>
+                      <Link
+                        to={`/order/${order.id}`}
+                        className='font-bold text-app-secondary text-lg hover:text-app-primary transition-colors duration-200 underline-offset-2 hover:underline focus:underline focus:outline-none'
+                        tabIndex={0}
+                        aria-label={`View details for order #${order.id}`}
+                      >
                         Order #{order.id}
-                      </h3>
+                      </Link>
                       <p className='text-sm text-gray-500'>
-                        Placed on {order.date}
+                        Placed on {formatDateTime(order.date)}
                       </p>
                     </div>
                   </div>
@@ -196,10 +267,15 @@ function MyOrders() {
                       View Details
                     </Link>
                     <button
-                      onClick={() => dispatch(deleteOrder(order.id))}
+                      onClick={() =>
+                        setDeleteModal({
+                          open: true,
+                          orderId: order.id,
+                          type: "single",
+                        })
+                      }
                       className='flex items-center justify-center gap-2 bg-red-50 text-red-600 px-6 py-3 rounded-xl font-medium hover:bg-red-100 transition-all duration-200'>
                       <FiTrash2 size={16} />
-                      Remove
                     </button>
                   </div>
                 </div>
@@ -224,7 +300,9 @@ function MyOrders() {
         {orders.length > 0 && !loading && (
           <div className='mt-8 flex justify-end'>
             <button
-              onClick={() => dispatch(clearOrders(user.id))}
+              onClick={() =>
+                setDeleteModal({ open: true, orderId: null, type: "all" })
+              }
               className='flex items-center gap-2 bg-red-50 text-red-600 px-6 py-3 rounded-xl font-medium hover:bg-red-100 transition-all duration-200 border border-red-200'>
               <FiTrash2 size={16} />
               Clear All Orders

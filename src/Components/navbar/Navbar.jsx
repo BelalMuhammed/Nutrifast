@@ -2,22 +2,42 @@ import { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { FiMenu, FiX, FiUser } from "react-icons/fi";
+import { useSelector, useDispatch } from "react-redux";
+import { FiShoppingCart, FiMenu, FiX, FiHeart, FiUser } from "react-icons/fi";
+import { FaSignOutAlt, FaList, FaUserShield, FaUser } from "react-icons/fa";
+import { logout } from "../../Redux/slices/authSlice";
+import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
+import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 import logoImg from "/logo-light.png";
-import { getCurrentUser, removeCurrentUser } from "../../lib/storage";
-
+import { getCurrentUser} from "../../lib/storage";
 // Import components
 import DesktopMenu from "./DesktopMenu";
 import CartWishlistIcons from "./CartWishlistIcons";
 import UserDropdown from "./UserDropdown";
 import MobileMenu from "./MobileMenu";
 
+// Helper NavLink component
+function NavLink({ to, children }) {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+  return (
+    <Link
+      to={to}
+      className={`text-sm hover:opacity-80 transition pb-1 relative text-white`}>
+      {children}
+      {isActive && (
+        <span className='absolute bottom-0 left-0 w-full h-0.5 bg-app-primary'></span>
+      )}
+    </Link>
+  );
+}
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,9 +55,26 @@ function Navbar() {
   const wishlistCount = wishlistItems.length;
 
   const handleLogout = () => {
-    removeCurrentUser();
-    navigate("/");
-    window.location.reload();
+    // Clear cart and wishlist data from Redux state first
+    dispatch(clearCartData());
+    dispatch(clearWishlistData());
+
+    // Clear user authentication (this also clears localStorage)
+    dispatch(logout());
+
+    // Additional cleanup to ensure data is cleared
+    setTimeout(() => {
+      // Force clear localStorage items if they still exist
+      try {
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("wishlist");
+        localStorage.removeItem("currentUser");
+      } catch {
+        // ignore errors
+      }
+    }, 100);
+
+    navigate("/login");
   };
 
   const isHome = location.pathname === "/";

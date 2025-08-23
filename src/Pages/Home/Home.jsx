@@ -12,6 +12,7 @@ function Home() {
       <CustomerFavorites />
       <WhyChooseNutriFast />
       <OurStory id="about" />
+      <VendorsLogo />
     </>
   );
 }

@@ -1,10 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
-import {
-  increaseQty,
-  decreaseQty,
-  removeFromCart,
-} from "../../Redux/slices/cartSlice";
-import { useNavigate } from "react-router-dom";
 import {
   FiShoppingCart,
   FiTrash2,
@@ -14,20 +7,24 @@ import {
   FiShoppingBag,
 } from "react-icons/fi";
 import { IoIosCart } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../../hooks/useCart";
 
 function Cart() {
-  const { cartItems } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+  const {
+    cartItems,
+    removeItem,
+    increaseQuantity,
+    decreaseQuantity,
+    getCartSummary,
+  } = useCart();
   const navigate = useNavigate();
 
   const goToCheckout = () => {
     navigate("/checkout");
   };
 
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const { totalPrice: subtotal } = getCartSummary();
 
   if (cartItems.length === 0) {
     return (
@@ -137,7 +134,7 @@ function Cart() {
                       <div className='flex items-center gap-4'>
                         <div className='flex items-center bg-gray-100 rounded-xl p-1'>
                           <button
-                            onClick={() => dispatch(decreaseQty(item.id))}
+                            onClick={() => decreaseQuantity(item.id)}
                             className='w-10 h-10 flex items-center justify-center rounded-lg bg-white text-gray-600 hover:text-app-primary hover:bg-app-primary/10 transition-all duration-200 shadow-sm'
                             aria-label='Decrease quantity'>
                             <FiMinus size={16} />
@@ -146,7 +143,7 @@ function Cart() {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => dispatch(increaseQty(item.id))}
+                            onClick={() => increaseQuantity(item.id)}
                             className='w-10 h-10 flex items-center justify-center rounded-lg bg-app-primary text-white hover:bg-app-secondary transition-all duration-200 shadow-sm'
                             aria-label='Increase quantity'>
                             <FiPlus size={16} />
@@ -155,7 +152,7 @@ function Cart() {
 
                         {/* Remove Button */}
                         <button
-                          onClick={() => dispatch(removeFromCart(item.id))}
+                          onClick={() => removeItem(item.id)}
                           className='p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200'
                           aria-label='Remove from cart'>
                           <FiTrash2 size={20} />
