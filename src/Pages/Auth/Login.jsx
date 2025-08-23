@@ -268,16 +268,6 @@ export default function Login() {
                   </p>
                 </div>
               </div>
-
-              {/* Remember Me & Forgot Password */}
-              <div className='flex items-center justify-between pt-2'>
-                <Link
-                  to='/forgot-password'
-                  className='text-app-primary hover:text-app-tertiary transition-colors font-bold text-sm hover:underline'>
-                  Forgot Password?
-                </Link>
-              </div>
-
               {/* Submit Button */}
               <button
                 type='submit'
