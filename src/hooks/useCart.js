@@ -33,10 +33,8 @@ export const useCart = () => {
   useEffect(() => {
     if (isAuthenticated && isOnline) {
       dispatch(fetchCart());
-    } else if (!isAuthenticated) {
-      // Clear cart data when user is not authenticated
-      dispatch(clearUserData());
     }
+    // Do NOT clear cart for guests; only clear on explicit logout
   }, [dispatch, isAuthenticated, isOnline]);
 
   // Monitor online status

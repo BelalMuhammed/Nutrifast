@@ -46,7 +46,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors, isValid, touchedFields, isSubmitted },
     watch,
-  } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
+  } = useForm({ mode: "onChange", reValidateMode: "onChange" });
 
   const watchedFields = watch();
 
@@ -299,7 +299,7 @@ export default function Login() {
                 </Link>
               </div>
 
-              {/* Enhanced Submit Button */}
+              {/* Submit Button */}
               <button
                 type='submit'
                 disabled={loading || isAnimating || !isValid}
