@@ -14,7 +14,7 @@ function SideFilter({
   selectedMedicalConditions = [],
   selectedAllergens = [],
   selectedCaloriesRange = [0, 1000],
-  onClose
+  onClose,
 }) {
   // Filter groups (excluding CaloriesRange)
   const [filters, setFilters] = useState({
@@ -56,7 +56,9 @@ function SideFilter({
   const handleCheckboxChange = (group, name, extraData = null) => {
     const value = extraData || name;
     const current = filterGroupMapping[group] || [];
-    const isSelected = current.some((item) => JSON.stringify(item) === JSON.stringify(value));
+    const isSelected = current.some(
+      (item) => JSON.stringify(item) === JSON.stringify(value)
+    );
     const updatedGroup = isSelected
       ? current.filter((item) => JSON.stringify(item) !== JSON.stringify(value))
       : [...current, value];
@@ -116,8 +118,9 @@ function SideFilter({
                   >
                     <Checkbox
                       checked={
-                        filterGroupMapping[group]?.some((selected) => 
-                          JSON.stringify(selected) === JSON.stringify(value)
+                        filterGroupMapping[group]?.some(
+                          (selected) =>
+                            JSON.stringify(selected) === JSON.stringify(value)
                         ) || false
                       }
                       onChange={() =>
@@ -158,19 +161,19 @@ function SideFilter({
             Calories Range
           </h3>
           <div className="flex flex-col gap-3 px-2">
-              <Slider
-                range
-                min={caloriesMin}
-                max={caloriesMax}
-                step={10}
-                value={selectedCaloriesRange}
-                onChange={handleCaloriesChange}
-                handleRender={(node, props) => (
-                  <Tooltip overlay={`${props.value} cal`} placement="top">
-                    {node}
-                  </Tooltip>
-                )}
-              />
+            <Slider
+              range
+              min={caloriesMin}
+              max={caloriesMax}
+              step={10}
+              value={selectedCaloriesRange}
+              onChange={handleCaloriesChange}
+              handleRender={(node, props) => (
+                <Tooltip overlay={`${props.value} cal`} placement="top">
+                  {node}
+                </Tooltip>
+              )}
+            />
             <div className="flex justify-between text-sm mt-3">
               <span className="font-semibold text-app-primary bg-gray-50 rounded-lg px-3 py-2 shadow-sm border border-gray-100">
                 {selectedCaloriesRange[0]} cal

@@ -46,6 +46,13 @@ export default function Checkout() {
   // Get current user data
   const currentUser = getCurrentUser();
 
+  // Centralized function to determine if an item is a fresh meal
+  const isFreshMeal = (item) => {
+    return (
+      item.category?.toLowerCase() === "fresh diet meals"
+    );
+  };
+
   const {
     register,
     handleSubmit,
@@ -89,9 +96,7 @@ export default function Checkout() {
 
   // Check for fresh diet meals in cart
   useEffect(() => {
-    const freshMeals = cartItems.filter(
-      (item) => item.category?.toLowerCase() === "fresh diet meals"
-    );
+    const freshMeals = cartItems.filter(isFreshMeal);
     setFreshMealsInCart(freshMeals);
   }, [cartItems]);
 
@@ -327,24 +332,7 @@ export default function Checkout() {
         // Partial order - update cart to contain only fresh meals
         try {
           // Calculate what should remain in cart after order (only fresh meals)
-          const freshMealsOnly = cartItems.filter(
-            (cartItem) =>
-              cartItem.category?.toLowerCase() === "fresh diet meals"
-          );
-
-          console.log("=== PARTIAL ORDER CART UPDATE ===");
-          console.log(
-            "All cart items before:",
-            cartItems.map((item) => `${item.name} (ID: ${item.id})`)
-          );
-          console.log(
-            "Order items being removed:",
-            data.orderItems.map((item) => `${item.name} (ID: ${item.id})`)
-          );
-          console.log(
-            "Fresh meals that should remain:",
-            freshMealsOnly.map((item) => `${item.name} (ID: ${item.id})`)
-          );
+          const freshMealsOnly = cartItems.filter(isFreshMeal);
 
           // Atomic operation: set cart to contain only fresh meals
           dispatch(setCartItems(freshMealsOnly));
@@ -463,9 +451,7 @@ export default function Checkout() {
       }
 
       // Check for fresh meals and show modal only if there are BOTH fresh and non-fresh items
-      const nonFreshMeals = cartItems.filter(
-        (item) => item.category?.toLowerCase() !== "fresh diet meals"
-      );
+      const nonFreshMeals = cartItems.filter(item => !isFreshMeal(item));
 
       if (freshMealsInCart.length > 0 && nonFreshMeals.length > 0) {
         // Mixed cart: has both fresh meals and regular items
@@ -492,9 +478,7 @@ export default function Checkout() {
       setShowConfirmation(true);
     } else if (option === "separate") {
       // Remove non-fresh items and proceed with them, keep fresh meals in cart
-      const nonFreshMeals = cartItems.filter(
-        (item) => item.category?.toLowerCase() !== "fresh diet meals"
-      );
+      const nonFreshMeals = cartItems.filter(item => !isFreshMeal(item));
 
       if (nonFreshMeals.length === 0) {
         showToastMessage(
@@ -607,9 +591,7 @@ export default function Checkout() {
                         </h4>
 
                         {/* Fresh Diet Meal Badge */}
-                        {(item.category?.toLowerCase().includes("fresh") ||
-                          item.name?.toLowerCase().includes("fresh") ||
-                          item.name?.toLowerCase().includes("diet")) && (
+                        {isFreshMeal(item) && (
                           <div className='flex items-center gap-1 mb-2'>
                             <span className='inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-700 text-xs font-medium rounded-full border border-orange-200 shadow-sm'>
                               <HiOutlineClock className='w-3 h-3' />

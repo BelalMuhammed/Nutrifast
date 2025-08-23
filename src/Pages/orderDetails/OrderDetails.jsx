@@ -284,17 +284,6 @@ export default function OrderDetails() {
                 </p>
               </div>
             </div>
-            <div className='text-right'>
-              <div className='flex items-center gap-2 mb-2'>
-                <FiClock className='text-gray-400' size={16} />
-                <span className='text-sm text-gray-500'>
-                  Estimated Delivery
-                </span>
-              </div>
-              <p className='font-semibold text-app-tertiary'>
-                3-5 Business Days
-              </p>
-            </div>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
