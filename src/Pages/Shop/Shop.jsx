@@ -1,5 +1,5 @@
 import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   FiChevronDown,
   FiGrid,
@@ -34,14 +34,21 @@ function Shop() {
   const [viewMode, setViewMode] = useState("grid");
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [displayedCount, setDisplayedCount] = useState(12);
-  const [initialFilters, setInitialFilters] = useState({});
+
+  // Optimistic filter states for immediate UI updates
+  const [optimisticFilters, setOptimisticFilters] = useState({
+    Categories: [],
+    DietTypes: [],
+    MedicalConditions: [],
+    Allergens: [],
+    CaloriesRange: [0, 1000],
+  });
 
   const PRODUCTS_PER_PAGE = 12;
 
-  // Get search term and category from URL
+  // Get search term from URL
   const queryParams = new URLSearchParams(location.search);
   const searchName = queryParams.get("name");
-  const categoryParam = queryParams.get("category");
 
   // Fetch products based on search term
   useEffect(() => {
@@ -54,28 +61,91 @@ function Shop() {
     }
   }, [searchName, dispatch]);
 
-  // Update filtered products when products or initialFilters change
+  // Update filtered products when products or queryParams change
   useEffect(() => {
     if (products.length === 0) return;
-    // If initialFilters.Categories is set, filter immediately
-    if (initialFilters.Categories && initialFilters.Categories.length > 0) {
-      setFilteredProducts(filterLogic(products, initialFilters));
-      setDisplayedCount(12);
-    } else {
-      setFilteredProducts(products || []);
-      setDisplayedCount(12);
-    }
-  }, [products, initialFilters]);
+    const queryParams = new URLSearchParams(location.search);
+    // Build filters from queryParams
+    const filters = {
+      Categories: queryParams.get("category")
+        ? queryParams.get("category").split(",")
+        : [],
+      DietTypes: queryParams.get("dietTypes")
+        ? queryParams.get("dietTypes").split(",")
+        : [],
+      MedicalConditions: queryParams.get("medicalConditions")
+        ? queryParams.get("medicalConditions").split(",")
+        : [],
+      Allergens: queryParams.get("allergens")
+        ? queryParams.get("allergens").split(",")
+        : [],
+      CaloriesRange: queryParams.get("caloriesRange")
+        ? queryParams.get("caloriesRange").split(",").map(Number)
+        : [0, 1000],
+    };
 
-  // Set initial filters based on category from URL
-  useEffect(() => {
-    if (categoryParam) {
-      setInitialFilters((prev) => ({
-        ...prev,
-        Categories: [categoryParam],
-      }));
-    }
-  }, [categoryParam]);
+    // Sync optimistic filters with URL
+    setOptimisticFilters(filters);
+
+    setFilteredProducts(filterLogic(products, filters));
+    setDisplayedCount(12);
+  }, [products, location.search]);
+
+  // Handler to update filters in queryParams
+  const handleFilterChange = useCallback(
+    (group, values) => {
+      // Immediately update optimistic state for instant UI feedback
+      const newOptimisticFilters = {
+        ...optimisticFilters,
+        [group]: values,
+      };
+      setOptimisticFilters(newOptimisticFilters);
+
+      // Apply filters immediately to products for instant visual feedback
+      if (products.length > 0) {
+        setFilteredProducts(filterLogic(products, newOptimisticFilters));
+      }
+
+      // Then update URL (this will eventually sync back via useEffect)
+      const params = new URLSearchParams(location.search);
+      if (group === "Categories") {
+        if (values.length > 0) {
+          params.set("category", values.join(","));
+        } else {
+          params.delete("category");
+        }
+      } else if (group === "DietTypes") {
+        if (values.length > 0) {
+          params.set("dietTypes", values.join(","));
+        } else {
+          params.delete("dietTypes");
+        }
+      } else if (group === "MedicalConditions") {
+        if (values.length > 0) {
+          params.set("medicalConditions", values.join(","));
+        } else {
+          params.delete("medicalConditions");
+        }
+      } else if (group === "Allergens") {
+        if (values.length > 0) {
+          params.set("allergens", values.join(","));
+        } else {
+          params.delete("allergens");
+        }
+      } else if (group === "CaloriesRange") {
+        if (values[0] !== 0 || values[1] !== 1000) {
+          params.set("caloriesRange", values.join(","));
+        } else {
+          params.delete("caloriesRange");
+        }
+      }
+      navigate(
+        { pathname: "/shop", search: params.toString() },
+        { replace: true }
+      );
+    },
+    [optimisticFilters, products, location.search, navigate]
+  );
 
   // Handle screen resize
   useEffect(() => {
@@ -216,9 +286,14 @@ function Shop() {
                 <DrawerHeader title="Filters" />
                 <DrawerItems>
                   <SideFilter
-                    products={products}
-                    onFilter={setFilteredProducts}
-                    initialFilters={initialFilters}
+                    selectedCategories={optimisticFilters.Categories}
+                    onFilterChange={handleFilterChange}
+                    selectedDietTypes={optimisticFilters.DietTypes}
+                    selectedMedicalConditions={
+                      optimisticFilters.MedicalConditions
+                    }
+                    selectedAllergens={optimisticFilters.Allergens}
+                    selectedCaloriesRange={optimisticFilters.CaloriesRange}
                     onClose={() => setDrawerOpen(false)}
                   />
                 </DrawerItems>
@@ -229,9 +304,12 @@ function Shop() {
               className={`transition-all duration-300 w-full lg:w-[300px] xl:w-[320px] opacity-100`}
             >
               <SideFilter
-                products={products}
-                onFilter={setFilteredProducts}
-                initialFilters={initialFilters}
+                selectedCategories={optimisticFilters.Categories}
+                onFilterChange={handleFilterChange}
+                selectedDietTypes={optimisticFilters.DietTypes}
+                selectedMedicalConditions={optimisticFilters.MedicalConditions}
+                selectedAllergens={optimisticFilters.Allergens}
+                selectedCaloriesRange={optimisticFilters.CaloriesRange}
               />
             </div>
           )}
