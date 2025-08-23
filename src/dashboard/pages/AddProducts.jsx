@@ -87,15 +87,13 @@ function CheckboxDropdown({ label, options, registerName, register }) {
         className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 cursor-pointer hover:border-green-600 hover:bg-white transition-all duration-300 flex items-center justify-between shadow-sm'
         onClick={() => setOpen(!open)}>
         <span
-          className={`text-sm font-medium ${
-            selected.length > 0 ? "text-gray-900" : "text-gray-600"
-          }`}>
+          className={`text-sm font-medium ${selected.length > 0 ? "text-gray-900" : "text-gray-600"
+            }`}>
           {selected.length > 0 ? selected.join(", ") : `Select ${label}`}
         </span>
         <ChevronDownIcon
-          className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${open ? "rotate-180" : ""
+            }`}
         />
       </div>
 
@@ -179,6 +177,12 @@ function TagsInput({ control, name, label }) {
 }
 
 export default function AddProducts() {
+
+
+
+
+
+
   const {
     register,
     handleSubmit,
@@ -191,15 +195,15 @@ export default function AddProducts() {
       dietTypes: [],
       medicalConditions: [],
       allergens: [],
-      calories: "",
-      price: "",
-      weight: "",
+      calories: 0,   // number
+      price: 0,      // number
+      weight: 0,     // number
       description: "",
       image: "",
       ingredients: [],
       brand: "",
       stock: "in-stock",
-      rating: "",
+      rating: 0,     // number
       tags: [],
     },
   });
@@ -353,6 +357,7 @@ export default function AddProducts() {
                   {...register("calories", {
                     required: "Calories are required",
                     min: 0,
+                    valueAsNumber: true
                   })}
                   className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='69'
@@ -373,6 +378,7 @@ export default function AddProducts() {
                   {...register("price", {
                     required: "Price is required",
                     min: 1,
+                    valueAsNumber: true
                   })}
                   className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='55'
@@ -520,9 +526,10 @@ export default function AddProducts() {
               <input
                 type='number'
                 step='0.1'
-                {...register("rating", { min: 0, max: 5 })}
+                {...register("rating", { min: 0, max: 5, valueAsNumber: true })}
                 className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                 placeholder='4.5'
+
               />
             </div>
           </div>

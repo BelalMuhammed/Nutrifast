@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../Network/interceptors";
 
+// const showToastMessage = (message, type = "success") => {
+//   setToast({ show: true, message, type });
+//   setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+// };
+
 //  Get all products
 export const fetchProducts = createAsyncThunk("products/fetchAll", async () => {
   const response = await axiosInstance.get("/products");

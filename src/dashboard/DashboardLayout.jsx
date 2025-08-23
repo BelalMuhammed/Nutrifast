@@ -14,10 +14,10 @@ export default function DashboardLayout() {
         <Topbar />
 
         {/* Page Content */}
-        <main className="flex-1 px-4 py-20 overflow-y-auto">
+        <main className="flex-1 px-4  overflow-y-auto">
           <Outlet />
         </main>
       </div>
-    </div>
-  );
+    </div>
+  );
 }
