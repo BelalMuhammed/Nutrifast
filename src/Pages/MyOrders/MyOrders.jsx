@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { formatDateTime } from "../../lib/dateFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -214,11 +215,7 @@ function MyOrders() {
                         Order #{order.id}
                       </h3>
                       <p className='text-sm text-gray-500'>
-                        Placed on{" "}
-                        {new Date(order.date).toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
+                        Placed on {formatDateTime(order.date)}
                       </p>
                     </div>
                   </div>

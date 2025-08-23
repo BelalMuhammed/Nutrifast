@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatDateTime } from "../../lib/dateFormat";
 import { useParams, Link } from "react-router-dom";
 import { axiosInstance } from "../../Network/interceptors";
 import {
@@ -136,7 +137,7 @@ export default function OrderDetails() {
                   </h1>
                   <div className='flex items-center gap-2 mt-1 text-gray-600'>
                     <FiCalendar size={16} />
-                    <span>Placed on {order.date || "N/A"}</span>
+                    <span>Placed on {formatDateTime(order.date)}</span>
                   </div>
                 </div>
               </div>
@@ -181,8 +182,16 @@ export default function OrderDetails() {
                 <div>
                   <p className='text-sm text-gray-500 font-medium'>Address</p>
                   <p className='text-app-tertiary'>
-                    {order.customer.address}, {order.customer.city},{" "}
-                    {order.customer.state}
+                    {order.shippingAddress?.address}
+                    {order.shippingAddress?.city
+                      ? `, ${order.shippingAddress.city}`
+                      : ""}
+                    {order.shippingAddress?.state
+                      ? `, ${order.shippingAddress.state}`
+                      : ""}
+                    {order.shippingAddress?.zipCode
+                      ? `, ${order.shippingAddress.zipCode}`
+                      : ""}
                   </p>
                 </div>
               </div>
@@ -205,7 +214,7 @@ export default function OrderDetails() {
                   <p className='text-sm text-gray-500 font-medium'>
                     Payment Method
                   </p>
-                  <span className='inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm font-medium'>
+                  <span className='inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 mt-2 uppercase rounded-full text-sm font-medium'>
                     <FiCheck size={14} />
                     {order.customer.paymentMethod}
                   </span>
@@ -271,7 +280,7 @@ export default function OrderDetails() {
                   Order Summary
                 </h2>
                 <p className='text-gray-500'>
-                  Order placed on {order.date || "N/A"}
+                  Order placed on {formatDateTime(order.date)}
                 </p>
               </div>
             </div>

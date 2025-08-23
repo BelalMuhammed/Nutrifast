@@ -285,6 +285,7 @@ export default function Checkout() {
           fullName: data.fullName,
           email: data.email,
           phoneNumber: data.phoneNumber,
+          paymentMethod: data.paymentMethod, // Ensure payment method is sent
         },
         shippingAddress: {
           address: data.address,
