@@ -30,6 +30,16 @@ export const clearOrders = createAsyncThunk(
   }
 );
 
+export const cancelOrder = createAsyncThunk(
+  "orders/cancelOrder",
+  async (id) => {
+    const res = await axiosInstance.patch(`/orders/${id}`, {
+      status: "Cancelled",
+    });
+    return res.data;
+  }
+);
+
 const ordersSlice = createSlice({
   name: "orders",
   initialState: {
@@ -60,6 +70,25 @@ const ordersSlice = createSlice({
         state.list = state.list.filter(
           (order) => order.userId !== action.payload
         );
+      })
+
+
+      .addCase(cancelOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(cancelOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.list.findIndex(
+          (order) => order.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.list[index] = action.payload;
+        }
+      })
+      .addCase(cancelOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
