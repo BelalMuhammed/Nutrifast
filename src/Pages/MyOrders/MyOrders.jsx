@@ -211,9 +211,14 @@ function MyOrders() {
                       <FiPackage className='text-app-primary' size={20} />
                     </div>
                     <div>
-                      <h3 className='font-bold text-app-secondary text-lg'>
+                      <Link
+                        to={`/order/${order.id}`}
+                        className='font-bold text-app-secondary text-lg hover:text-app-primary transition-colors duration-200 underline-offset-2 hover:underline focus:underline focus:outline-none'
+                        tabIndex={0}
+                        aria-label={`View details for order #${order.id}`}
+                      >
                         Order #{order.id}
-                      </h3>
+                      </Link>
                       <p className='text-sm text-gray-500'>
                         Placed on {formatDateTime(order.date)}
                       </p>
