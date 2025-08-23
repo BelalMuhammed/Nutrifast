@@ -85,6 +85,7 @@ import {
   HiXCircle,
   HiUserAdd,
 } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 // import { deleteProduct } from "@/Redux/slices/productSlice";
 // import { useDispatch } from "react-redux";
 
@@ -101,7 +102,7 @@ export default function TableDashboard({
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-
+  const navigate = useNavigate();
   // const dispatch = useDispatch()
   const columns = useMemo(() => {
     if (!data.length) return [];
@@ -298,6 +299,7 @@ export default function TableDashboard({
         </div>
 
         {type === "products" ? <Button
+          onClick={() => { navigate("/dashboard/addProducts") }}
           variant='outline'
           className='w-full mt-auto sm:w-auto bg-app-primary text-white border-2 border-app-primary hover:bg-app-secondary hover:border-app-secondary transition-all duration-300 font-semibold rounded-lg sm:rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 shadow-sm text-sm sm:text-base'>
           <PlusIcon size={14} className='mr-2 sm:w-4 sm:h-4' />
@@ -414,8 +416,8 @@ export default function TableDashboard({
 
       <div className='bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden'>
         {/* ✅ Table Container with Horizontal Scroll */}
-        <div className='overflow-x-auto w-full'>
-          <Table className='min-w-[900px] table-fixed'>
+        <div className='overflow-x-auto w-full hidden lg:block'>
+          <Table className='overflow-x-auto min-w-[900px] table-fixed'>
             <TableHeader>
               {table.getHeaderGroups().map((hg) => (
                 <TableRow
@@ -501,7 +503,7 @@ export default function TableDashboard({
 
 
       {/* Mobile cards */}
-      <div className='space-y-3 sm:space-y-4 md:hidden px-2 sm:px-0'>
+      <div className='space-y-3 sm:space-y-4 lg:hidden px-2 sm:px-0'>
         {table.getRowModel().rows.length ? (
           table.getRowModel().rows.map((row, index) => (
             <div

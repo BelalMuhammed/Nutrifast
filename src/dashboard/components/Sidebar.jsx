@@ -68,22 +68,22 @@ export default function DashboardSidebar() {
                   )}
                 </NavLink>
 
-                <NavLink to="addProducts">
+                {/* <NavLink to="addProducts">
                   {({ isActive }) => (
                     <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
                       Add Products
                     </SidebarItem>
                   )}
-                </NavLink>
-                
-                
+                </NavLink> */}
+
+
                 <NavLink to="productsFilters">
-                {({ isActive }) => (
-                  <SidebarItem  className={isActive ? "bg-green-100 text-app-primary" : ""}>
-                    Product Filters
-                  </SidebarItem>
-                )}
-              </NavLink>
+                  {({ isActive }) => (
+                    <SidebarItem className={isActive ? "bg-green-100 text-app-primary" : ""}>
+                      Product Filters
+                    </SidebarItem>
+                  )}
+                </NavLink>
               </SidebarCollapse>
 
               {/* Vendors collapse */}
@@ -134,8 +134,8 @@ export default function DashboardSidebar() {
 
               {/* Example static item */}
 
-         
-           
+
+
             </SidebarItemGroup>
           </SidebarItems>
         </Sidebar>
