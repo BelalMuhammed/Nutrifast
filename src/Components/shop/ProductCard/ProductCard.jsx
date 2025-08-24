@@ -50,9 +50,9 @@ function ProductCard({ product, viewMode = "grid" }) {
   let CardContent;
   if (viewMode === "list") {
     CardContent = (
-      <div className="flex gap-6 items-center bg-white rounded-2xl p-5 shadow-sm w-full min-w-0 relative transition-transform duration-200 hover:shadow-md group border border-gray-100">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center bg-white rounded-2xl p-4 sm:p-5 shadow-sm w-full min-w-0 relative transition-transform duration-200 hover:shadow-md group border border-gray-100">
         {/* Image */}
-        <div className="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden">
+        <div className="w-full sm:w-32 h-40 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden relative mb-3 sm:mb-0">
           <Link to={`/product/${id}`}>
             <img
               src={image}
@@ -76,38 +76,39 @@ function ProductCard({ product, viewMode = "grid" }) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between mb-3">
+        <div className="flex-1 min-w-0 flex flex-col">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 sm:mb-3 gap-2 sm:gap-0">
             <Link to={`/product/${id}`}>
-              <h3 className="text-xl font-bold text-app-tertiary hover:text-app-primary transition-colors duration-200 mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-app-tertiary hover:text-app-primary transition-colors duration-200 mb-1 sm:mb-2">
                 {name}
               </h3>
             </Link>
             <button
               onClick={handleWishlistToggle}
-              className={`flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 border border-gray-200 transition-colors duration-200 hover:bg-red-50 ${
+              className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 border border-gray-200 transition-colors duration-200 hover:bg-red-50 ${
                 isInWishlist ? "text-red-500" : "text-gray-400"
-              } ml-4`}
+              } sm:ml-4`}
               aria-label={
                 isInWishlist ? "Remove from wishlist" : "Add to wishlist"
               }
             >
-              <FaHeart size={20} />
+              <FaHeart size={18} className="sm:size-20" />
             </button>
           </div>
 
-          <p className="text-gray-600 mb-3 line-clamp-2">{description}</p>
+          <p className="text-gray-600 mb-2 sm:mb-3 text-sm sm:text-base line-clamp-2">
+            {description}
+          </p>
 
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3 sm:mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-app-accent">
+              <span className="text-xs sm:text-sm font-medium text-app-accent">
                 Calories:
               </span>
-              <span className="text-base font-semibold text-app-tertiary">
+              <span className="text-sm sm:text-base font-semibold text-app-tertiary">
                 {calories || "N/A"} kcal
               </span>
             </div>
-
             <div className="flex flex-wrap gap-2">
               {tags.slice(0, 3).map((tag) => (
                 <span
@@ -120,8 +121,8 @@ function ProductCard({ product, viewMode = "grid" }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-app-primary">
+          <div className="flex items-center justify-between mt-auto">
+            <span className="text-lg sm:text-2xl font-bold text-app-primary">
               {price} EGP
             </span>
             <AddButton product={product} />

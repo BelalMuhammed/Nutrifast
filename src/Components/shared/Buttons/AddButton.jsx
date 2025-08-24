@@ -62,7 +62,6 @@ function AddButton({ product, className = "" }) {
         className={`btn-app flex items-center ${
           isInCart ? "opacity-70" : ""
         } ${className}`}
-        disabled={isInCart}
       >
         <HiOutlineShoppingBag size={22} className="me-2" />
         <span>{isInCart ? "In Cart" : "Add to cart"}</span>
