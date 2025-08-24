@@ -529,22 +529,38 @@ function Shop() {
                             </button>
                           </>
                         ) : (
-                          <button
-                            onClick={() => window.location.reload()}
-                            className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
-                            style={{
-                              backgroundColor: "#388e3c",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.target.style.backgroundColor = "#4caf50")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.target.style.backgroundColor = "#388e3c")
-                            }
-                          >
-                            <FiSearch size={18} />
-                            Reset filter
-                          </button>
+                          <div className="w-full flex justify-center">
+                            <button
+                              onClick={() => {
+                                setLocalSearchTerm("");
+                                setDisplayedCount(12);
+                                setSortOption("");
+                                setOptimisticFilters({
+                                  Categories: [],
+                                  DietTypes: [],
+                                  MedicalConditions: [],
+                                  Allergens: [],
+                                  CaloriesRange: [0, 1000],
+                                });
+                                navigate("/shop");
+                                dispatch(resetToAllProducts());
+                                dispatch(fetchProducts());
+                              }}
+                              className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                              style={{
+                                backgroundColor: "#388e3c",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.target.style.backgroundColor = "#4caf50")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.target.style.backgroundColor = "#388e3c")
+                              }
+                            >
+                              <FiSearch size={18} />
+                              Reset filter
+                            </button>
+                          </div>
                         )}
                       </div>
                     </div>
