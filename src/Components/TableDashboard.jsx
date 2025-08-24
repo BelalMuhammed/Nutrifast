@@ -140,7 +140,8 @@ export default function TableDashboard({
               <button
                 title='Edit product'
                 className='p-1.5 sm:p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Edit product", row.original)}>
+                onClick={() => navigate(`/dashboard/EditProduct/${row.original.id}`)}>
+
                 <HiPencil size={14} className='sm:w-4 sm:h-4' />
               </button>
               <button

@@ -84,7 +84,7 @@ function CheckboxDropdown({ label, options, registerName, register }) {
 
       {/* Dropdown button */}
       <div
-        className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 cursor-pointer hover:border-green-600 hover:bg-white transition-all duration-300 flex items-center justify-between shadow-sm'
+        className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 cursor-pointer hover:border-green-600 hover:bg-white transition-all duration-300 flex items-center justify-between shadow-sm'
         onClick={() => setOpen(!open)}>
         <span
           className={`text-sm font-medium ${selected.length > 0 ? "text-gray-900" : "text-gray-600"
@@ -100,7 +100,7 @@ function CheckboxDropdown({ label, options, registerName, register }) {
       {/* Dropdown content */}
       {open && (
         <div className='absolute z-20 mt-2 w-full bg-white border-2 border-gray-300 rounded-xl shadow max-h-48 overflow-y-auto'>
-          <div className='p-4 space-y-3'>
+          <div className='p-2 space-y-3'>
             {options.map((opt) => (
               <label
                 key={opt.id}
@@ -139,7 +139,7 @@ function TagsInput({ control, name, label }) {
           <label className='block text-sm font-bold text-gray-800 mb-3'>
             {label}
           </label>
-          <div className='flex flex-wrap gap-3 border-2 border-gray-300 rounded-xl p-4 bg-gray-50 min-h-[60px] focus-within:border-green-600 focus-within:bg-white transition-all duration-300'>
+          <div className='flex flex-wrap gap-3 border-2 border-gray-300 rounded-xl p-2 bg-gray-50 min-h-[60px] focus-within:border-green-600 focus-within:bg-white transition-all duration-300'>
             {field.value.map((tag, idx) => (
               <span
                 key={idx}
@@ -235,7 +235,7 @@ export default function AddProducts() {
   };
 
   return (
-    <div className='min-h-screen  p-4 sm:p-6 lg:p-8'>
+    <div className='min-h-screen  p-2 sm:p-6 lg:p-8'>
       <div className='mx-auto'>
         {/* Header Section */}
         <div className='bg-white rounded-2xl shadow border border-gray-200 p-6 sm:p-8 mb-6'>
@@ -273,7 +273,7 @@ export default function AddProducts() {
                   {...register("name", {
                     required: "Product name is required",
                   })}
-                  className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                  className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='Whole Wheat Sourdough Bread'
                 />
                 {errors.name && (
@@ -292,7 +292,7 @@ export default function AddProducts() {
                   {...register("category", {
                     required: "Category is required",
                   })}
-                  className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm font-medium'>
+                  className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm font-medium'>
                   <option value=''>-- Select Category --</option>
                   {categories.map((c) => (
                     <option key={c.id} value={c.name}>
@@ -359,7 +359,7 @@ export default function AddProducts() {
                     min: 0,
                     valueAsNumber: true
                   })}
-                  className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                  className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='69'
                 />
                 {errors.calories && (
@@ -380,7 +380,7 @@ export default function AddProducts() {
                     min: 1,
                     valueAsNumber: true
                   })}
-                  className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                  className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='55'
                 />
                 {errors.price && (
@@ -400,7 +400,7 @@ export default function AddProducts() {
                 </label>
                 <input
                   {...register("weight")}
-                  className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                  className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='500g'
                 />
               </div>
@@ -410,7 +410,7 @@ export default function AddProducts() {
                 </label>
                 <input
                   {...register("brand")}
-                  className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                  className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   placeholder='HealthyHub Bakery'
                 />
               </div>
@@ -430,7 +430,7 @@ export default function AddProducts() {
               <textarea
                 {...register("description")}
                 rows={4}
-                className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 resize-vertical font-medium'
+                className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 resize-vertical font-medium'
                 placeholder='Freshly baked whole wheat sourdough bread with a perfect balance of nutrition and taste...'
               />
             </div>
@@ -442,7 +442,7 @@ export default function AddProducts() {
               </label>
               <select
                 {...register("stock")}
-                className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm font-medium'>
+                className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm font-medium'>
                 <option value='in-stock'>In Stock</option>
                 <option value='out-of-stock'>Out of Stock</option>
               </select>
@@ -492,7 +492,7 @@ export default function AddProducts() {
                     })}
                     onChange={(e) => setImagePreview(e.target.value)}
                     placeholder='https://example.com/image.jpg'
-                    className='w-full border-2 border-gray-300 rounded-xl p-4 pr-12 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                    className='w-full border-2 border-gray-300 rounded-xl p-2 pr-12 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                   />
                   <PhotoIcon className='absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-600' />
                 </div>
@@ -527,7 +527,7 @@ export default function AddProducts() {
                 type='number'
                 step='0.1'
                 {...register("rating", { min: 0, max: 5, valueAsNumber: true })}
-                className='w-full border-2 border-gray-300 rounded-xl p-4 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
+                className='w-full border-2 border-gray-300 rounded-xl p-2 bg-gray-50 focus:border-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-300 text-sm placeholder-gray-600 font-medium'
                 placeholder='4.5'
 
               />

@@ -77,9 +77,9 @@ export const deleteProduct = createAsyncThunk(
 //  Update product by id
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
-  async ({ id, updatedData }, { rejectWithValue }) => {
+  async ({ id, data }, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.put(`/products/${id}`, updatedData);
+      const res = await axiosInstance.put(`/products/${id}`, data);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

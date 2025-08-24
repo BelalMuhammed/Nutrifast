@@ -18,6 +18,7 @@ import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import AdminLogin from "@/Pages/Auth/AdminLogin";
 import ProductFilters from "@/dashboard/pages/ProductFilters";
 import TestDash from "@/Components/testDash";
+import EditProduct from "@/dashboard/pages/EditProduct";
 
 const Role = lazy(() => import("../../Pages/Auth/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -141,6 +142,7 @@ export default function AppRoutes() {
             { path: "vendorList", element: <VendorList /> },
             { path: "vendorApplications", element: <VendorsApplications /> },
             { path: "productsFilters", element: <ProductFilters /> },
+            { path: "EditProduct/:id", element: <EditProduct /> },
           ],
         },
 
