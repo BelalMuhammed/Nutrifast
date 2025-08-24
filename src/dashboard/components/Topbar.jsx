@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { FiMenu, FiSearch, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
 import { HiBell, HiMoon } from "react-icons/hi";
+import { IoMdHome } from "react-icons/io";
 
 export default function DashboardTopbar({ onMenuClick }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const handleOpenNewTab = () => {
+    window.open("/", "_blank"); // 👈 "_blank" means new tab
+  };
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow-md z-40">
       <div className="max-w-screen-xl ms-auto mx-auto flex items-center  px-4 py-3 md:ml-64">
@@ -34,6 +37,10 @@ export default function DashboardTopbar({ onMenuClick }) {
         <div className="flex items-center gap-3 md:gap-4 ms-auto">
           <button className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
             <HiMoon size={20} />
+          </button>
+
+          <button onClick={() => { handleOpenNewTab() }} className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
+            <IoMdHome size={20} />
           </button>
           <button className="p-2 rounded-full hover:bg-gray-100 relative transition-transform hover:scale-110">
             <HiBell size={20} />

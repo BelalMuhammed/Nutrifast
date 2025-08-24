@@ -9,7 +9,7 @@ import { logout } from "../../Redux/slices/authSlice";
 import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
 import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 import logoImg from "/logo-light.png";
-import { getCurrentUser} from "../../lib/storage";
+import { getCurrentUser } from "../../lib/storage";
 // Import components
 import DesktopMenu from "./DesktopMenu";
 import CartWishlistIcons from "./CartWishlistIcons";
