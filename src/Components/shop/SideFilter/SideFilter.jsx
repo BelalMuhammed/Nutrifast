@@ -15,11 +15,7 @@ const HandleWithTooltip = ({ value, ...restProps }) => (
   </Tooltip>
 );
 
-function SideFilter({
-  products = [],
-  onFilter,
-  initialFilters = {},
-}) {
+function SideFilter({ products = [], onFilter, initialFilters = {}, onClose }) {
   // Filter groups (excluding CaloriesRange)
   const [filters, setFilters] = useState({
     Categories: [],
@@ -89,9 +85,19 @@ function SideFilter({
   }, [selectedFilters, products, onFilter]);
 
   return (
-    <Sidebar className="bg-white rounded-xl shadow-sm w-full  border border-gray-100">
-      <div className="px-6 pt-6 pb-2 relative">
-    
+    <Sidebar className="bg-white rounded-xl shadow-sm w-full border border-gray-100 relative">
+      {/* Show close button only if onClose prop is provided (Drawer context) */}
+      {onClose && (
+        <button
+          className="absolute top-4 right-4 z-50 bg-white rounded-full p-2 shadow hover:bg-gray-100 transition-colors"
+          style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+          aria-label="Close Filters"
+          onClick={onClose}
+        >
+          <FiX size={22} className="text-gray-500" />
+        </button>
+      )}
+      <div className="px-6 pt-6 pb-2">
         <h2 className="text-2xl font-bold text-app-secondary mb-6 text-center tracking-tight">
           Product Filters
         </h2>

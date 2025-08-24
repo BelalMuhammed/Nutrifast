@@ -48,14 +48,14 @@ function AddButton({ product }) {
       <button
         onClick={handleAddToCart}
         className={`btn-app flex items-center ${isInCart ? "opacity-70" : ""}`}
-        disabled={isInCart}>
-        <HiOutlineShoppingBag size={22} className='me-2' />
+      >
+        <HiOutlineShoppingBag size={22} className="me-2" />
         <span>{isInCart ? "In Cart" : "Add to cart"}</span>
       </button>
 
       {/* Flowbite Toast Notification */}
       {showToast && (
-        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-xs w-full'>
+        <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-xs w-full">
           <Toast>
             <div
               className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
@@ -64,14 +64,15 @@ function AddButton({ product }) {
                   : toastType === "error"
                   ? "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
                   : "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
-              }`}>
+              }`}
+            >
               {toastType === "warning" || toastType === "error" ? (
-                <HiExclamation className='h-5 w-5' />
+                <HiExclamation className="h-5 w-5" />
               ) : (
-                <HiCheck className='h-5 w-5' />
+                <HiCheck className="h-5 w-5" />
               )}
             </div>
-            <div className='ml-3 text-sm font-normal'>
+            <div className="ml-3 text-sm font-normal">
               {toastType === "warning"
                 ? "Product is already in your cart!"
                 : toastType === "error"

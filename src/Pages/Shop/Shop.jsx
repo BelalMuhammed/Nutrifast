@@ -142,34 +142,34 @@ function Shop() {
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div className="text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start gap-3 mb-3">
-                <div className="bg-app-primary/10 p-3 rounded-xl">
-                  <FiShoppingBag className="text-app-primary" size={32} />
-                </div>
-                <div className="min-w-0">
-                  <h1 className="text-2xl lg:text-3xl font-bold text-app-secondary break-words">
-                    {searchName ? "Search Results" : "Shop All Products"}
-                  </h1>
-                  <p className="text-gray-600 mt-1 text-sm lg:text-base break-words">
-                    {searchName ? (
-                      <>
-                        Showing results for "
-                        <span className="font-semibold text-app-primary">
-                          {searchName}
-                        </span>
-                        "
-                      </>
-                    ) : (
-                      "Discover our complete collection of healthy products"
-                    )}
-                  </p>
-                </div>
+              <div className="min-w-0">
+                <h1 className="text-2xl lg:text-3xl font-bold text-app-secondary break-words">
+                  {searchName ? "Search Results" : null}
+                </h1>
+                <p className="text-gray-600 mt-1 text-sm lg:text-base break-words">
+                  {searchName ? (
+                    <>
+                      Showing results for "
+                      <span className="font-semibold text-app-primary">
+                        {searchName}
+                      </span>
+                      "
+                    </>
+                  ) : (
+                    "Discover our complete collection of healthy products"
+                  )}
+                </p>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Search Bar */}
-            <div className="w-full lg:max-w-md">
-              <div className="flex items-center gap-2 bg-white rounded-2xl shadow-lg border border-gray-200 px-3 lg:px-4 py-3">
+        {/* Controls Bar */}
+        <div className="mb-8">
+          {/* Search Bar above controls */}
+          <div className="mb-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 bg-white rounded-2xl border border-gray-200 px-3 lg:px-4 py-3">
                 <FiSearch
                   className="text-app-primary flex-shrink-0"
                   size={20}
@@ -201,119 +201,6 @@ function Shop() {
           </div>
         </div>
 
-        {/* Controls Bar */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 lg:p-4 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            {/* Results Count (no filter toggle) */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between lg:justify-start gap-4">
-              <span className="text-gray-600 font-medium text-sm lg:text-base">
-                {loading
-                  ? "Loading..."
-                  : `Showing ${displayedProducts.length} of ${sortedProducts.length} products`}
-              </span>
-            </div>
-
-            {/* View Controls */}
-            <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4">
-              {/* Sort Options */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full xl:w-auto">
-                <span className="text-gray-600 text-sm font-medium whitespace-nowrap">
-                  Sort by:
-                </span>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <button
-                    onClick={() =>
-                      setSortOption(
-                        sortOption === "name-asc" ? "name-desc" : "name-asc"
-                      )
-                    }
-                    className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                      sortOption.startsWith("name")
-                        ? "bg-app-primary text-white shadow-md"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    Name{" "}
-                    {sortOption === "name-asc"
-                      ? "↑"
-                      : sortOption === "name-desc"
-                      ? "↓"
-                      : ""}
-                  </button>
-                  <button
-                    onClick={() =>
-                      setSortOption(
-                        sortOption === "price-asc" ? "price-desc" : "price-asc"
-                      )
-                    }
-                    className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                      sortOption.startsWith("price")
-                        ? "bg-app-primary text-white shadow-md"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    Price{" "}
-                    {sortOption === "price-asc"
-                      ? "↑"
-                      : sortOption === "price-desc"
-                      ? "↓"
-                      : ""}
-                  </button>
-                  <button
-                    onClick={() =>
-                      setSortOption(
-                        sortOption === "rating-desc"
-                          ? "rating-asc"
-                          : "rating-desc"
-                      )
-                    }
-                    className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                      sortOption.startsWith("rating")
-                        ? "bg-app-primary text-white shadow-md"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    Top Rated{" "}
-                    {sortOption === "rating-desc"
-                      ? "⭐"
-                      : sortOption === "rating-asc"
-                      ? "↑"
-                      : ""}
-                  </button>
-                </div>
-              </div>
-
-              {/* View Mode Toggle */}
-              <div className="flex items-center bg-gray-100 rounded-xl p-1 ml-auto xl:ml-0">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded-lg transition-all duration-200 ${
-                    viewMode === "grid"
-                      ? "bg-white text-app-primary shadow-sm"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                  aria-label="Grid view"
-                  title="Grid View"
-                >
-                  <FiGrid size={20} />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded-lg transition-all duration-200 ${
-                    viewMode === "list"
-                      ? "bg-white text-app-primary shadow-sm"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                  aria-label="List view"
-                  title="List View"
-                >
-                  <FiList size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
           {/* Sidebar Filters */}
@@ -332,6 +219,7 @@ function Shop() {
                     products={products}
                     onFilter={setFilteredProducts}
                     initialFilters={initialFilters}
+                    onClose={() => setDrawerOpen(false)}
                   />
                 </DrawerItems>
               </Drawer>
@@ -356,6 +244,112 @@ function Shop() {
               </div>
             ) : sortedProducts.length > 0 ? (
               <>
+                {/* Perfect Responsive Product Count, Sort Controls, and View Mode Toggle above cards */}
+                <div className="w-full flex flex-wrap items-center justify-between mb-4 gap-2 sm:gap-4">
+                  <span className="text-xs sm:text-sm text-gray-500 font-normal mb-2 sm:mb-0">
+                    Showing {displayedProducts.length} of{" "}
+                    {sortedProducts.length} products
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs sm:text-sm text-gray-600 font-medium whitespace-nowrap">
+                        Sort by:
+                      </span>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() =>
+                            setSortOption(
+                              sortOption === "name-asc"
+                                ? "name-desc"
+                                : "name-asc"
+                            )
+                          }
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                            sortOption.startsWith("name")
+                              ? "bg-app-primary text-white shadow-md"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          }`}
+                        >
+                          Name{" "}
+                          {sortOption === "name-asc"
+                            ? "↑"
+                            : sortOption === "name-desc"
+                            ? "↓"
+                            : ""}
+                        </button>
+                        <button
+                          onClick={() =>
+                            setSortOption(
+                              sortOption === "price-asc"
+                                ? "price-desc"
+                                : "price-asc"
+                            )
+                          }
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                            sortOption.startsWith("price")
+                              ? "bg-app-primary text-white shadow-md"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          }`}
+                        >
+                          Price{" "}
+                          {sortOption === "price-asc"
+                            ? "↑"
+                            : sortOption === "price-desc"
+                            ? "↓"
+                            : ""}
+                        </button>
+                        <button
+                          onClick={() =>
+                            setSortOption(
+                              sortOption === "rating-desc"
+                                ? "rating-asc"
+                                : "rating-desc"
+                            )
+                          }
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                            sortOption.startsWith("rating")
+                              ? "bg-app-primary text-white shadow-md"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          }`}
+                        >
+                          Top Rated{" "}
+                          {sortOption === "rating-desc"
+                            ? "⭐"
+                            : sortOption === "rating-asc"
+                            ? "↑"
+                            : ""}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center bg-gray-100 rounded-xl p-1 mt-2 sm:mt-0">
+                      <button
+                        onClick={() => setViewMode("grid")}
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                          viewMode === "grid"
+                            ? "bg-white text-app-primary shadow-sm"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}
+                        aria-label="Grid view"
+                        title="Grid View"
+                      >
+                        <FiGrid size={18} className="sm:size-5" />
+                      </button>
+                      <button
+                        onClick={() => setViewMode("list")}
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                          viewMode === "list"
+                            ? "bg-white text-app-primary shadow-sm"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}
+                        aria-label="List view"
+                        title="List View"
+                      >
+                        <FiList size={18} className="sm:size-5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 <div
                   className={`w-full ${
                     viewMode === "grid"
@@ -374,33 +368,17 @@ function Shop() {
 
                 {/* Show More Button */}
                 {hasMoreProducts && (
-                  <div className="flex justify-center mt-8">
+                  <div className="w-full flex justify-center mt-4">
                     <button
                       onClick={handleShowMore}
-                      className="text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
-                      style={{
-                        backgroundColor: "#388e3c",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#4caf50")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "#388e3c")
-                      }
+                      className="text-gray-500 font-normal text-base underline hover:text-gray-700 transition-colors duration-200 bg-transparent p-0 m-0 border-none shadow-none flex items-center gap-2"
+                      style={{ background: "none" }}
                     >
                       <span>Show More Products</span>
-                      <FiChevronDown className="rotate-180" size={18} />
+                      <FiChevronDown size={18} />
                     </button>
                   </div>
                 )}
-
-                {/* Products count info */}
-                <div className="text-center mt-6 text-gray-600">
-                  <p className="text-sm">
-                    Showing {displayedProducts.length} of{" "}
-                    {sortedProducts.length} products
-                  </p>
-                </div>
               </>
             ) : (
               <div className="flex flex-col items-center justify-center  px-4">

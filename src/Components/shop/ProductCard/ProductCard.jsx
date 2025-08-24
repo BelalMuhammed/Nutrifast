@@ -51,10 +51,10 @@ function ProductCard({ product, viewMode = "grid" }) {
   // List View Layout
   if (viewMode === "list") {
     return (
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md group">
-        <div className="flex items-center gap-6">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md group">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 flex-wrap">
           {/* Image */}
-          <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
+          <div className="relative w-full h-32 sm:w-32 sm:h-32 rounded-xl overflow-hidden flex-shrink-0 mb-3 sm:mb-0">
             <Link to={`/product/${id}`}>
               <img
                 src={image}
@@ -78,34 +78,36 @@ function ProductCard({ product, viewMode = "grid" }) {
           </div>
 
           {/* Content */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between mb-3">
+          <div className="flex-1 min-w-0 w-full">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2">
               <Link to={`/product/${id}`}>
-                <h3 className="text-xl font-bold text-app-tertiary hover:text-app-primary transition-colors duration-200 mb-2">
+                <h3 className="text-base sm:text-xl font-bold text-app-tertiary hover:text-app-primary transition-colors duration-200 mb-2">
                   {name}
                 </h3>
               </Link>
               <button
                 onClick={handleWishlistToggle}
-                className={`flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 border border-gray-200 transition-colors duration-200 hover:bg-red-50 ${
+                className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 border border-gray-200 transition-colors duration-200 hover:bg-red-50 ${
                   isInWishlist ? "text-red-500" : "text-gray-400"
-                } ml-4`}
+                } ml-0 sm:ml-4`}
                 aria-label={
                   isInWishlist ? "Remove from wishlist" : "Add to wishlist"
                 }
               >
-                <FaHeart size={20} />
+                <FaHeart size={18} className="sm:size-5" />
               </button>
             </div>
 
-            <p className="text-gray-600 mb-3 line-clamp-2">{description}</p>
+            <p className="text-gray-600 mb-3 line-clamp-2 text-sm sm:text-base">
+              {description}
+            </p>
 
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-app-accent">
+                <span className="text-xs sm:text-sm font-medium text-app-accent">
                   Calories:
                 </span>
-                <span className="text-base font-semibold text-app-tertiary">
+                <span className="text-sm sm:text-base font-semibold text-app-tertiary">
                   {calories || "N/A"} kcal
                 </span>
               </div>
@@ -122,8 +124,8 @@ function ProductCard({ product, viewMode = "grid" }) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-app-primary">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+              <span className="text-lg sm:text-2xl font-bold text-app-primary">
                 {price} EGP
               </span>
               <AddButton product={product} />
