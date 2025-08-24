@@ -30,10 +30,8 @@ export const useWishlist = () => {
   useEffect(() => {
     if (isAuthenticated && isOnline) {
       dispatch(fetchWishlist());
-    } else if (!isAuthenticated) {
-      // Clear wishlist data when user is not authenticated
-      dispatch(clearUserData());
     }
+    // Do NOT clear wishlist for guests; only clear on explicit logout
   }, [dispatch, isAuthenticated, isOnline]);
 
   // Monitor online status

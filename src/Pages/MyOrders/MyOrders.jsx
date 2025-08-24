@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { formatDateTime } from "../../lib/dateFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -36,10 +37,13 @@ function MyOrders() {
     }
   }, [dispatch, user?.id]);
 
-  const filteredOrders =
+  const filteredOrders = (
     activeTab === "All"
       ? orders
-      : orders.filter((order) => order.status === activeTab);
+      : orders.filter((order) => order.status === activeTab)
+  )
+    .slice()
+    .reverse();
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -207,15 +211,16 @@ function MyOrders() {
                       <FiPackage className='text-app-primary' size={20} />
                     </div>
                     <div>
-                      <h3 className='font-bold text-app-secondary text-lg'>
+                      <Link
+                        to={`/order/${order.id}`}
+                        className='font-bold text-app-secondary text-lg hover:text-app-primary transition-colors duration-200 underline-offset-2 hover:underline focus:underline focus:outline-none'
+                        tabIndex={0}
+                        aria-label={`View details for order #${order.id}`}
+                      >
                         Order #{order.id}
-                      </h3>
+                      </Link>
                       <p className='text-sm text-gray-500'>
-                        Placed on{" "}
-                        {new Date(order.date).toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
+                        Placed on {formatDateTime(order.date)}
                       </p>
                     </div>
                   </div>

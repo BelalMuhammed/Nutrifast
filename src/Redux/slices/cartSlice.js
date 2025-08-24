@@ -14,9 +14,8 @@ function loadCart() {
 
 function saveCart(cartItems) {
   try {
-    // Only save if user is authenticated
-    const currentUser = localStorage.getItem("currentUser");
-    if (currentUser && cartItems) {
+    // Always save cart, even for guests
+    if (cartItems) {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
   } catch {
@@ -99,6 +98,7 @@ const cartSlice = createSlice({
     error: null,
     lastSyncTime: null,
     isOnline: true,
+    isProcessingPartialOrder: false,
   },
   reducers: {
     // Local-only actions (for offline mode)
@@ -138,6 +138,10 @@ const cartSlice = createSlice({
       state.cartItems = [];
       saveCart(state.cartItems);
     },
+    setCartItems: (state, action) => {
+      state.cartItems = action.payload;
+      saveCart(state.cartItems);
+    },
     // New action to handle user logout
     clearUserData: (state) => {
       state.cartItems = [];
@@ -153,6 +157,9 @@ const cartSlice = createSlice({
     },
     setOnlineStatus: (state, action) => {
       state.isOnline = action.payload;
+    },
+    setProcessingPartialOrder: (state, action) => {
+      state.isProcessingPartialOrder = action.payload;
     },
     clearError: (state) => {
       state.error = null;
@@ -245,8 +252,10 @@ export const {
   decreaseQtyLocal,
   updateQuantityLocal,
   clearCartLocal,
+  setCartItems,
   clearUserData,
   setOnlineStatus,
+  setProcessingPartialOrder,
   clearError,
 } = cartSlice.actions;
 
