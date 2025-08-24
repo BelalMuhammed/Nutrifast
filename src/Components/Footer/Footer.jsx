@@ -93,7 +93,7 @@ function Footer() {
               {/* Logo */}
               <div className="flex items-center mb-4 sm:mb-6">
                 <img
-                  src="../../../public/Group 12 (1).png"
+                  src="../../../public/logo-dark.png"
                   alt="NutriFast Logo"
                   className="h-10 sm:h-12 w-auto"
                 />
@@ -113,14 +113,14 @@ function Footer() {
                 INFORMATION
               </h3>
               <ul className="space-y-1 sm:space-y-2">
-                 <li>
+                <li>
                   <Link
                     to="/#about"
                     className="text-gray-600 hover:text-app-accent transition text-xs sm:text-sm block py-1"
                   >
                     About us
                   </Link>
-                </li> 
+                </li>
                 {/* <li>
                   <Link
                     to="#"
