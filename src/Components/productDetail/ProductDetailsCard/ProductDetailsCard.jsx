@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddButton from "../../shared/Buttons/AddButton";
-import { Rating, RatingStar } from "flowbite-react";
 import { CiWarning } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleWishlistItem } from "../../../Redux/slices/wishListSlice";
-import { Toast, ToastToggle } from "flowbite-react";
+import ToastNotification from "../../shared/ToastNotification";
 import { HiCheck, HiX } from "react-icons/hi";
 import {
   FiStar,
@@ -19,8 +18,11 @@ import {
 
 const ProductDetailsCard = ({ selectedProduct }) => {
   const dispatch = useDispatch();
-  const [showWishlistToast, setShowWishlistToast] = useState(false);
-  const [wishlistToastType, setWishlistToastType] = useState("success");
+  const [wishlistToast, setWishlistToast] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
 
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const isInWishlist = wishlistItems.some(
@@ -28,18 +30,25 @@ const ProductDetailsCard = ({ selectedProduct }) => {
   );
 
   const handleWishlistToggle = () => {
-    if (isInWishlist) {
-      // Removing from wishlist
-      setWishlistToastType("removed");
-    } else {
-      // Adding to wishlist
-      setWishlistToastType("added");
-    }
-
     dispatch(toggleWishlistItem(selectedProduct));
-    setShowWishlistToast(true);
-    setTimeout(() => setShowWishlistToast(false), 4000);
+    setWishlistToast({
+      show: true,
+      type: isInWishlist ? "removed" : "success",
+      message: isInWishlist
+        ? `"${selectedProduct.name}" removed from wishlist!`
+        : `"${selectedProduct.name}" added to wishlist!`,
+    });
   };
+
+  // Auto-dismiss toast after 2.5 seconds
+  useEffect(() => {
+    if (wishlistToast.show) {
+      const timer = setTimeout(() => {
+        setWishlistToast((prev) => ({ ...prev, show: false }));
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [wishlistToast.show]);
   return (
     <div className='bg-white rounded-2xl shadow border border-gray-100 overflow-hidden  mx-auto'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 lg:min-h-[600px] items-stretch'>
@@ -314,30 +323,12 @@ const ProductDetailsCard = ({ selectedProduct }) => {
       </div>
 
       {/* Wishlist Toast Notification */}
-      {showWishlistToast && (
-        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[9999] max-w-xs w-full'>
-          <Toast>
-            <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                wishlistToastType === "removed"
-                  ? "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
-                  : "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200"
-              }`}>
-              {wishlistToastType === "removed" ? (
-                <HiX className='h-5 w-5' />
-              ) : (
-                <HiCheck className='h-5 w-5' />
-              )}
-            </div>
-            <div className='ml-3 text-sm font-normal'>
-              {wishlistToastType === "removed"
-                ? `"${selectedProduct.name}" removed from wishlist!`
-                : `"${selectedProduct.name}" added to wishlist!`}
-            </div>
-            <ToastToggle onDismiss={() => setShowWishlistToast(false)} />
-          </Toast>
-        </div>
-      )}
+      <ToastNotification
+        show={wishlistToast.show}
+        message={wishlistToast.message}
+        type={wishlistToast.type === "removed" ? "error" : "success"}
+        onClose={() => setWishlistToast((prev) => ({ ...prev, show: false }))}
+      />
     </div>
   );
 };

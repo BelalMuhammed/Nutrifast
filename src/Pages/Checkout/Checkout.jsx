@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { Toast, ToastToggle } from "flowbite-react";
+import ToastNotification from "../../Components/shared/ToastNotification";
 import {
   HiCheck,
   HiX,
@@ -524,30 +524,12 @@ export default function Checkout() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 -mt-16 pt-24'>
       {/* Toast Notifications */}
-      {toast.show && (
-        <div className='fixed bottom-5 right-5 z-50 animate-slide-in-right'>
-          <Toast>
-            <div
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                toast.type === "success"
-                  ? "bg-green-100 text-green-500"
-                  : toast.type === "error"
-                  ? "bg-red-100 text-red-500"
-                  : "bg-blue-100 text-blue-500"
-              }`}>
-              {toast.type === "success" ? (
-                <HiCheck className='h-5 w-5' />
-              ) : toast.type === "error" ? (
-                <HiX className='h-5 w-5' />
-              ) : (
-                <HiInformationCircle className='h-5 w-5' />
-              )}
-            </div>
-            <div className='ml-3 text-sm font-medium'>{toast.message}</div>
-            <ToastToggle onClick={() => setToast({ show: false })} />
-          </Toast>
-        </div>
-      )}
+      <ToastNotification
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ ...toast, show: false })}
+      />
 
       <div className='app-container py-8'>
         <div className='grid grid-cols-1 xl:grid-cols-12 gap-8'>
