@@ -87,6 +87,10 @@ import {
   HiUserAdd,
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { DropdownItem, Dropdown } from "flowbite-react";
+import { acceptVendor } from "@/Redux/slices/vendorDashboardSlice";
+import { useDispatch } from "react-redux";
+import ConfirmDialog from "./shared/ConfirmDialog";
 // import { deleteProduct } from "@/Redux/slices/productSlice";
 // import { useDispatch } from "react-redux";
 
@@ -103,10 +107,10 @@ export default function TableDashboard({
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-
+  const [openDialog, setOpenDialog] = useState(false);
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const columns = useMemo(() => {
     if (!data.length) return [];
 
@@ -185,14 +189,31 @@ export default function TableDashboard({
                 onClick={() => console.log("Remove order", row.original.id)}>
                 <HiUserRemove size={14} className='sm:w-4 sm:h-4' />
               </button>
-              <button
+              {/* <button
                 title='Change status'
                 className='p-1.5 sm:p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500  transition-all duration-300 shadow-sm'
                 onClick={() =>
                   console.log("Change order status", row.original.id)
                 }>
                 <LuSettings2 size={14} className='sm:w-4 sm:h-4' />
-              </button>
+              </button> */}
+              <Dropdown
+                className=" z-50"
+                renderTrigger={() => (
+                  <button
+                    title="Change status"
+                    className="p-1.5 sm:p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500 transition-all duration-300 shadow-sm"
+                  >
+                    <LuSettings2 size={14} className="sm:w-4 sm:h-4" />
+                  </button>
+                )}
+                dropdownClassName="z-50"
+              >
+                <DropdownItem onClick={() => alert("Dashboard!")}>Dashboard</DropdownItem>
+                <DropdownItem onClick={() => alert("Settings!")}>Settings</DropdownItem>
+                <DropdownItem onClick={() => alert("Earnings!")}>Earnings</DropdownItem>
+                <DropdownItem onClick={() => alert("Sign out!")}>Sign out</DropdownItem>
+              </Dropdown>
             </div>
           );
         } else if (type === "messages") {
@@ -207,9 +228,16 @@ export default function TableDashboard({
               <button
                 title='Delete message'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Delete message", row.original.id)}>
+                onClick={() => setOpenDialog(true)}>
+                {/* onClick={() => console.log("Delete message", row.original.id)}  */}
                 <HiTrash size={14} className='sm:w-4 sm:h-4' />
               </button>
+              <ConfirmDialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                onConfirm={alert(`${row.original.id} deleted`)}
+                message="Are you sure you want to delete this product?"
+              />
             </div>
           );
         } else if (type === "vendorApplications") {
@@ -218,9 +246,10 @@ export default function TableDashboard({
               <button
                 title='Approve vendor'
                 className='p-1.5 sm:p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Approve vendor", row.original.id)}>
+                onClick={() => dispatch(acceptVendor(row.original))}>
                 <HiCheckCircle size={14} className='sm:w-4 sm:h-4' />
               </button>
+              {/*  */}
               <button
                 title='Reject vendor'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
@@ -299,7 +328,7 @@ export default function TableDashboard({
   return (
     <div className='space-y-6 bg-gradient-to-br  via-white  min-h-screen pt-4 sm:pt-6 lg:pt-8 px-4 sm:px-6 lg:px-8'>
       {/* Header Section */}
-      <div className='flex   justify-between   w-full bg-gradient-to-r from-app-primary to-app-secondary rounded-xl sm:rounded-2xl p-4 sm:p-6  shadow-sm'>
+      <div className='flex  flex-wrap  justify-between   w-full bg-gradient-to-r from-app-primary to-app-secondary rounded-xl sm:rounded-2xl p-4 sm:p-6  shadow-sm'>
         <div className=" ">
           <h2 className='text-xl sm:text-2xl font-bold mb-2'>
             {type.charAt(0).toUpperCase() + type.slice(1)} Management

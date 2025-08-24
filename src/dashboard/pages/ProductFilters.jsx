@@ -10,6 +10,7 @@ import {
   FiAlertTriangle,
   FiCheck,
 } from "react-icons/fi";
+import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 
 function ProductFilters() {
   const [filters, setFilters] = useState({
@@ -235,11 +236,13 @@ function ProductFilters() {
   };
 
   if (loading) {
-    return (
-      <div className='flex items-center justify-center min-h-[400px]'>
-        <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-app-primary'></div>
-      </div>
-    );
+    return
+    //(
+    //   <div className='flex items-center justify-center min-h-[400px]'>
+    //     <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-app-primary'></div>
+    //   </div>
+    // );
+    <LoaderSpinner></LoaderSpinner>
   }
 
   return (
@@ -259,7 +262,7 @@ function ProductFilters() {
         <div className='max-w-7xl mx-auto'>
           {/* Header */}
           <div className='bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6'>
-            <div className='flex items-center justify-between'>
+            <div className='flex flex-wrap items-center justify-between'>
               <div className='flex items-center gap-4'>
                 <div className='w-12 h-12 bg-gradient-to-r from-app-primary to-app-secondary rounded-xl flex items-center justify-center shadow-sm'>
                   <FiEdit2 className='w-6 h-6 ' />
@@ -273,7 +276,7 @@ function ProductFilters() {
                   </p>
                 </div>
               </div>
-              <div className='flex gap-3'>
+              <div className='flex flex-wrap gap-3'>
                 <button
                   onClick={() => fetchFilters()}
                   disabled={loading}
@@ -329,13 +332,13 @@ function ProductFilters() {
                           key={item.id}
                           className='bg-gray-50 rounded-lg p-3 border border-gray-200 hover:border-app-primary/30 transition-all duration-200'>
                           <div className=''>
-                            <div className='flex '>
+                            <div className='flex flex-wrap w-full'>
                               {category === "Categories" && item.image && (
-                                <div className='mb-2'>
+                                <div className='mb-2 mx-auto'>
                                   <img
                                     src={item.image}
                                     alt={item.name}
-                                    className='w-12 h-12 rounded-lg object-cover border border-gray-200'
+                                    className='w-12 h-12 rounded-lg object-cover border mx-auto border-gray-200'
                                     onError={(e) => {
                                       e.target.style.display = "none";
                                     }}
@@ -345,7 +348,7 @@ function ProductFilters() {
 
 
 
-                              <div className="">
+                              <div className=" flex justify-content-between align-items-center w-full">
                                 <h4 className='font-medium text-gray-800 text-sm  ms-2'>
                                   {item.name}
                                 </h4>

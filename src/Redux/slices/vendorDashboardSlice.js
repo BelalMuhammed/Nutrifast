@@ -55,7 +55,7 @@ export const acceptVendor = createAsyncThunk(
 
     // 2. Remove vendor from applications
     if (vendor.id) {
-      await axiosInstance.delete(`/vendorApplications/${vendor.id}`);
+      await axiosInstance.delete(`/vendorRegistrations/${vendor.id}`);
     }
 
     // Refresh both lists
@@ -107,6 +107,13 @@ const vendorDashboardSlice = createSlice({
       .addCase(getAllVendorsApplications.fulfilled, (state, action) => {
         state.applications = action.payload;
       })
+      // .addCase(getAllVendorsApplications.pending, (state) => {
+      //   state.loading = true;
+      // })
+      // .addCase(getAllVendorsApplications.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.error.message;
+      // })
 
       // ✅ Remove vendor application
       .addCase(removeVendorApplicationById.fulfilled, (state, action) => {
