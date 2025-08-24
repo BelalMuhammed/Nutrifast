@@ -7,26 +7,26 @@ import { useDispatch, useSelector } from 'react-redux';
 function VendorList() {
     const dispatch = useDispatch();
 
-    // نجيب الـ state من الـ slice
+
     const { list: vendorDashboard, loading, error } = useSelector((state) => state.vendorDashboard);
 
-    // نعمل dispatch للـ fetchProducts أول ما الكومبوننت يركب
+
     useEffect(() => {
         dispatch(getAllVendors());
     }, [dispatch]);
 
     const filteredVendors = (vendorDashboard || []).map((v) => ({
         id: v.id,
-        businessName: v.businessName,
-        businessType: v.businessType,
-        website: v.websiteSocialLinks,
-        address: v.businessAddress,
-        contactName: v.contactDetails?.fullName,
-        email: v.contactDetails?.email,
-        phone: v.contactDetails?.phone,
-        categories: v.productServiceDetails?.categories?.join(", "),
-        nutritionalInfo: v.productServiceDetails?.providesNutritionalInfo,
-        healthCertificate: v.healthcertificatesLink ? "Available" : "Not Provided",
+        businessName: v.name,
+        // businessType: v.businessType,
+        // website: v.websiteSocialLinks,
+        address: v.address,
+        // contactName: v.contactDetails?.fullName,
+        email: v.email,
+        phone: v.phone,
+        // categories: v.productServiceDetails?.categories?.join(", "),
+        // nutritionalInfo: v.productServiceDetails?.providesNutritionalInfo,
+        // healthCertificate: v.healthcertificatesLink ? "Available" : "Not Provided",
     }));
     if (loading) return <LoaderSpinner />;
     if (error) return <p>Error: {error}</p>;

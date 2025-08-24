@@ -1,5 +1,6 @@
 "use client";
 
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useId, useMemo, useRef, useState } from "react";
 import {
   flexRender,
@@ -102,6 +103,8 @@ export default function TableDashboard({
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
+
+
   const navigate = useNavigate();
   // const dispatch = useDispatch()
   const columns = useMemo(() => {
@@ -154,15 +157,22 @@ export default function TableDashboard({
               <button
                 title='Block user'
                 className='p-1.5 sm:p-2 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Block user", row.original.id)}>
+                onClick={() => console.log("Block user", row.original.id)}
+
+              >
                 <HiBan size={14} className='sm:w-4 sm:h-4' />
               </button>
               <button
                 title='Remove user'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Remove user", row.original.id)}>
+                onClick={() => console.log("Remove user", row.original.id)}
+              >
+
                 <HiUserRemove size={14} className='sm:w-4 sm:h-4' />
               </button>
+
+
+
             </div>
           );
         } else if (type === "orders") {
@@ -416,7 +426,7 @@ export default function TableDashboard({
 
       <div className='bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden'>
         {/* ✅ Table Container with Horizontal Scroll */}
-        <div className='overflow-x-auto w-full hidden lg:block'>
+        <div className='overflow-x-auto w-full  lg:block'>
           <Table className='overflow-x-auto min-w-[900px] table-fixed'>
             <TableHeader>
               {table.getHeaderGroups().map((hg) => (
@@ -503,7 +513,7 @@ export default function TableDashboard({
 
 
       {/* Mobile cards */}
-      <div className='space-y-3 sm:space-y-4 lg:hidden px-2 sm:px-0'>
+      <div className='space-y-3 sm:space-y-4 hidden px-2 sm:px-0'>
         {table.getRowModel().rows.length ? (
           table.getRowModel().rows.map((row, index) => (
             <div
@@ -618,9 +628,9 @@ export default function TableDashboard({
           </div>
 
           {/* Pagination Controls */}
-          <div className='order-2 lg:order-3'>
-            <Pagination>
-              <PaginationContent className='flex flex-wrap justify-center lg:justify-end gap-1 sm:gap-2 items-center'>
+          <div className='order-2 lg:order-3 bg-transparent'>
+            <Pagination className="bg-transparent">
+              <PaginationContent className='bg-transparent flex flex-wrap justify-center lg:justify-end gap-1 sm:gap-2 items-center'>
                 <PaginationItem>
                   <Button
                     variant='outline'

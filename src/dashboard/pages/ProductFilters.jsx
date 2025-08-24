@@ -643,8 +643,8 @@ function ProductFilters() {
             <div className='flex items-center gap-4 mb-4'>
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center ${confirmDialog.type === "delete"
-                  ? "bg-red-100 text-red-600"
-                  : "bg-blue-100 text-blue-600"
+                  ? " text-red-600"
+                  : " text-blue-600"
                   }`}>
                 {confirmDialog.type === "delete" ? (
                   <FiAlertTriangle className='w-6 h-6' />

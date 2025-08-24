@@ -7,7 +7,7 @@ import { logout } from "../../Redux/slices/authSlice";
 import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
 import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 import logoImg from "/logo-light.png";
-import { getCurrentUser} from "../../lib/storage";
+import { getCurrentUser } from "../../lib/storage";
 // Import components
 import DesktopMenu from "./DesktopMenu";
 import CartWishlistIcons from "./CartWishlistIcons";
@@ -115,77 +115,80 @@ function Navbar() {
     : "bg-black/90 backdrop-blur-md";
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 text-white ${navbarBackgroundClass}`}
-    >
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="flex items-center flex-shrink-0"
-              onClick={handleHomeClick}
-            >
-              <img className="h-10 w-auto" src={logoImg} alt="Brand Logo" />
-            </Link>
-          </div>
-
-          {/* Desktop Menu */}
-          <DesktopMenu menuItems={menuItems} />
-
-          <div className="flex items-center space-x-4">
-            {/* Desktop Cart and Wishlist */}
-            <CartWishlistIcons
-              cartCount={cartCount}
-              wishlistCount={wishlistCount}
-            />
-
-            {/* Account */}
-            {user ? (
-              <UserDropdown
-                user={user}
-                userName={userName}
-                onLogout={handleLogout}
-                isActiveLink={isActiveLink}
-              />
-            ) : (
+    <section className="mainNav">
+      <nav
+        className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 text-white ${navbarBackgroundClass}`}
+      >
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center">
               <Link
-                to="/login"
-                className="hidden md:flex items-center py-2 px-4 bg-app-primary rounded-md text-white text-sm hover:bg-app-primary/90 transition"
+                to="/"
+                className="flex items-center flex-shrink-0"
+                onClick={handleHomeClick}
               >
-                Login
+                <img className="h-10 w-auto" src={logoImg} alt="Brand Logo" />
               </Link>
-            )}
+            </div>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-md hover:bg-white/10 focus:outline-none text-white"
-            >
-              {isOpen ? (
-                <FiX className="w-5 h-5" />
+            {/* Desktop Menu */}
+            <DesktopMenu menuItems={menuItems} />
+
+            <div className="flex items-center space-x-4">
+              {/* Desktop Cart and Wishlist */}
+              <CartWishlistIcons
+                cartCount={cartCount}
+                wishlistCount={wishlistCount}
+              />
+
+              {/* Account */}
+              {user ? (
+                <UserDropdown
+                  user={user}
+                  userName={userName}
+                  onLogout={handleLogout}
+                  isActiveLink={isActiveLink}
+                />
               ) : (
-                <FiMenu className="w-5 h-5" />
+                <Link
+                  to="/login"
+                  className="hidden md:flex items-center py-2 px-4 bg-app-primary rounded-md text-white text-sm hover:bg-app-primary/90 transition"
+                >
+                  Login
+                </Link>
               )}
-            </button>
+
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden p-2 rounded-md hover:bg-white/10 focus:outline-none text-white"
+              >
+                {isOpen ? (
+                  <FiX className="w-5 h-5" />
+                ) : (
+                  <FiMenu className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      <MobileMenu
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        menuItems={menuItems}
-        user={user}
-        userName={userName}
-        onLogout={handleLogout}
-        isActiveLink={isActiveLink}
-        cartCount={cartCount}
-        wishlistCount={wishlistCount}
-      />
-    </nav>
+        {/* Mobile Menu */}
+        <MobileMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          menuItems={menuItems}
+          user={user}
+          userName={userName}
+          onLogout={handleLogout}
+          isActiveLink={isActiveLink}
+          cartCount={cartCount}
+          wishlistCount={wishlistCount}
+        />
+      </nav>
+    </section>
+
   );
 }
 

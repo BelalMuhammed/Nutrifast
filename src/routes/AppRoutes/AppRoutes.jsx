@@ -17,6 +17,7 @@ import Products from "../../dashboard/pages/Products";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import AdminLogin from "@/Pages/Auth/AdminLogin";
 import ProductFilters from "@/dashboard/pages/ProductFilters";
+import TestDash from "@/Components/testDash";
 
 const Role = lazy(() => import("../../Pages/Auth/Role"));
 const Home = lazy(() => import("../../Pages/Home/Home"));
@@ -61,6 +62,10 @@ export default function AppRoutes() {
         {
           path: "reset-password",
           element: <ResetPassword />,
+        },
+        {
+          path: "testTable",
+          element: <TestDash />,
         },
         {
           path: "contact",
