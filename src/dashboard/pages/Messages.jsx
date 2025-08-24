@@ -38,6 +38,7 @@
 import LoaderSpinner from '@/Components/shared/Loaders/Loader';
 import TableDashboard from '@/Components/TableDashboard';
 import { fetchMessages } from '@/Redux/slices/messagesSlice';
+import { formatDateTime } from '../../lib/dateFormat';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -56,7 +57,7 @@ function Messages() {
             name: msg.name,
             email: msg.email,
             message: msg.message,
-            timestamp: new Date(msg.timestamp).toLocaleDateString(),
+            timestamp: formatDateTime(msg.timestamp),
 
         };
     }) || [];

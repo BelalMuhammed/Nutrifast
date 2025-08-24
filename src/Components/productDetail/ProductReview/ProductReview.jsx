@@ -74,21 +74,12 @@ const ProductReview = ({ productId }) => {
   const REVIEWS_TO_SHOW = 3;
 
   return (
-    <div className='flex items-start justify-center bg-white px-1 pt-2 mb-8 mt-20'>
+    <div className='flex items-start justify-center bg-white px-1 pt-2 mb-8 '>
       <div className='w-full max-w-6xl xl:max-w-7xl mx-auto bg-white '>
-        <h2 className='text-3xl font-bold mb-2 text-app-tertiary tracking-tight'>
-          Product Reviews
-        </h2>
+      
         {loading && <p className='text-app-primary'>Loading...</p>}
         {error && <p className='text-red-500 mb-2'>{error}</p>}
-        {!loading && (!reviews || reviews.length === 0) && (
-          <div className='flex flex-col items-center justify-center py-8'>
-            <span className='mb-2 opacity-60'>
-              <FaUserCircle size={64} className='mx-auto text-gray-400' />
-            </span>
-            <p className='text-gray-400 text-lg'>No reviews yet.</p>
-          </div>
-        )}
+        
         {reviews && reviews.length > 0 && (
           <>
             <ul className='mb-8'>

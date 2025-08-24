@@ -38,12 +38,12 @@ const VendorsLogo = () => {
   }
 
   return (
-    <section className='w-full  py-12 '>
+    <section className='w-full  py-10 '>
       <div className='text-center mb-8 px-2'>
-        <h2 className='text-2xl sm:text-3xl font-extrabold text-app-primary mb-2'>
+        <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2 '>
           Our Local Vendor Partners
         </h2>
-        <p className='text-gray-700 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed'>
+        <p className='text-gray-700 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed'>
           At NutriFast, we believe in the power of local products and proudly
           support Egyptian vendors. If you're a local supplier, we invite you to
           join our platform and showcase your healthy products. Let's grow
