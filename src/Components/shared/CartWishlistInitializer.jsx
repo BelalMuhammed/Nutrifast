@@ -14,6 +14,9 @@ const CartWishlistInitializer = () => {
   // Listen to authentication state from Redux
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
+  // Listen to cart processing state
+  const { isProcessingPartialOrder } = useSelector((state) => state.cart);
+
   // Keep track of previous authentication state to detect changes
   const prevAuthState = useRef({ isAuthenticated: false, userId: null });
 
@@ -29,7 +32,11 @@ const CartWishlistInitializer = () => {
       (isAuthenticated || localStorageUser);
     const userChanged = prevAuthState.current.userId !== currentUserId;
 
-    if ((justLoggedIn || userChanged) && currentUserId) {
+    if (
+      (justLoggedIn || userChanged) &&
+      currentUserId &&
+      !isProcessingPartialOrder
+    ) {
       console.log(
         "Authentication change detected - fetching cart and wishlist data..."
       );
@@ -42,12 +49,12 @@ const CartWishlistInitializer = () => {
       isAuthenticated: isAuthenticated || !!localStorageUser,
       userId: currentUserId,
     };
-  }, [dispatch, isAuthenticated, user?.id]); // Re-run when authentication changes
+  }, [dispatch, isAuthenticated, user?.id, isProcessingPartialOrder]); // Re-run when authentication changes
 
   // Initial mount check - fetch data if user is already logged in
   useEffect(() => {
     const initialUser = getCurrentUser();
-    if (initialUser?.id) {
+    if (initialUser?.id && !isProcessingPartialOrder) {
       console.log("App start: User already logged in, fetching data...");
       dispatch(fetchCart());
       dispatch(fetchWishlist());
@@ -58,7 +65,7 @@ const CartWishlistInitializer = () => {
         userId: initialUser.id,
       };
     }
-  }, [dispatch]); // Only run once on mount
+  }, [dispatch, isProcessingPartialOrder]); // Only run once on mount
 
   // This component doesn't render anything
   return null;

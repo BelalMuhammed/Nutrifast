@@ -67,41 +67,27 @@ export default function WishList() {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className='max-w-7xl mx-auto'>
-          <div className='bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-4'>
-            <div className='bg-app-primary/5 px-4 py-3 border-b border-gray-100'>
-              <h2 className='text-lg font-bold text-app-tertiary flex items-center gap-2'>
-                <FiHeart className='text-app-primary' size={16} />
-                Saved Products
-              </h2>
-            </div>
-            <div className='p-4'>
-              <div className='flex flex-col gap-4'>
-                {items.map((item) => (
-                  <ProductCard key={item.id} product={item} viewMode='list' />
-                ))}
-              </div>
-            </div>
-          </div>
+        {/* Products List - No Outer Card */}
+        <div className='max-w-3xl mx-auto flex flex-col gap-4 mb-8'>
+          {items.map((item) => (
+            <ProductCard key={item.id} product={item} viewMode='list' />
+          ))}
+        </div>
 
-          {/* Action Section */}
-          <div className='text-center'>
-            <button
-              onClick={() => navigate("/shop")}
-              className='text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center gap-3'
-              style={{
-                backgroundColor: "#388e3c",
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#4caf50")}
-              onMouseLeave={(e) =>
-                (e.target.style.backgroundColor = "#388e3c")
-              }>
-              <FiShoppingBag size={20} />
-              Continue Shopping
-              <FiArrowRight size={18} />
-            </button>
-          </div>
+        {/* Action Section */}
+        <div className='text-center'>
+          <button
+            onClick={() => navigate("/shop")}
+            className='text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center gap-3'
+            style={{
+              backgroundColor: "#388e3c",
+            }}
+            onMouseEnter={(e) => (e.target.style.backgroundColor = "#4caf50")}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = "#388e3c")}>
+            <FiShoppingBag size={20} />
+            Continue Shopping
+            <FiArrowRight size={18} />
+          </button>
         </div>
       </div>
     </div>
