@@ -39,6 +39,7 @@ function Shop() {
   const [viewMode, setViewMode] = useState("grid");
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [displayedCount, setDisplayedCount] = useState(12);
+  const [hasInitialData, setHasInitialData] = useState(false); // Track if we have initial data
 
   // Optimistic filter states for immediate UI updates
   const [optimisticFilters, setOptimisticFilters] = useState({
@@ -95,7 +96,12 @@ function Shop() {
     // Always apply filters to the current products (search results or all)
     setFilteredProducts(filterLogic(products, filters));
     setDisplayedCount(12);
-  }, [products, location.search]);
+
+    // Mark that we have initial data once products are loaded
+    if (products.length > 0 && !hasInitialData) {
+      setHasInitialData(true);
+    }
+  }, [products, location.search, hasInitialData]);
 
   // Handler to update filters in queryParams
   const handleFilterChange = useCallback(
@@ -211,18 +217,17 @@ function Shop() {
   const displayedProducts = sortedProducts.slice(0, displayedCount);
   const hasMoreProducts = sortedProducts.length > displayedCount;
 
+  // Show loader during initial load or when searching
+  const showLoader = loading || (!hasInitialData && products.length === 0);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-app-quaternary/20 overflow-x-hidden">
-      {/* <Loader /> */}
-      <div className="app-container  mx-auto px-4 sm:px-6 py-8">
+      <div className="app-container mx-auto px-4 sm:px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div className="text-center lg:text-left">
               <div className="min-w-0">
-                <h1 className="text-2xl lg:text-3xl font-bold text-app-secondary break-words">
-                  {searchName ? "Search Results" : null}
-                </h1>
                 <p className="text-gray-600 mt-1 text-sm lg:text-base break-words">
                   {searchName ? (
                     <>
@@ -280,7 +285,7 @@ function Shop() {
 
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
-          {/* Sidebar Filters */}
+          {/* Sidebar Filters - Only show when we have data */}
           {isMobile ? (
             <>
               <MobileFilterButton onClick={() => setDrawerOpen(true)} />
@@ -307,29 +312,32 @@ function Shop() {
               </Drawer>
             </>
           ) : (
-            <div
-              className={`transition-all duration-300 w-full lg:w-[300px] xl:w-[320px] opacity-100`}
-            >
-              <SideFilter
-                selectedCategories={optimisticFilters.Categories}
-                onFilterChange={handleFilterChange}
-                selectedDietTypes={optimisticFilters.DietTypes}
-                selectedMedicalConditions={optimisticFilters.MedicalConditions}
-                selectedAllergens={optimisticFilters.Allergens}
-                selectedCaloriesRange={optimisticFilters.CaloriesRange}
-              />
-            </div>
+            hasInitialData && (
+              <div
+                className={`transition-all duration-300 w-full lg:w-[300px] xl:w-[320px] opacity-100`}
+              >
+                <SideFilter
+                  selectedCategories={optimisticFilters.Categories}
+                  onFilterChange={handleFilterChange}
+                  selectedDietTypes={optimisticFilters.DietTypes}
+                  selectedMedicalConditions={
+                    optimisticFilters.MedicalConditions
+                  }
+                  selectedAllergens={optimisticFilters.Allergens}
+                  selectedCaloriesRange={optimisticFilters.CaloriesRange}
+                />
+              </div>
+            )
           )}
 
           {/* Products Content */}
           <div className="flex-1 min-w-0 w-full">
-            {loading ? (
+            {showLoader ? (
               <div className="flex justify-center items-center py-20">
                 <Loader />
               </div>
             ) : sortedProducts.length > 0 ? (
               <>
-                {/* Perfect Responsive Product Count, Sort Controls, and View Mode Toggle above cards */}
                 <div className="w-full flex flex-wrap items-center justify-between mb-4 gap-2 sm:gap-4">
                   <span className="text-xs sm:text-sm text-gray-500 font-normal mb-2 sm:mb-0">
                     Showing {displayedProducts.length} of{" "}
@@ -466,8 +474,8 @@ function Shop() {
                 )}
               </>
             ) : (
-              !loading && (
-                <div className="flex flex-col items-center justify-center  px-4">
+              hasInitialData && ( // Only show empty state if we have initial data
+                <div className="flex flex-col items-center justify-center px-4">
                   {/* Empty State Container */}
                   <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 max-w-md w-full text-center">
                     {/* Icon Section */}
@@ -503,23 +511,7 @@ function Shop() {
                       {/* Action Buttons */}
                       <div className="flex flex-col sm:flex-row gap-3 pt-4">
                         {searchName ? (
-                          <>
-                            <button
-                              onClick={handleClearSearch}
-                              className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
-                              style={{
-                                backgroundColor: "#388e3c",
-                              }}
-                              onMouseEnter={(e) =>
-                                (e.target.style.backgroundColor = "#4caf50")
-                              }
-                              onMouseLeave={(e) =>
-                                (e.target.style.backgroundColor = "#388e3c")
-                              }
-                            >
-                              <FiX size={18} />
-                              Clear Search
-                            </button>
+                          <div className="w-full flex justify-center">
                             <button
                               onClick={() => navigate("/shop")}
                               className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
@@ -527,7 +519,7 @@ function Shop() {
                               <FiShoppingBag size={18} />
                               Browse All
                             </button>
-                          </>
+                          </div>
                         ) : (
                           <div className="w-full flex justify-center">
                             <button
