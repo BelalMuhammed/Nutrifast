@@ -54,9 +54,8 @@ function UserDropdown({ user, userName, onLogout, isActiveLink }) {
           <FiUser className="w-5 h-5" />
         </div>
         <FiChevronDown
-          className={`w-4 h-4 transition-transform ${
-            dropdownOpen ? "rotate-180" : ""
-          }`}
+          className={`w-4 h-4 transition-transform ${dropdownOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -76,28 +75,25 @@ function UserDropdown({ user, userName, onLogout, isActiveLink }) {
           <div className="py-1">
             <Link
               to="/myOrders"
-              className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${
-                isActiveLink("/myOrders") ? "text-app-primary" : ""
-              }`}
+              className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${isActiveLink("/myOrders") ? "text-app-primary" : ""
+                }`}
               onClick={() => setDropdownOpen(false)}
             >
               <FaList className="mr-3 opacity-70" /> My Orders
             </Link>
             <Link
               to="/myProfile"
-              className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${
-                isActiveLink("/myProfile") ? "text-app-primary" : ""
-              }`}
+              className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${isActiveLink("/myProfile") ? "text-app-primary" : ""
+                }`}
               onClick={() => setDropdownOpen(false)}
             >
               <FaUser className="mr-3 opacity-70" /> My Profile
             </Link>
             {user.role === "admin" && (
               <Link
-                to="/adminDashboard"
-                className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${
-                  isActiveLink("/adminDashboard") ? "text-app-primary" : ""
-                }`}
+                to="/dashboard"
+                className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${isActiveLink("/dashboard") ? "text-app-primary" : ""
+                  }`}
                 onClick={() => setDropdownOpen(false)}
               >
                 <FaUserShield className="mr-3 opacity-70" /> Admin Dashboard
