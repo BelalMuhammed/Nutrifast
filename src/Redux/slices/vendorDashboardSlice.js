@@ -5,7 +5,7 @@ import { axiosInstance } from "../../Network/interceptors";
 export const getAllVendors = createAsyncThunk(
   "vendors/vendorRegistrations",
   async () => {
-    const response = await axiosInstance.get(`/vendorRegistrations`);
+    const response = await axiosInstance.get(`/vendors`);
     return response.data;
   }
 );
@@ -41,7 +41,7 @@ export const getAllVendorsApplications = createAsyncThunk(
 export const removeVendorApplicationById = createAsyncThunk(
   "vendors/removeVendorApplicationById",
   async (applicationId) => {
-    await axiosInstance.delete(`/vendorApplications/${applicationId}`);
+    await axiosInstance.delete(`/vendorRegistrations/${applicationId}`);
     return applicationId;
   }
 );
@@ -55,7 +55,7 @@ export const acceptVendor = createAsyncThunk(
 
     // 2. Remove vendor from applications
     if (vendor.id) {
-      await axiosInstance.delete(`/vendorApplications/${vendor.id}`);
+      await axiosInstance.delete(`/vendorRegistrations/${vendor.id}`);
     }
 
     // Refresh both lists
@@ -107,6 +107,13 @@ const vendorDashboardSlice = createSlice({
       .addCase(getAllVendorsApplications.fulfilled, (state, action) => {
         state.applications = action.payload;
       })
+      // .addCase(getAllVendorsApplications.pending, (state) => {
+      //   state.loading = true;
+      // })
+      // .addCase(getAllVendorsApplications.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.error.message;
+      // })
 
       // ✅ Remove vendor application
       .addCase(removeVendorApplicationById.fulfilled, (state, action) => {

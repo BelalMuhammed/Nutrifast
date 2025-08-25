@@ -10,6 +10,15 @@ export const fetchOrders = createAsyncThunk(
   }
 );
 
+export const fetchAdminOrders = createAsyncThunk(
+  "orders/fetchAdminOrders",
+  async () => {
+    const response = await axiosInstance.get(`/orders`);
+    console.log("Orders API response:", response.data);
+    return response.data;
+  }
+);
+
 export const deleteOrder = createAsyncThunk(
   "orders/deleteOrder",
   async (orderId) => {
@@ -60,6 +69,19 @@ const ordersSlice = createSlice({
         state.list = state.list.filter(
           (order) => order.userId !== action.payload
         );
+      })
+
+      // ✅ Admin Orders
+      .addCase(fetchAdminOrders.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAdminOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload;
+      })
+      .addCase(fetchAdminOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
