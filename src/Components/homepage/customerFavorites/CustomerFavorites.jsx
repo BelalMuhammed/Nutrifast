@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import CustomerFavCard from "../../customerFavCard/CustomerFavCard";
-import { getCustomerFavorites } from "../../../api/apiService";
+
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { getCustomerFavorites } from "@/Api/apiService";
 
 export default function CustomerFavorites() {
   const [favorites, setFavorites] = useState([]);
