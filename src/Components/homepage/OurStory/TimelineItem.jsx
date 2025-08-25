@@ -12,7 +12,7 @@ export default function TimelineItem({ icon, title, text, delay, isInView }) {
       transition={{ delay, duration: 1 }}
       className="relative mb-10 md:flex items-start"
     >
-      <div className="absolute -left-11 top-1 w-10 h-10 rounded-full bg-app-primary/10 flex items-center justify-center hidden md:flex">
+      <div className="absolute h-8 rounded-full bg-app-primary/10 flex items-center justify-center hidden md:flex">
         <IconComponent className="w-5 h-5 text-app-primary" />
       </div>
       <div className="md:ml-8">

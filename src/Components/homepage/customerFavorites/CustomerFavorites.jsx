@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 
 import CustomerFavCard from "../../customerFavCard/CustomerFavCard";
 
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
