@@ -30,8 +30,7 @@ import {
 
 import { LuSettings2 } from "react-icons/lu";
 
-// import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -86,6 +85,7 @@ import { deleteMessage } from "@/Redux/slices/messagesSlice";
 import { deleteUser } from "@/Redux/slices/userSlice";
 import { deleteProduct } from "@/Redux/slices/productSlice";
 import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
 
 
 export default function TableDashboard({
