@@ -18,18 +18,19 @@ function VendorsApplications() {
     const filteredVendors = (vendorDashboard || []).map((v) => ({
         id: v.id,
         businessName: v.businessName,
-        businessType: v.businessType,
-        website: v.websiteSocialLinks,
-        address: v.businessAddress,
-        contactName: v.contactDetails?.fullName,
-        email: v.contactDetails?.email,
-        phone: v.contactDetails?.phone,
-        categories: v.productServiceDetails?.categories?.join(", "),
-        nutritionalInfo: v.productServiceDetails?.providesNutritionalInfo,
-        healthCertificate: v.healthcertificatesLink ? "Available" : "Not Provided",
+        // businessType: v.businessType,
+        // website: v.websiteSocialLinks,
+        // address: v.businessAddress,
+        // contactName: v.contactDetails?.fullName,
+        // email: v.contactDetails?.email,
+        // phone: v.contactDetails?.phone,
+        // categories: v.productServiceDetails?.categories?.join(", "),
+        // nutritionalInfo: v.productServiceDetails?.providesNutritionalInfo,
+        // healthCertificate: v.healthcertificatesLink ? "Available" : "Not Provided",
     }));
     if (loading) return <LoaderSpinner />;
     if (error) return <p>Error: {error}</p>;
+
     return (
         <TableDashboard data={filteredVendors} type="vendorApplications" />
     )

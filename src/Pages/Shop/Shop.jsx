@@ -207,6 +207,7 @@ function Shop() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-app-quaternary/20 overflow-x-hidden">
+      {/* <Loader /> */}
       <div className="app-container  mx-auto px-4 sm:px-6 py-8">
         {/* Header Section */}
         <div className="mb-8">
@@ -342,18 +343,17 @@ function Shop() {
                                 : "name-asc"
                             )
                           }
-                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                            sortOption.startsWith("name")
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${sortOption.startsWith("name")
                               ? "bg-app-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                            }`}
                         >
                           Name{" "}
                           {sortOption === "name-asc"
                             ? "↑"
                             : sortOption === "name-desc"
-                            ? "↓"
-                            : ""}
+                              ? "↓"
+                              : ""}
                         </button>
                         <button
                           onClick={() =>
@@ -363,18 +363,17 @@ function Shop() {
                                 : "price-asc"
                             )
                           }
-                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                            sortOption.startsWith("price")
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${sortOption.startsWith("price")
                               ? "bg-app-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                            }`}
                         >
                           Price{" "}
                           {sortOption === "price-asc"
                             ? "↑"
                             : sortOption === "price-desc"
-                            ? "↓"
-                            : ""}
+                              ? "↓"
+                              : ""}
                         </button>
                         <button
                           onClick={() =>
@@ -384,29 +383,27 @@ function Shop() {
                                 : "rating-desc"
                             )
                           }
-                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                            sortOption.startsWith("rating")
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${sortOption.startsWith("rating")
                               ? "bg-app-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                            }`}
                         >
                           Top Rated{" "}
                           {sortOption === "rating-desc"
                             ? "⭐"
                             : sortOption === "rating-asc"
-                            ? "↑"
-                            : ""}
+                              ? "↑"
+                              : ""}
                         </button>
                       </div>
                     </div>
                     <div className="flex items-center bg-gray-100 rounded-xl p-1 mt-2 sm:mt-0">
                       <button
                         onClick={() => setViewMode("grid")}
-                        className={`p-2 rounded-lg transition-all duration-200 ${
-                          viewMode === "grid"
+                        className={`p-2 rounded-lg transition-all duration-200 ${viewMode === "grid"
                             ? "bg-white text-app-primary shadow-sm"
                             : "text-gray-500 hover:text-gray-700"
-                        }`}
+                          }`}
                         aria-label="Grid view"
                         title="Grid View"
                       >
@@ -414,11 +411,10 @@ function Shop() {
                       </button>
                       <button
                         onClick={() => setViewMode("list")}
-                        className={`p-2 rounded-lg transition-all duration-200 ${
-                          viewMode === "list"
+                        className={`p-2 rounded-lg transition-all duration-200 ${viewMode === "list"
                             ? "bg-white text-app-primary shadow-sm"
                             : "text-gray-500 hover:text-gray-700"
-                        }`}
+                          }`}
                         aria-label="List view"
                         title="List View"
                       >
@@ -429,11 +425,10 @@ function Shop() {
                 </div>
 
                 <div
-                  className={`w-full ${
-                    viewMode === "grid"
-                      ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
-                      : "space-y-4"
-                  }`}
+                  className={`w-full ${viewMode === "grid"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
+                    : "space-y-4"
+                    }`}
                 >
                   {displayedProducts.map((product) => (
                     <ProductCard

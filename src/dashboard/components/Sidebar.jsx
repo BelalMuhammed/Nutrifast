@@ -20,11 +20,11 @@ import {
 } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
 
-export default function DashboardSidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function DashboardSidebar({ isOpen, onClose }) {
+  // const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex sidebarDashboard">
+    <div className="flex sidebarDashboard fixed h-full z-[50]">
       {/* Sidebar */}
       <div
         className={`fixed md:static top-0 left-0 h-full z-50 transition-transform duration-300
@@ -39,7 +39,7 @@ export default function DashboardSidebar() {
             <h1 className="text-xl font-bold text-green-600">Nutrifast</h1>
             {/* Close button only on mobile */}
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               className="md:hidden ml-auto p-2 bg-gray-100 rounded-md shadow me-2"
             >
               <HiX size={20} />
@@ -68,22 +68,22 @@ export default function DashboardSidebar() {
                   )}
                 </NavLink>
 
-                <NavLink to="addProducts">
+                {/* <NavLink to="addProducts">
                   {({ isActive }) => (
                     <SidebarItem className={isActive ? "bg-green-100 text-green-700" : ""}>
                       Add Products
                     </SidebarItem>
                   )}
-                </NavLink>
-                
-                
+                </NavLink> */}
+
+
                 <NavLink to="productsFilters">
-                {({ isActive }) => (
-                  <SidebarItem  className={isActive ? "bg-green-100 text-app-primary" : ""}>
-                    Product Filters
-                  </SidebarItem>
-                )}
-              </NavLink>
+                  {({ isActive }) => (
+                    <SidebarItem className={isActive ? "bg-green-100 text-app-primary" : ""}>
+                      Product Filters
+                    </SidebarItem>
+                  )}
+                </NavLink>
               </SidebarCollapse>
 
               {/* Vendors collapse */}
@@ -134,8 +134,8 @@ export default function DashboardSidebar() {
 
               {/* Example static item */}
 
-         
-           
+
+
             </SidebarItemGroup>
           </SidebarItems>
         </Sidebar>
@@ -144,7 +144,7 @@ export default function DashboardSidebar() {
       {/* Mobile toggle */}
       {!isOpen && (
         <button
-          onClick={() => setIsOpen(true)}
+          onClick={onClose}
           className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-100 rounded-md shadow"
         >
           <HiMenu size={20} />

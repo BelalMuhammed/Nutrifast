@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../Network/interceptors";
 
+// const showToastMessage = (message, type = "success") => {
+//   setToast({ show: true, message, type });
+//   setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+// };
+
 //  Get all products
 export const fetchProducts = createAsyncThunk("products/fetchAll", async () => {
   const response = await axiosInstance.get("/products");
@@ -72,9 +77,9 @@ export const deleteProduct = createAsyncThunk(
 //  Update product by id
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
-  async ({ id, updatedData }, { rejectWithValue }) => {
+  async ({ id, data }, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.put(`/products/${id}`, updatedData);
+      const res = await axiosInstance.put(`/products/${id}`, data);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

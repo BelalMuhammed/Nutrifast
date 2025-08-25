@@ -1,7 +1,7 @@
 import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 import { formatDateTime } from "../../lib/dateFormat";
 import TableDashboard from "@/Components/TableDashboard";
-import { fetchOrders } from "@/Redux/slices/ordersSlice";
+import { fetchAdminOrders, fetchOrders } from "@/Redux/slices/ordersSlice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,7 +10,7 @@ function Orders() {
   const { list: orders, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    dispatch(fetchOrders());
+    dispatch(fetchAdminOrders());
   }, [dispatch]);
 
   const filteredOrders =

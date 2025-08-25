@@ -378,8 +378,8 @@ export default function Checkout() {
       setOrderCompleted(true);
 
       const orderMessage = data.orderItems
-        ? `Order placed successfully! Fresh meals remain in your cart for next-day delivery. 🎉`
-        : `Order placed successfully! 🎉`;
+        ? `Order placed successfully! Fresh meals remain in your cart for next-day delivery.`
+        : `Order placed successfully!`;
 
       showToastMessage(orderMessage, "success");
 

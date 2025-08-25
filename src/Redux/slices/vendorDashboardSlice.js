@@ -5,7 +5,7 @@ import { axiosInstance } from "../../Network/interceptors";
 export const getAllVendors = createAsyncThunk(
   "vendors/vendorRegistrations",
   async () => {
-    const response = await axiosInstance.get(`/vendorRegistrations`);
+    const response = await axiosInstance.get(`/vendors`);
     return response.data;
   }
 );
