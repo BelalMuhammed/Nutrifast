@@ -538,7 +538,7 @@ export default function AddProducts() {
           <div className='pt-6 border-t-2 border-gray-200'>
             <button
               type='submit'
-              className='w-full bg-app-primary text-white p-5 rounded-xl transition-all duration-300 font-bold text-lg shadow hover:shadow-3xl transform hover:-translate-y-1 flex items-center justify-center gap-3 border-2 border-app-primary'>
+              className='w-full bg-app-primary text-white p-2 rounded-xl transition-all duration-300 font-bold text-lg shadow hover:shadow-3xl transform hover:-translate-y-1 flex items-center justify-center gap-3 border-2 border-app-primary'>
               <PlusIcon className='w-6 h-6' />
               Add Product to Store
             </button>

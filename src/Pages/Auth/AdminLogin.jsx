@@ -65,11 +65,10 @@ export default function AdminLogin() {
       {/* Toast Message - always at the top, outside the main container */}
       {toast.show && (
         <div
-          className={`fixed top-20 left-1/2 -translate-x-1/2 z-[9999] px-6 py-3 rounded-xl shadow-lg font-semibold text-sm ${
-            toast.type === "success"
+          className={`fixed top-20 left-1/2 -translate-x-1/2 z-[9999] px-6 py-3 rounded-xl shadow-lg font-semibold text-sm ${toast.type === "success"
               ? "bg-app-primary text-white"
               : "bg-red-500 text-white"
-          }`}
+            }`}
           style={{ minWidth: 250, maxWidth: 400 }}>
           {toast.message}
         </div>
@@ -77,9 +76,8 @@ export default function AdminLogin() {
       <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-app-primary/10 to-app-secondary/10 p-4'>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className={`w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8 space-y-6 transition-all duration-500 ${
-            isAnimating ? "scale-105" : "scale-100"
-          }`}
+          className={`w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8 space-y-6 transition-all duration-500 ${isAnimating ? "scale-105" : "scale-100"
+            }`}
           autoComplete='off'>
           <h2 className='text-2xl font-bold text-app-primary mb-2 text-center'>
             Admin Login
@@ -102,9 +100,8 @@ export default function AdminLogin() {
                   message: "Enter a valid email address",
                 },
               })}
-              className={`w-full border-2 rounded-xl p-3 bg-gray-50 focus:border-app-primary focus:ring-2 focus:ring-app-primary/20 transition-all duration-300 text-sm placeholder-gray-400 ${
-                errors.email ? "border-red-400" : "border-gray-200"
-              }`}
+              className={`w-full border-2 rounded-xl p-3 bg-gray-50 focus:border-app-primary focus:ring-2 focus:ring-app-primary/20 transition-all duration-300 text-sm placeholder-gray-400 ${errors.email ? "border-red-400" : "border-gray-200"
+                }`}
               placeholder='admin@email.com'
               autoComplete='username'
             />
@@ -130,9 +127,8 @@ export default function AdminLogin() {
                     message: "Password must be at least 6 characters",
                   },
                 })}
-                className={`w-full border-2 rounded-xl p-3 bg-gray-50 focus:border-app-primary focus:ring-2 focus:ring-app-primary/20 transition-all duration-300 text-sm placeholder-gray-400 ${
-                  errors.password ? "border-red-400" : "border-gray-200"
-                }`}
+                className={`w-full border-2 rounded-xl p-3 bg-gray-50 focus:border-app-primary focus:ring-2 focus:ring-app-primary/20 transition-all duration-300 text-sm placeholder-gray-400 ${errors.password ? "border-red-400" : "border-gray-200"
+                  }`}
                 placeholder='••••••••'
                 autoComplete='current-password'
               />
@@ -181,7 +177,7 @@ export default function AdminLogin() {
           <button
             type='submit'
             className='w-full bg-app-primary text-white font-bold py-3 rounded-xl shadow  transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed mt-2'
-            disabled={loading || !isValid}>
+          >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>

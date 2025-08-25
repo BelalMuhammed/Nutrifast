@@ -14,6 +14,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { getCustomerFavorites } from "@/Api/apiService";
 
+
 export default function CustomerFavorites() {
   const [favorites, setFavorites] = useState([]);
 
@@ -70,9 +71,9 @@ export default function CustomerFavorites() {
             {favorites.map((fav, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
                 className="px-2 sm:px-3 md:px-4 flex justify-center"
               >

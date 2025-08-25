@@ -30,33 +30,34 @@ import {
 
 import { LuSettings2 } from "react-icons/lu";
 
-
+// import { Button } from "@/Components/ui/Button";
+// import { Checkbox } from "@/Components/ui/Checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/Components/ui/Dropdown-menu";
+import { Input } from "@/Components/ui/Input";
+import { Label } from "@/Components/ui/Label";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-} from "@/components/ui/pagination";
+} from "@/Components/ui/Pagination";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/Components/ui/Popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/Components/ui/Select";
 import {
   Table,
   TableBody,
@@ -64,7 +65,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/Components/ui/Table";
 import {
   HiPencil,
   HiTrash,

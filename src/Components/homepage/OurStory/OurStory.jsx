@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, useAnimation, useInView } from "framer-motion";
-import storyImg from "../../../assets/brandstory.jpg";
+import { HiStar, HiHeart, HiBookOpen } from "react-icons/hi2";
 
 import TimelineItem from "./TimelineItem";
 import StatsSection from "./StatsSection";
+import storyImg from "../../../assets/banner.png";
 import StoryImage from "./StoryImage";
 
 export default function OurStory({ id }) {
@@ -77,7 +78,7 @@ export default function OurStory({ id }) {
             <StatsSection isInView={isInView} />
           </div>
 
-          {/* Right: Image + Features */}
+          {/* Right: Image */}
           <StoryImage storyImg={storyImg} isInView={isInView} />
         </div>
       </div>

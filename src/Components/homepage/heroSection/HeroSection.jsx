@@ -133,10 +133,10 @@ function HeroSection() {
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.97 }}
-          className="btn-app text-sm sm:text-base md:text-lg px-6 sm:px-8 py-2.5 sm:py-3 font-bold shadow-lg"
+          className="btn-app text-sm sm:text-base  px-6 sm:px-8 py-2.5 sm:py-3S shadow-lg"
           onClick={() => (window.location.href = "/shop")}
         >
-          Shop All Products
+          Find Your Energy
         </motion.button>
       </motion.div>
 
