@@ -88,11 +88,13 @@ import {
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { DropdownItem, Dropdown } from "flowbite-react";
-import { acceptVendor } from "@/Redux/slices/vendorDashboardSlice";
-import { useDispatch } from "react-redux";
+import { acceptVendor, getAllVendorsApplications, removeVendorApplicationById, removeVendorById } from "@/Redux/slices/vendorDashboardSlice";
 import ConfirmDialog from "./shared/ConfirmDialog";
-// import { deleteProduct } from "@/Redux/slices/productSlice";
-// import { useDispatch } from "react-redux";
+import { deleteOrder } from "@/Redux/slices/ordersSlice";
+import { useDispatch } from "react-redux";
+import { deleteMessage } from "@/Redux/slices/messagesSlice";
+import { deleteUser } from "@/Redux/slices/userSlice";
+import { deleteProduct } from "@/Redux/slices/productSlice";
 
 export default function TableDashboard({
   data: externalData = [],
@@ -102,15 +104,24 @@ export default function TableDashboard({
   const id = useId();
   const inputRef = useRef(null);
 
-  const [data, setData] = useState(externalData);
+  // const [data, setData] = useState(externalData);
+  const data = externalData;
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
+  // Track which row's dialog is open (store row id or false)
   const [openDialog, setOpenDialog] = useState(false);
+  const [dialogRow, setDialogRow] = useState(null);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [dialogOnConfirm, setDialogOnConfirm] = useState(() => () => { });
 
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  // const handlDeleteOrder = (id) => {
+  //   dispatch(deleteOrder(id));
+  // };
   const columns = useMemo(() => {
     if (!data.length) return [];
 
@@ -138,6 +149,7 @@ export default function TableDashboard({
     const actionColumn = {
       header: "Actions",
       cell: ({ row }) => {
+        // Products
         if (type === "products") {
           return (
             <div className='flex gap-1 sm:gap-2'>
@@ -151,43 +163,79 @@ export default function TableDashboard({
               <button
                 title='Delete product'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => onDelete(row.original.id)}>
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to delete this product?");
+                  setDialogOnConfirm(() => () => {
+                    dispatch(deleteProduct(row.original.id));
+                    setOpenDialog(false);
+                    setDialogRow(null);
+                  });
+                  setOpenDialog(true);
+                }}>
                 <HiTrash size={14} className='sm:w-4 sm:h-4' />
               </button>
             </div>
           );
-        } else if (type === "users") {
+        }
+        // Users
+        else if (type === "users") {
           return (
             <div className='flex gap-1 sm:gap-2'>
               <button
                 title='Block user'
                 className='p-1.5 sm:p-2 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Block user", row.original.id)}
-
-              >
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to block this user?");
+                  setDialogOnConfirm(() => () => {
+                    // Add block user logic here
+                    dispatch(deleteUser(row.original.id))
+                    setOpenDialog(false);
+                    setDialogRow(null);
+                  });
+                  setOpenDialog(true);
+                }}>
                 <HiBan size={14} className='sm:w-4 sm:h-4' />
               </button>
-              <button
+              {/* <button
                 title='Remove user'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Remove user", row.original.id)}
-              >
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to remove this user?");
+                  setDialogOnConfirm(() => () => {
+                    // Add remove user logic here
 
+                    dispatch(deleteUser(row.original.id))
+                    setOpenDialog(false);
+                    setDialogRow(null);
+                  });
+                  setOpenDialog(true);
+                }}>
                 <HiUserRemove size={14} className='sm:w-4 sm:h-4' />
-              </button>
-
-
-
+              </button> */}
             </div>
           );
-        } else if (type === "orders") {
+        }
+        // Orders
+        else if (type === "orders") {
           return (
             <div className='flex gap-1 sm:gap-2'>
               <button
                 title='Remove order'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Remove order", row.original.id)}>
-                <HiUserRemove size={14} className='sm:w-4 sm:h-4' />
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to remove this order?");
+                  setDialogOnConfirm(() => () => {
+
+                    dispatch(deleteOrder(row.original.orderId))
+
+                  });
+                  setOpenDialog(true);
+                }}>
+                <HiTrash size={14} className='sm:w-4 sm:h-4' />
               </button>
               {/* <button
                 title='Change status'
@@ -216,28 +264,32 @@ export default function TableDashboard({
               </Dropdown>
             </div>
           );
-        } else if (type === "messages") {
+        }
+        // Messages
+        else if (type === "messages") {
           return (
             <div className='flex gap-1 sm:gap-2'>
-              <button
+              {/* <button
                 title='View message'
                 className='p-1.5 sm:p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-500  transition-all duration-300 shadow-sm'
                 onClick={() => console.log("View message", row.original.id)}>
                 <HiMailOpen size={14} className='sm:w-4 sm:h-4' />
-              </button>
+              </button> */}
               <button
                 title='Delete message'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => setOpenDialog(true)}>
-                {/* onClick={() => console.log("Delete message", row.original.id)}  */}
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to delete this message?");
+                  setDialogOnConfirm(() => () => {
+                    dispatch(deleteMessage(row.original.id))
+                    setOpenDialog(false);
+                    setDialogRow(null);
+                  });
+                  setOpenDialog(true);
+                }}>
                 <HiTrash size={14} className='sm:w-4 sm:h-4' />
               </button>
-              <ConfirmDialog
-                open={openDialog}
-                onClose={() => setOpenDialog(false)}
-                onConfirm={alert(`${row.original.id} deleted`)}
-                message="Are you sure you want to delete this product?"
-              />
             </div>
           );
         } else if (type === "vendorApplications") {
@@ -253,7 +305,16 @@ export default function TableDashboard({
               <button
                 title='Reject vendor'
                 className='p-1.5 sm:p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Reject vendor", row.original.id)}>
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to Reject vendor?");
+                  setDialogOnConfirm(() => () => {
+                    dispatch(removeVendorApplicationById(row.original.id))
+                    // setOpenDialog(false);
+                    // setDialogRow(null);
+                  });
+                  setOpenDialog(true);
+                }}>
                 <HiXCircle size={14} className='sm:w-4 sm:h-4' />
               </button>
             </div>
@@ -261,16 +322,28 @@ export default function TableDashboard({
         } else if (type === "vendors") {
           return (
             <div className='flex gap-1 sm:gap-2'>
-              <button
+              {/* <button
                 title='Activate vendor'
                 className='p-1.5 sm:p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Activate vendor", row.original.id)}>
+                onClick={() => console.log("Activate vendor", row.original)}>
                 <HiUserAdd size={14} className='sm:w-4 sm:h-4' />
-              </button>
+              </button> */}
               <button
                 title='Suspend vendor'
                 className='p-1.5 sm:p-2 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-500  transition-all duration-300 shadow-sm'
-                onClick={() => console.log("Suspend vendor", row.original.id)}>
+
+                onClick={() => {
+                  setDialogRow(row.original);
+                  setDialogMessage("Are you sure you want to Suspend this vendor?");
+                  setDialogOnConfirm(() => () => {
+                    dispatch(removeVendorById(row.original.id))
+                    setOpenDialog(false);
+                    setDialogRow(null);
+                  });
+                  setOpenDialog(true);
+                }}
+              >
+
                 <HiBan size={14} className='sm:w-4 sm:h-4' />
               </button>
             </div>
@@ -284,14 +357,14 @@ export default function TableDashboard({
   }, [data, type, onDelete]);
 
   // delete selected rows
-  const handleDeleteRows = () => {
-    const selectedRows = table.getSelectedRowModel().rows;
-    const updatedData = data.filter(
-      (item) => !selectedRows.some((row) => row.original.id === item.id)
-    );
-    setData(updatedData);
-    table.resetRowSelection();
-  };
+  // const handleDeleteRows = () => {
+  //   const selectedRows = table.getSelectedRowModel().rows;
+  //   const updatedData = data.filter(
+  //     (item) => !selectedRows.some((row) => row.original.id === item.id)
+  //   );
+  //   setData(updatedData);
+  //   table.resetRowSelection();
+  // };
 
   const table = useReactTable({
     data,
@@ -712,6 +785,16 @@ export default function TableDashboard({
           </div>
         </div>
       </div>
+
+      {/* Single ConfirmDialog for all delete/remove actions */}
+      {openDialog && dialogRow && (
+        <ConfirmDialog
+          open={openDialog}
+          onClose={() => { setOpenDialog(false); setDialogRow(null); }}
+          onConfirm={dialogOnConfirm}
+          message={dialogMessage}
+        />
+      )}
     </div>
   );
 }

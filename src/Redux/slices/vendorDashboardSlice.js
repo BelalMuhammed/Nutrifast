@@ -41,7 +41,7 @@ export const getAllVendorsApplications = createAsyncThunk(
 export const removeVendorApplicationById = createAsyncThunk(
   "vendors/removeVendorApplicationById",
   async (applicationId) => {
-    await axiosInstance.delete(`/vendorApplications/${applicationId}`);
+    await axiosInstance.delete(`/vendorRegistrations/${applicationId}`);
     return applicationId;
   }
 );

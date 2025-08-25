@@ -276,8 +276,8 @@ function ProductFilters() {
                   </p>
                 </div>
               </div>
-              <div className='flex flex-wrap gap-3'>
-                <button
+              <div className=' mt-2'>
+                {/* <button
                   onClick={() => fetchFilters()}
                   disabled={loading}
                   className='bg-gray-100 text-gray-700 px-4 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-300 flex items-center gap-2 shadow-sm disabled:opacity-50'
@@ -294,7 +294,7 @@ function ProductFilters() {
                   title='Sync all changes to server'>
                   <FiRotateCw className='w-5 h-5' />
                   Sync
-                </button>
+                </button> */}
                 <button
                   onClick={() => setShowAddModal(true)}
                   className='bg-app-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-app-primary/90 transition-all duration-300 flex items-center gap-2 shadow-sm'>
