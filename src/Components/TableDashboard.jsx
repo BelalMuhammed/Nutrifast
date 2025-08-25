@@ -40,7 +40,7 @@ import {
   DropdownMenuTrigger,
 } from "@/Components/ui/Dropdown";
 // 
-import { Input } from "@/Components/ui/Input";
+import { Input } from "./ui/Input";
 import { Label } from "@/Components/ui/Label";
 import {
   Pagination,
