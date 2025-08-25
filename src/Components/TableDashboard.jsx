@@ -38,27 +38,27 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "./ui/Dropdown";
-// @/Components/ui/Input
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
+} from "@/Components/ui/Dropdown";
+// 
+import { Input } from "@/Components/ui/Input";
+import { Label } from "@/Components/ui/Label";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-} from "./ui/Pagination";
+} from "@/Components/ui/Pagination";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "./ui/Popover";
+} from "@/Components/ui/Popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/Select";
+} from "@/Components/ui/Select";
 import {
   Table,
   TableBody,
@@ -66,7 +66,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/Table";
+} from "@/Components/ui/Table";
 import {
   HiPencil,
   HiTrash,
@@ -79,16 +79,18 @@ import {
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { DropdownItem, Dropdown } from "flowbite-react";
-import { acceptVendor, getAllVendorsApplications, removeVendorApplicationById, removeVendorById } from "../Redux/slices/vendorDashboardSlice";
-import ConfirmDialog from "./shared/ConfirmDialog";
-import { deleteOrder } from "../Redux/slices/ordersSlice";
+import { acceptVendor, getAllVendorsApplications, removeVendorApplicationById, removeVendorById } from "@/Redux/slices/vendorDashboardSlice";
+import ConfirmDialog from "@/Components/shared/ConfirmDialog";
+
+import { deleteOrder } from "@/Redux/slices/ordersSlice";
 
 import { useDispatch } from "react-redux";
-import { deleteMessage } from "../Redux/slices/messagesSlice";
-import { deleteUser } from "../Redux/slices/userSlice";
-import { deleteProduct } from "../Redux/slices/productSlice";
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
+
+import { deleteMessage } from "@/Redux/slices/messagesSlice";
+import { deleteUser } from "@/Redux/slices/userSlice";
+import { deleteProduct } from "@/Redux/slices/productSlice";
+import { Button } from "@/Components/ui/button";
+import { Checkbox } from "@/Components/ui/checkbox";
 
 
 
