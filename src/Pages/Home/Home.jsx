@@ -3,7 +3,8 @@ import CustomerFavorites from "../../Components/homepage/customerFavorites/Custo
 import HeroSection from "../../Components/homepage/heroSection/HeroSection";
 import WhyChooseNutriFast from "../../Components/whyChooseNutriFast/WhyChooseNutriFast";
 import OurStory from "../../Components/homepage/OurStory/OurStory";
-import VendorsLogo from "../../Components/homepage/vendorsLogo/VendorsLogo";
+import VendorsLogo from "@/Components/homepage/VendorsLogo/VendorsLogo";
+// import VendorsLogo from "../../Components/homepage/vendorsLogo/VendorsLogo";
 
 function Home() {
   return (
