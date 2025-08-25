@@ -1,4 +1,4 @@
-import AddProducts from "@/dashboard/pages/AddProducts";
+// import AddProducts from "@/dashboard/pages/AddProducts";
 import Orders from "@/dashboard/pages/Orders";
 import Users from "@/dashboard/pages/Users";
 import VendorList from "@/dashboard/pages/VendorList";
@@ -17,6 +17,7 @@ import Products from "../../dashboard/pages/Products";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import AdminLogin from "@/Pages/Auth/AdminLogin";
 import ProductFilters from "@/dashboard/pages/ProductFilters";
+import AddProducts from "@/dashboard/pages/AddProducts";
 import TestDash from "@/Components/testDash";
 import EditProduct from "@/dashboard/pages/EditProduct";
 
