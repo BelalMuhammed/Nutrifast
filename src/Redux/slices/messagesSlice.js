@@ -12,7 +12,7 @@ export const fetchMessages = createAsyncThunk(
 export const deleteMessage = createAsyncThunk(
   "Messages/deleteMessage",
   async (MessageId) => {
-    await axiosInstance.delete(`/Messages/${MessageId}`);
+    await axiosInstance.delete(`/messages/${MessageId}`);
     return MessageId;
   }
 );
@@ -20,7 +20,7 @@ export const deleteMessage = createAsyncThunk(
 export const clearMessages = createAsyncThunk(
   "Messages/clearMessages",
   async (Id) => {
-    await axiosInstance.delete(`/Messages/?id=${Id}`);
+    await axiosInstance.delete(`/messages/?id=${Id}`);
     return [];
   }
 );

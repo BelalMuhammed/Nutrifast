@@ -66,7 +66,7 @@ export const deleteProduct = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await axiosInstance.delete(`/products/${id}`);
-      alert("product deleted successfully");
+      // alert("product deleted successfully");
       return id;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -90,12 +90,14 @@ export const updateProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "products",
   initialState: {
-    products: [],
+    products: [], // All products OR search results
+    allProducts: [], // Always keeps the complete product list
     selectedProduct: null,
     loading: false,
     error: null,
     suggestions: [],
     suggestionsLoading: false,
+    isSearchMode: false, // Track if we're in search mode
   },
   reducers: {
     clearSelectedProduct: (state) => {
@@ -103,6 +105,10 @@ const productSlice = createSlice({
     },
     clearSuggestions: (state) => {
       state.suggestions = [];
+    },
+    resetToAllProducts: (state) => {
+      state.products = state.allProducts;
+      state.isSearchMode = false;
     },
   },
   extraReducers: (builder) => {
@@ -113,7 +119,9 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.allProducts = action.payload; // Keep a copy of all products
         state.loading = false;
+        state.isSearchMode = false;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.error = action.error.message;
@@ -132,6 +140,7 @@ const productSlice = createSlice({
       .addCase(searchProductsByName.fulfilled, (state, action) => {
         state.products = action.payload;
         state.loading = false;
+        state.isSearchMode = true;
       })
       .addCase(searchProductsByName.rejected, (state, action) => {
         state.error = action.error.message;
@@ -185,5 +194,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { clearSelectedProduct, clearSuggestions } = productSlice.actions;
+export const { clearSelectedProduct, clearSuggestions, resetToAllProducts } =
+  productSlice.actions;
 export default productSlice.reducer;

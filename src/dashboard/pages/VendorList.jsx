@@ -16,17 +16,24 @@ function VendorList() {
     }, [dispatch]);
 
     const filteredVendors = (vendorDashboard || []).map((v) => ({
+        // id: v.id,
+        // businessName: v.name,
+
+        // address: v.address,
+
+        // email: v.email,
+        // phone: v.phone,
         id: v.id,
-        businessName: v.name,
-        // businessType: v.businessType,
-        // website: v.websiteSocialLinks,
-        address: v.address,
-        // contactName: v.contactDetails?.fullName,
+        businessName: v.businessName,
+        businessType: v.businessType,
+        firstName: v.firstName,
+        lastName: v.lastName,
         email: v.email,
         phone: v.phone,
-        // categories: v.productServiceDetails?.categories?.join(", "),
-        // nutritionalInfo: v.productServiceDetails?.providesNutritionalInfo,
-        // healthCertificate: v.healthcertificatesLink ? "Available" : "Not Provided",
+        businessAddress: v.businessAddress,
+        page: v.page,
+        licenseUrl: v.licenseUrl
+
     }));
     if (loading) return <LoaderSpinner />;
     if (error) return <p>Error: {error}</p>;
