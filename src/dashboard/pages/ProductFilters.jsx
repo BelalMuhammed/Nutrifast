@@ -11,6 +11,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import LoaderSpinner from "@/Components/shared/Loaders/Loader";
+// import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 
 function ProductFilters() {
   const [filters, setFilters] = useState({
@@ -236,13 +237,7 @@ function ProductFilters() {
   };
 
   if (loading) {
-    return
-    //(
-    //   <div className='flex items-center justify-center min-h-[400px]'>
-    //     <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-app-primary'></div>
-    //   </div>
-    // );
-    <LoaderSpinner></LoaderSpinner>
+    return <LoaderSpinner />
   }
 
   return (
