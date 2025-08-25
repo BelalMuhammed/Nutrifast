@@ -1,6 +1,6 @@
 "use client";
 
-import { HiOutlineExclamationCircle } from "react-icons/hi";
+
 import { useId, useMemo, useRef, useState } from "react";
 import {
   flexRender,
@@ -29,17 +29,7 @@ import {
 } from "lucide-react";
 
 import { LuSettings2 } from "react-icons/lu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/Components/ui/Alert-dialog";
+
 import { Button } from "@/Components/ui/Button";
 import { Checkbox } from "@/Components/ui/Checkbox";
 import {
@@ -95,6 +85,9 @@ import { useDispatch } from "react-redux";
 import { deleteMessage } from "@/Redux/slices/messagesSlice";
 import { deleteUser } from "@/Redux/slices/userSlice";
 import { deleteProduct } from "@/Redux/slices/productSlice";
+import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
+
 
 export default function TableDashboard({
   data: externalData = [],

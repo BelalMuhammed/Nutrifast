@@ -11,6 +11,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import LoaderSpinner from "@/Components/shared/Loaders/Loader";
+// import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 
 function ProductFilters() {
   const [filters, setFilters] = useState({
