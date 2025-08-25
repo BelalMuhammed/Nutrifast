@@ -257,10 +257,10 @@ export default function TableDashboard({
                 )}
                 dropdownClassName="z-50"
               >
-                <DropdownItem onClick={() => alert("Dashboard!")}>Dashboard</DropdownItem>
-                <DropdownItem onClick={() => alert("Settings!")}>Settings</DropdownItem>
-                <DropdownItem onClick={() => alert("Earnings!")}>Earnings</DropdownItem>
-                <DropdownItem onClick={() => alert("Sign out!")}>Sign out</DropdownItem>
+                <DropdownItem onClick={() => alert("pending!")}>pending</DropdownItem>
+                <DropdownItem onClick={() => alert("Shipped!")}>Shipped</DropdownItem>
+                <DropdownItem onClick={() => alert("Completed!")}>Completed</DropdownItem>
+                <DropdownItem onClick={() => alert("cancel!")}>cancel</DropdownItem>
               </Dropdown>
             </div>
           );
