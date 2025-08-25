@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import isFreshDietMeal from "../../lib/isFreshDietMeal";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -46,11 +47,6 @@ export default function Checkout() {
   // Get current user data
   const currentUser = getCurrentUser();
 
-  // Centralized function to determine if an item is a fresh meal
-  const isFreshMeal = (item) => {
-    return item.category?.toLowerCase() === "fresh diet meals";
-  };
-
   const {
     register,
     handleSubmit,
@@ -94,7 +90,7 @@ export default function Checkout() {
 
   // Check for fresh diet meals in cart
   useEffect(() => {
-    const freshMeals = cartItems.filter(isFreshMeal);
+    const freshMeals = cartItems.filter(isFreshDietMeal);
     setFreshMealsInCart(freshMeals);
   }, [cartItems]);
 
@@ -330,7 +326,7 @@ export default function Checkout() {
         // Partial order - update cart to contain only fresh meals
         try {
           // Calculate what should remain in cart after order (only fresh meals)
-          const freshMealsOnly = cartItems.filter(isFreshMeal);
+          const freshMealsOnly = cartItems.filter(isFreshDietMeal);
 
           // Atomic operation: set cart to contain only fresh meals
           dispatch(setCartItems(freshMealsOnly));
@@ -378,8 +374,8 @@ export default function Checkout() {
       setOrderCompleted(true);
 
       const orderMessage = data.orderItems
-        ? `Order placed successfully! Fresh meals remain in your cart for next-day delivery. 🎉`
-        : `Order placed successfully! 🎉`;
+        ? `Order placed successfully! Fresh meals remain in your cart for next-day delivery.`
+        : `Order placed successfully!`;
 
       showToastMessage(orderMessage, "success");
 
@@ -449,7 +445,7 @@ export default function Checkout() {
       }
 
       // Check for fresh meals and show modal only if there are BOTH fresh and non-fresh items
-      const nonFreshMeals = cartItems.filter((item) => !isFreshMeal(item));
+      const nonFreshMeals = cartItems.filter((item) => !isFreshDietMeal(item));
 
       if (freshMealsInCart.length > 0 && nonFreshMeals.length > 0) {
         // Mixed cart: has both fresh meals and regular items
@@ -476,7 +472,7 @@ export default function Checkout() {
       setShowConfirmation(true);
     } else if (option === "separate") {
       // Remove non-fresh items and proceed with them, keep fresh meals in cart
-      const nonFreshMeals = cartItems.filter((item) => !isFreshMeal(item));
+      const nonFreshMeals = cartItems.filter((item) => !isFreshDietMeal(item));
 
       if (nonFreshMeals.length === 0) {
         showToastMessage(
@@ -590,7 +586,7 @@ export default function Checkout() {
                         </h4>
 
                         {/* Fresh Diet Meal Badge */}
-                        {isFreshMeal(item) && (
+                        {isFreshDietMeal(item) && (
                           <div className="flex items-center gap-1 mb-2">
                             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-700 text-xs font-medium rounded-full border border-orange-200 shadow-sm">
                               <HiOutlineClock className="w-3 h-3" />

@@ -17,6 +17,7 @@ import SideFilter from "../../Components/shop/SideFilter/SideFilter";
 import {
   fetchProducts,
   searchProductsByName,
+  resetToAllProducts,
 } from "../../Redux/slices/productSlice";
 import filterLogic from "../../utlis/filterLogic";
 
@@ -25,6 +26,10 @@ function Shop() {
   const navigate = useNavigate();
   const location = useLocation();
   const { products, loading } = useSelector((state) => state.products);
+
+  // Get search term from URL
+  const queryParams = new URLSearchParams(location.search);
+  const searchName = queryParams.get("name");
 
   // States
   const [sortOption, setSortOption] = useState("");
@@ -46,26 +51,24 @@ function Shop() {
 
   const PRODUCTS_PER_PAGE = 12;
 
-  // Get search term from URL
-  const queryParams = new URLSearchParams(location.search);
-  const searchName = queryParams.get("name");
-
-  // Fetch products based on search term
+  // Fetch products or search based on URL
   useEffect(() => {
     if (searchName && searchName.trim() !== "") {
       setLocalSearchTerm(searchName);
       dispatch(searchProductsByName(searchName));
     } else {
+      dispatch(resetToAllProducts());
       dispatch(fetchProducts());
       setLocalSearchTerm("");
     }
   }, [searchName, dispatch]);
 
-  // Update filtered products when products or queryParams change
+  // Update filtered products when products or URL params change
   useEffect(() => {
-    if (products.length === 0) return;
     const queryParams = new URLSearchParams(location.search);
-    // Build filters from queryParams
+    const currentSearchName = queryParams.get("name");
+
+    // Build filters from URL
     const filters = {
       Categories: queryParams.get("category")
         ? queryParams.get("category").split(",")
@@ -84,9 +87,12 @@ function Shop() {
         : [0, 1000],
     };
 
-    // Sync optimistic filters with URL
-    setOptimisticFilters(filters);
+    // Only update optimisticFilters from URL when not searching
+    if (!currentSearchName || currentSearchName.trim() === "") {
+      setOptimisticFilters(filters);
+    }
 
+    // Always apply filters to the current products (search results or all)
     setFilteredProducts(filterLogic(products, filters));
     setDisplayedCount(12);
   }, [products, location.search]);
@@ -94,7 +100,7 @@ function Shop() {
   // Handler to update filters in queryParams
   const handleFilterChange = useCallback(
     (group, values) => {
-      // Immediately update optimistic state for instant UI feedback
+      // Update optimistic state for instant UI feedback
       const newOptimisticFilters = {
         ...optimisticFilters,
         [group]: values,
@@ -106,7 +112,7 @@ function Shop() {
         setFilteredProducts(filterLogic(products, newOptimisticFilters));
       }
 
-      // Then update URL (this will eventually sync back via useEffect)
+      // Update URL
       const params = new URLSearchParams(location.search);
       if (group === "Categories") {
         if (values.length > 0) {
@@ -343,17 +349,18 @@ function Shop() {
                                 : "name-asc"
                             )
                           }
-                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${sortOption.startsWith("name")
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                            sortOption.startsWith("name")
                               ? "bg-app-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
+                          }`}
                         >
                           Name{" "}
                           {sortOption === "name-asc"
                             ? "↑"
                             : sortOption === "name-desc"
-                              ? "↓"
-                              : ""}
+                            ? "↓"
+                            : ""}
                         </button>
                         <button
                           onClick={() =>
@@ -363,17 +370,18 @@ function Shop() {
                                 : "price-asc"
                             )
                           }
-                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${sortOption.startsWith("price")
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                            sortOption.startsWith("price")
                               ? "bg-app-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
+                          }`}
                         >
                           Price{" "}
                           {sortOption === "price-asc"
                             ? "↑"
                             : sortOption === "price-desc"
-                              ? "↓"
-                              : ""}
+                            ? "↓"
+                            : ""}
                         </button>
                         <button
                           onClick={() =>
@@ -383,27 +391,29 @@ function Shop() {
                                 : "rating-desc"
                             )
                           }
-                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${sortOption.startsWith("rating")
+                          className={`px-3 py-2 rounded-full text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                            sortOption.startsWith("rating")
                               ? "bg-app-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
+                          }`}
                         >
                           Top Rated{" "}
                           {sortOption === "rating-desc"
                             ? "⭐"
                             : sortOption === "rating-asc"
-                              ? "↑"
-                              : ""}
+                            ? "↑"
+                            : ""}
                         </button>
                       </div>
                     </div>
                     <div className="flex items-center bg-gray-100 rounded-xl p-1 mt-2 sm:mt-0">
                       <button
                         onClick={() => setViewMode("grid")}
-                        className={`p-2 rounded-lg transition-all duration-200 ${viewMode === "grid"
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                          viewMode === "grid"
                             ? "bg-white text-app-primary shadow-sm"
                             : "text-gray-500 hover:text-gray-700"
-                          }`}
+                        }`}
                         aria-label="Grid view"
                         title="Grid View"
                       >
@@ -411,10 +421,11 @@ function Shop() {
                       </button>
                       <button
                         onClick={() => setViewMode("list")}
-                        className={`p-2 rounded-lg transition-all duration-200 ${viewMode === "list"
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                          viewMode === "list"
                             ? "bg-white text-app-primary shadow-sm"
                             : "text-gray-500 hover:text-gray-700"
-                          }`}
+                        }`}
                         aria-label="List view"
                         title="List View"
                       >
@@ -425,10 +436,11 @@ function Shop() {
                 </div>
 
                 <div
-                  className={`w-full ${viewMode === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
-                    : "space-y-4"
-                    }`}
+                  className={`w-full ${
+                    viewMode === "grid"
+                      ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-6"
+                      : "space-y-4"
+                  }`}
                 >
                   {displayedProducts.map((product) => (
                     <ProductCard
@@ -454,89 +466,107 @@ function Shop() {
                 )}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center  px-4">
-                {/* Empty State Container */}
-                <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 max-w-md w-full text-center">
-                  {/* Icon Section */}
-                  <div>
-                    <div className="bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full w-24 h-24 mx-auto flex items-center justify-center ">
-                      <FiSearch className="text-app-primary" size={40} />
+              !loading && (
+                <div className="flex flex-col items-center justify-center  px-4">
+                  {/* Empty State Container */}
+                  <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 max-w-md w-full text-center">
+                    {/* Icon Section */}
+                    <div>
+                      <div className="bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full w-24 h-24 mx-auto flex items-center justify-center ">
+                        <FiSearch className="text-app-primary" size={40} />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Content Section */}
-                  <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-app-secondary">
-                      {searchName
-                        ? "No Results Found"
-                        : "No Products Available"}
-                    </h3>
+                    {/* Content Section */}
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-bold text-app-secondary">
+                        {searchName
+                          ? "No Results Found"
+                          : "No Products Available"}
+                      </h3>
 
-                    <p className="text-gray-600 leading-relaxed">
-                      {searchName ? (
-                        <>
-                          We couldn't find any products matching{" "}
-                          <span className="font-semibold text-app-primary">
-                            "{searchName}"
-                          </span>
-                          <br />
-                          Try adjusting your search or browse our categories.
-                        </>
-                      ) : (
-                        "Our shelves are currently being restocked with healthy products. Check back soon!"
-                      )}
-                    </p>
+                      <p className="text-gray-600 leading-relaxed">
+                        {searchName ? (
+                          <>
+                            We couldn't find any products matching{" "}
+                            <span className="font-semibold text-app-primary">
+                              "{searchName}"
+                            </span>
+                            <br />
+                            Try adjusting your search or browse our categories.
+                          </>
+                        ) : (
+                          "Our shelves are currently being restocked with healthy products. Check back soon!"
+                        )}
+                      </p>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                      {searchName ? (
-                        <>
-                          <button
-                            onClick={handleClearSearch}
-                            className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
-                            style={{
-                              backgroundColor: "#388e3c",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.target.style.backgroundColor = "#4caf50")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.target.style.backgroundColor = "#388e3c")
-                            }
-                          >
-                            <FiX size={18} />
-                            Clear Search
-                          </button>
-                          <button
-                            onClick={() => navigate("/shop")}
-                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
-                          >
-                            <FiShoppingBag size={18} />
-                            Browse All
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          onClick={() => window.location.reload()}
-                          className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
-                          style={{
-                            backgroundColor: "#388e3c",
-                          }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.backgroundColor = "#4caf50")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.backgroundColor = "#388e3c")
-                          }
-                        >
-                          <FiSearch size={18} />
-                          Reset filter
-                        </button>
-                      )}
+                      {/* Action Buttons */}
+                      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                        {searchName ? (
+                          <>
+                            <button
+                              onClick={handleClearSearch}
+                              className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                              style={{
+                                backgroundColor: "#388e3c",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.target.style.backgroundColor = "#4caf50")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.target.style.backgroundColor = "#388e3c")
+                              }
+                            >
+                              <FiX size={18} />
+                              Clear Search
+                            </button>
+                            <button
+                              onClick={() => navigate("/shop")}
+                              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                            >
+                              <FiShoppingBag size={18} />
+                              Browse All
+                            </button>
+                          </>
+                        ) : (
+                          <div className="w-full flex justify-center">
+                            <button
+                              onClick={() => {
+                                setLocalSearchTerm("");
+                                setDisplayedCount(12);
+                                setSortOption("");
+                                setOptimisticFilters({
+                                  Categories: [],
+                                  DietTypes: [],
+                                  MedicalConditions: [],
+                                  Allergens: [],
+                                  CaloriesRange: [0, 1000],
+                                });
+                                navigate("/shop");
+                                dispatch(resetToAllProducts());
+                                dispatch(fetchProducts());
+                              }}
+                              className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                              style={{
+                                backgroundColor: "#388e3c",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.target.style.backgroundColor = "#4caf50")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.target.style.backgroundColor = "#388e3c")
+                              }
+                            >
+                              <FiSearch size={18} />
+                              Reset filter
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )
             )}
           </div>
         </div>

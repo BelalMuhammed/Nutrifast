@@ -5,6 +5,7 @@ import ToastNotification from "../../shared/ToastNotification";
 import { HiOutlineClock } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useWishlist } from "../../../hooks/useWishlist";
+import isFreshDietMeal from "../../../lib/isFreshDietMeal";
 
 function ProductCard({ product, viewMode = "grid" }) {
   const { isItemInWishlist, toggleItem } = useWishlist();
@@ -25,16 +26,9 @@ function ProductCard({ product, viewMode = "grid" }) {
   }, [wishlistToast.show]);
 
   // Destructure product properties
-  const {
-    id,
-    name,
-    image,
-    description,
-    calories,
-    price,
-    tags = [],
-    isFreshDietMeal,
-  } = product;
+  const { id, name, image, description, calories, price, tags = [] } = product;
+
+  const freshDiet = isFreshDietMeal(product);
 
   const isInWishlist = isItemInWishlist(id);
 
@@ -60,7 +54,7 @@ function ProductCard({ product, viewMode = "grid" }) {
               className="w-full h-full object-cover rounded-xl border border-gray-100 hover:scale-105 transition-transform duration-200"
             />
             {/* Preorder Tag */}
-            {isFreshDietMeal && (
+            {freshDiet && (
               <div
                 className="absolute top-3 left-3 bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-yellow-300 flex items-center gap-1 animate-fadeIn z-10"
                 style={{
@@ -69,7 +63,7 @@ function ProductCard({ product, viewMode = "grid" }) {
                 }}
               >
                 <HiOutlineClock className="h-4 w-4 mr-1 text-orange-600 bg-yellow-100 rounded-full p-[2px]" />
-                <span style={{ fontWeight: 600 }}>Preorder required</span>
+                <span style={{ fontWeight: 600 }}>Preorder</span>
               </div>
             )}
           </Link>
@@ -142,7 +136,7 @@ function ProductCard({ product, viewMode = "grid" }) {
               className="w-full h-full object-cover rounded-xl border border-gray-100 hover:scale-105 transition-transform duration-200"
             />
             {/* Preorder Tag */}
-            {isFreshDietMeal && (
+            {freshDiet && (
               <div
                 className="absolute top-3 left-3 bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-yellow-300 flex items-center gap-1 animate-fadeIn z-10"
                 style={{
