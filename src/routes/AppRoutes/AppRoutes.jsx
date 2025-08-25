@@ -161,7 +161,7 @@ import Orders from "@/dashboard/pages/Orders";
 import Users from "@/dashboard/pages/Users";
 import VendorList from "@/dashboard/pages/VendorList";
 import VendorsApplications from "@/dashboard/pages/VendorsApplications";
-import Messages from "@/dashboard/pages/Messages";
+import Messages from "../../dashboard/pages/Messages";
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "../../Components/layout/LayOut";
@@ -232,7 +232,9 @@ export default function AppRoutes() {
 
         // 🔒 Protected user routes
         {
-          element: <ProtectedRoute allowedRoles={["user", "vendor", "admin"]} />,
+          element: (
+            <ProtectedRoute allowedRoles={["user", "vendor", "admin"]} />
+          ),
           children: [
             { path: "myProfile", element: <MyProfile /> },
             { path: "myOrders", element: <MyOrders /> },
@@ -255,7 +257,10 @@ export default function AppRoutes() {
                 { path: "addProducts", element: <AddProducts /> },
                 { path: "users", element: <Users /> },
                 { path: "vendorList", element: <VendorList /> },
-                { path: "vendorApplications", element: <VendorsApplications /> },
+                {
+                  path: "vendorApplications",
+                  element: <VendorsApplications />,
+                },
                 { path: "productsFilters", element: <ProductFilters /> },
                 { path: "EditProduct/:id", element: <EditProduct /> },
               ],
