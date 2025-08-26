@@ -45,6 +45,17 @@ function ProductCard({ product, viewMode = "grid" }) {
   if (viewMode === "list") {
     CardContent = (
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center bg-white rounded-2xl p-4 sm:p-5 shadow-sm w-full min-w-0 relative transition-transform duration-200 hover:shadow-md group border border-gray-100">
+        {/* Floating favorite button */}
+        <button
+          onClick={handleWishlistToggle}
+          className={`absolute top-3 right-3 flex items-center justify-center w-8 h-8 rounded-full bg-white/80 shadow-lg border border-gray-200 transition-colors duration-200 hover:bg-red-50 z-20 ${
+            isInWishlist ? "text-red-500" : "text-gray-400"
+          }`}
+          style={{ backdropFilter: "blur(8px)" }}
+          aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <FaHeart size={18} />
+        </button>
         {/* Image */}
         <div className="w-full sm:w-32 h-40 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden relative mb-3 sm:mb-0">
           <Link to={`/product/${id}`}>
@@ -77,17 +88,6 @@ function ProductCard({ product, viewMode = "grid" }) {
                 {name}
               </h3>
             </Link>
-            <button
-              onClick={handleWishlistToggle}
-              className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-50 border border-gray-200 transition-colors duration-200 hover:bg-red-50 ${
-                isInWishlist ? "text-red-500" : "text-gray-400"
-              } sm:ml-4`}
-              aria-label={
-                isInWishlist ? "Remove from wishlist" : "Add to wishlist"
-              }
-            >
-              <FaHeart size={18} className="sm:size-20" />
-            </button>
           </div>
 
           <p className="text-gray-600 mb-2 sm:mb-3 text-sm sm:text-base line-clamp-2">
