@@ -96,7 +96,6 @@ import { Button } from "@/Components/ui/button";
 import { Checkbox } from "@/Components/ui/checkbox";
 
 
-
 export default function TableDashboard({
   data: externalData = [],
   type,
