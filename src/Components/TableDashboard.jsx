@@ -92,8 +92,8 @@ import { useDispatch } from "react-redux";
 import { deleteMessage } from "@/Redux/slices/messagesSlice";
 import { deleteUser } from "@/Redux/slices/userSlice";
 import { deleteProduct } from "@/Redux/slices/productSlice";
-import { Button } from "@/Components/ui/button";
-import { Checkbox } from "@/Components/ui/checkbox";
+import { Button } from "@/Components/ui/Button";
+import { Checkbox } from "@/Components/ui/Checkbox";
 
 
 export default function TableDashboard({
