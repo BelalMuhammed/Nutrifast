@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    
+    "predeloy":"npm run build",
+    "deploy":"gh-pages -d dist"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -20,6 +23,7 @@
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.12.7",
     "framer-motion": "^12.23.12",
+    "gh-pages": "^6.3.0",
     "lucide-react": "^0.540.0",
     "motion": "^12.23.12",
     "radix-ui": "^1.4.3",

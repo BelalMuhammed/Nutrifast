@@ -11,6 +11,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import LoaderSpinner from "@/Components/shared/Loaders/Loader";
+// import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 
 function ProductFilters() {
   const [filters, setFilters] = useState({
@@ -222,27 +223,21 @@ function ProductFilters() {
   };
 
   // Sync all filters to server (bulk update)
-  const syncFiltersToServer = async () => {
-    try {
-      setLoading(true);
-      await axiosInstance.put("/filters", filters);
-      showToastMessage("All filters synced successfully", "success");
-    } catch (error) {
-      console.error("Error syncing filters:", error);
-      showToastMessage("Failed to sync filters", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const syncFiltersToServer = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await axiosInstance.put("/filters", filters);
+  //     showToastMessage("All filters synced successfully", "success");
+  //   } catch (error) {
+  //     console.error("Error syncing filters:", error);
+  //     showToastMessage("Failed to sync filters", "error");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (loading) {
-    return
-    //(
-    //   <div className='flex items-center justify-center min-h-[400px]'>
-    //     <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-app-primary'></div>
-    //   </div>
-    // );
-    <LoaderSpinner></LoaderSpinner>
+    return <LoaderSpinner></LoaderSpinner>
   }
 
   return (
@@ -297,7 +292,7 @@ function ProductFilters() {
                 </button> */}
                 <button
                   onClick={() => setShowAddModal(true)}
-                  className='bg-app-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-app-primary/90 transition-all duration-300 flex items-center gap-2 shadow-sm'>
+                  className='bg-app-primary text-white px-6 py-2 rounded-xl font-semibold hover:bg-app-primary/90 transition-all duration-300 flex items-center gap-2 shadow-sm'>
                   <FiPlus className='w-5 h-5' />
                   Add New Filter
                 </button>
@@ -338,7 +333,7 @@ function ProductFilters() {
                                   <img
                                     src={item.image}
                                     alt={item.name}
-                                    className='w-12 h-12 rounded-lg object-cover border mx-auto border-gray-200'
+                                    className='w-50 h-20 rounded-lg object-cover border mx-auto border-gray-200'
                                     onError={(e) => {
                                       e.target.style.display = "none";
                                     }}
@@ -348,7 +343,7 @@ function ProductFilters() {
 
 
 
-                              <div className=" flex justify-content-between align-items-center w-full">
+                              {/* <div className=" flex justify-content-between align-items-center w-full">
                                 <h4 className='font-medium text-gray-800 text-sm  ms-2'>
                                   {item.name}
                                 </h4>
@@ -372,7 +367,37 @@ function ProductFilters() {
                                     <FiTrash2 className='w-4 h-4' />
                                   </button>
                                 </div>
+                              </div> */}
+                              <div className="flex items-center justify-between w-full  rounded-xl  ">
+                                {/* Left side (Name + Calories) */}
+                                <div>
+                                  <h4 className="font-semibold text-gray-800 text-sm">{item.name}</h4>
+                                  {item.min !== undefined && item.max !== undefined && (
+                                    <p className="text-xs text-gray-500 mt-0.5">
+                                      {item.min} - {item.max} cal
+                                    </p>
+                                  )}
+                                </div>
+
+                                {/* Right side (Actions) */}
+                                <div className="flex gap-2">
+                                  <button
+                                    onClick={() => handleEdit(category, item)}
+                                    className="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                                    title="Edit"
+                                  >
+                                    <FiEdit2 className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDelete(category, item.id)}
+                                    className="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
+                                    title="Delete"
+                                  >
+                                    <FiTrash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
                               </div>
+
 
                             </div>
 

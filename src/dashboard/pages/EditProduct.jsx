@@ -535,7 +535,7 @@ export default function EditProduct() {
                     <div className='pt-6 border-t-2 border-gray-200'>
                         <button
                             type='submit'
-                            className='w-full bg-yellow-500 text-white p-5 rounded-xl transition-all duration-300 font-bold text-lg shadow hover:shadow-3xl flex items-center justify-center gap-3 border-2 border-yellow-500'>
+                            className='w-full bg-yellow-500 text-white p-2 rounded-xl transition-all duration-300 font-bold text-lg shadow hover:shadow-3xl flex items-center justify-center gap-3 border-2 border-yellow-500'>
                             <PlusIcon className='w-6 h-6' />
                             Save Changes
                         </button>

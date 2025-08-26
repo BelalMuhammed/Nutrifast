@@ -1,14 +1,45 @@
 "use client";
 
+import { logout } from "@/Redux/slices/authSlice";
 import { useState } from "react";
 import { FiMenu, FiSearch, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
 import { HiBell, HiMoon } from "react-icons/hi";
 import { IoMdHome } from "react-icons/io";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
+import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
 export default function DashboardTopbar({ onMenuClick }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    // Clear cart and wishlist data from Redux state first
+    dispatch(clearCartData());
+    dispatch(clearWishlistData());
+
+    // Clear user authentication (this also clears localStorage)
+    dispatch(logout());
+
+    // Additional cleanup to ensure data is cleared
+    setTimeout(() => {
+      // Force clear localStorage items if they still exist
+      try {
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("wishlist");
+        localStorage.removeItem("currentUser");
+      } catch {
+        // ignore errors
+      }
+    }, 100);
+
+    navigate("/");
+  };
+
+
   const handleOpenNewTab = () => {
-    window.open("/", "_blank"); // 👈 "_blank" means new tab
+    window.open("/", "_blank");
   };
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow-md z-40">
@@ -63,21 +94,21 @@ export default function DashboardTopbar({ onMenuClick }) {
 
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-xl py-2 z-50 animate-slide-fade">
-                <div className="px-4 py-3 border-b">
+                <div className="px-4 py-3 ">
                   <p className="font-semibold text-gray-800">Admin User</p>
                   <p className="text-sm text-gray-500">admin@nutrifast.com</p>
                 </div>
 
-                <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors">
+                {/* <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors">
                   <FiUser className="text-gray-500" />
                   Profile
                 </button>
                 <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors">
                   <FiSettings className="text-gray-500" />
                   Settings
-                </button>
-                <div className="border-t my-1"></div>
-                <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors text-red-500">
+                </button> */}
+                <div className=" my-1"></div>
+                <button onClick={() => { handleLogout() }} className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors text-red-500">
                   <FiLogOut />
                   Sign Out
                 </button>

@@ -13,8 +13,10 @@ import { getCurrentUser } from "../../lib/storage";
 // Import components
 import DesktopMenu from "./DesktopMenu";
 import CartWishlistIcons from "./CartWishlistIcons";
-import UserDropdown from "./UserDropdown";
+
 import MobileMenu from "./MobileMenu";
+import UserDropdown from "./UserDropDown";
+
 
 // Helper NavLink component
 function NavLink({ to, children }) {
