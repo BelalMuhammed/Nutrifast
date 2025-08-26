@@ -25,7 +25,7 @@ Nutrifast is a modern web application for nutrition-focused meal delivery. It of
 
 ## Features
 
-- 🛒 **Cart & Wishlist**: Add, remove, and auto-load items with persistent state.
+- 🛒 **Cart & Wishlist**: Persistent cart/wishlist with add/remove and auto-load.
 - 🔒 **Authentication**: Secure login, registration, and session management.
 - 📦 **Order Management**: View, track, and manage your orders.
 - 🥗 **Product Catalog**: Browse meals, filter by calories, categories, and more.
@@ -42,10 +42,9 @@ Nutrifast is a modern web application for nutrition-focused meal delivery. It of
 - **API**: Axios
 - **Routing**: React Router
 - **Linting**: ESLint
-- **Other**:  Custom Hooks, Modern CSS
+- **Other**: Context API, Custom Hooks, Modern CSS
 
 ## Getting Started
-npm run dev
 
 ### Installation
 
@@ -71,7 +70,6 @@ $ yarn dev
 
 The app will be available at [http://localhost:5173](http://localhost:5173).
 
-
 ## Project Structure
 
 ```
@@ -81,11 +79,23 @@ Nutrifast/
 │   ├── Api/               # API services (Axios, cart, wishlist)
 │   ├── assets/            # Images and static resources
 │   ├── Components/        # Reusable UI components
+│   │   ├── categoryCard/           # Category cards
+│   │   ├── customerFavCard/        # Customer favorite cards
+│   │   ├── Footer/                 # Footer and highlights
+│   │   ├── homepage/               # Homepage sections
+│   │   ├── layout/                 # Layout components
+│   │   ├── navbar/                 # Navigation bar components
+│   │   ├── productDetail/          # Product details, reviews, related
+│   │   ├── shared/                 # Shared UI (buttons, loaders, etc.)
+│   │   ├── shop/                   # Shop filters, product grid, etc.
+│   │   ├── test/                   # CartWishlistTest.jsx (for dev/test only)
+│   │   ├── ui/                     # UI primitives (Button, Table, etc.)
+│   │   └── whyChooseNutriFast/     # Why choose us section
 │   ├── contexts/          # React Context providers
-│   ├── dashboard/         # Admin dashboard components & pages
+│   ├── dashboard/         # Admin dashboard (layout, pages, components)
 │   ├── hooks/             # Custom React hooks
 │   ├── lib/               # Utility libraries
-│   ├── Network/           # Network 
+│   ├── Network/           # Network interceptors
 │   ├── Pages/             # Main app pages (Home, Cart, Auth, etc.)
 │   ├── Redux/             # Redux store, slices, middleware
 │   ├── routes/            # App routing
@@ -97,6 +107,7 @@ Nutrifast/
 ├── vite.config.js         # Vite configuration
 └── README.md              # Project documentation
 ```
+
 
 ## Scripts
 
@@ -118,4 +129,6 @@ For major changes, please open an issue first to discuss what you would like to 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+**No LICENSE file found.**
+
+This project currently does not include a license file. If you intend to make this project open source, please add a LICENSE file (MIT, Apache 2.0, etc.) to clarify usage rights.
