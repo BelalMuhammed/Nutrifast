@@ -228,9 +228,6 @@ function Shop() {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div className="text-center lg:text-left">
               <div className="min-w-0">
-                <h1 className="text-2xl lg:text-3xl font-bold text-app-secondary break-words">
-                  {searchName ? "Search Results" : "Shop"}
-                </h1>
                 <p className="text-gray-600 mt-1 text-sm lg:text-base break-words">
                   {searchName ? (
                     <>
@@ -341,7 +338,6 @@ function Shop() {
               </div>
             ) : sortedProducts.length > 0 ? (
               <>
-                {/* Perfect Responsive Product Count, Sort Controls, and View Mode Toggle above cards */}
                 <div className="w-full flex flex-wrap items-center justify-between mb-4 gap-2 sm:gap-4">
                   <span className="text-xs sm:text-sm text-gray-500 font-normal mb-2 sm:mb-0">
                     Showing {displayedProducts.length} of{" "}
@@ -515,23 +511,7 @@ function Shop() {
                       {/* Action Buttons */}
                       <div className="flex flex-col sm:flex-row gap-3 pt-4">
                         {searchName ? (
-                          <>
-                            <button
-                              onClick={handleClearSearch}
-                              className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
-                              style={{
-                                backgroundColor: "#388e3c",
-                              }}
-                              onMouseEnter={(e) =>
-                                (e.target.style.backgroundColor = "#4caf50")
-                              }
-                              onMouseLeave={(e) =>
-                                (e.target.style.backgroundColor = "#388e3c")
-                              }
-                            >
-                              <FiX size={18} />
-                              Clear Search
-                            </button>
+                          <div className="w-full flex justify-center">
                             <button
                               onClick={() => navigate("/shop")}
                               className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
@@ -539,7 +519,7 @@ function Shop() {
                               <FiShoppingBag size={18} />
                               Browse All
                             </button>
-                          </>
+                          </div>
                         ) : (
                           <div className="w-full flex justify-center">
                             <button
