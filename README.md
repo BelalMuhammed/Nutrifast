@@ -39,17 +39,13 @@ Nutrifast is a modern web application for nutrition-focused meal delivery. It of
 
 - **Frontend**: React, Vite, JavaScript (ES6+), CSS Modules
 - **State Management**: Redux Toolkit
-- **API**: Axios, RESTful services
+- **API**: Axios
 - **Routing**: React Router
 - **Linting**: ESLint
-- **Other**: Context API, Custom Hooks, Modern CSS
+- **Other**:  Custom Hooks, Modern CSS
 
 ## Getting Started
-
-### Prerequisites
-
-- Node.js (v16+ recommended)
-- npm or yarn
+npm run dev
 
 ### Installation
 
@@ -75,21 +71,6 @@ $ yarn dev
 
 The app will be available at [http://localhost:5173](http://localhost:5173).
 
-### Build for Production
-
-```bash
-$ npm run build
-# or
-$ yarn build
-```
-
-### Linting
-
-```bash
-$ npm run lint
-# or
-$ yarn lint
-```
 
 ## Project Structure
 
@@ -104,7 +85,7 @@ Nutrifast/
 │   ├── dashboard/         # Admin dashboard components & pages
 │   ├── hooks/             # Custom React hooks
 │   ├── lib/               # Utility libraries
-│   ├── Network/           # Network interceptors
+│   ├── Network/           # Network 
 │   ├── Pages/             # Main app pages (Home, Cart, Auth, etc.)
 │   ├── Redux/             # Redux store, slices, middleware
 │   ├── routes/            # App routing
@@ -127,7 +108,7 @@ Nutrifast/
 
 Contributions are welcome! Please follow these steps:
 
-1. Fork the repository
+1. clone the repository
 2. Create a new branch (`git checkout -b feature/your-feature`)
 3. Commit your changes (`git commit -m 'Add feature'`)
 4. Push to the branch (`git push origin feature/your-feature`)
