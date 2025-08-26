@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../Api/Axios";
+import { Link } from "react-router-dom";
 
 const VendorsLogo = () => {
   const [vendors, setVendors] = useState([]);
@@ -55,12 +56,12 @@ const VendorsLogo = () => {
             together and make a real impact on healthy living in Egypt—become a
             valued partner in our journey!
           </p>
-          <a
-            href="/register/vendor"
+          < Link
+            to="/register/vendor"
             className="inline-block mt-6 px-5 py-2.5 rounded-md bg-app-accent text-white text-base shadow-lg hover:bg-orange-600 transition-colors duration-200"
           >
             Register as a Vendor
-          </a>
+          </Link>
         </div>
         {/* Marquee Animation Container */}
         <div className="overflow-hidden w-full">

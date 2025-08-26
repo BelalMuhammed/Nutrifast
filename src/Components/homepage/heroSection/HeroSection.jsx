@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import banner from "../../../assets/banner.png";
 import banner2 from "../../../assets/why-us-cover1.png";
+import { Link } from "react-router-dom";
 
 function HeroSection() {
   // Typing animation states
@@ -77,9 +78,8 @@ function HeroSection() {
               repeatType: "reverse",
             },
           }}
-          className={`absolute inset-0 w-full h-full object-cover object-center z-0 transition-all duration-1000 ${
-            current === idx ? "" : "pointer-events-none"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover object-center z-0 transition-all duration-1000 ${current === idx ? "" : "pointer-events-none"
+            }`}
           style={{ filter: "brightness(0.65) blur(0px)" }}
         />
       ))}
@@ -130,24 +130,27 @@ function HeroSection() {
         </motion.p>
 
         {/* Button */}
-        <motion.button
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.97 }}
-          className="btn-app text-sm sm:text-base  px-6 sm:px-8 py-2.5 sm:py-3S shadow-lg"
-          onClick={() => (window.location.href = "/shop")}
-        >
-          Find Your Energy
-        </motion.button>
-      </motion.div>
+        <Link to="/shop">
+          <motion.button
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.97 }}
+            className="btn-app text-sm sm:text-base  px-6 sm:px-8 py-2.5 sm:py-3S shadow-lg"
+          // onClick={() => (window.location.href = "")}
+          >
+            Find Your Energy
+          </motion.button>
+        </Link>
 
+
+
+      </motion.div>
       {/* Slider Dashes */}
       <div className="absolute bottom-8 left-0 w-full flex justify-center items-center gap-3 z-30">
         {images.map((_, idx) => (
           <span
             key={idx}
-            className={`block w-4 h-1 rounded-full transition-all duration-300 ${
-              current === idx ? "bg-app-primary scale-x-125" : "bg-white/40"
-            }`}
+            className={`block w-4 h-1 rounded-full transition-all duration-300 ${current === idx ? "bg-app-primary scale-x-125" : "bg-white/40"
+              }`}
             style={{ boxShadow: current === idx ? "0 0 8px #22c55e" : "none" }}
           />
         ))}
