@@ -17,7 +17,7 @@ function Users() {
       id: user.id,
       name: user.username,
       email: user.email,
-      password: user.password,
+      // password: user.password,
       role: user.role,
       address: user.address,
       phone: user.phone

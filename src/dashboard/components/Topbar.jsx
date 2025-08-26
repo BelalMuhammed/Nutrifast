@@ -66,17 +66,17 @@ export default function DashboardTopbar({ onMenuClick }) {
 
         {/* Right: Icons + Profile */}
         <div className="flex items-center gap-3 md:gap-4 ms-auto">
-          <button className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
+          {/* <button className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
             <HiMoon size={20} />
-          </button>
+          </button> */}
 
           <button onClick={() => { handleOpenNewTab() }} className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
             <IoMdHome size={20} />
           </button>
-          <button className="p-2 rounded-full hover:bg-gray-100 relative transition-transform hover:scale-110">
+          {/* <button className="p-2 rounded-full hover:bg-gray-100 relative transition-transform hover:scale-110">
             <HiBell size={20} />
             <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-          </button>
+          </button> */}
 
           {/* Profile Dropdown */}
           <div className="relative">

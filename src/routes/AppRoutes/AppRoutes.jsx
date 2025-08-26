@@ -221,7 +221,7 @@ export default function AppRoutes() {
         { path: "contact", element: <ContactUs /> },
         { path: "shop", element: <Shop /> },
         { path: "product/:id", element: <ProductDetails /> },
-        { path: "checkout", element: <Checkout /> },
+
         { path: "cart", element: <Cart /> },
         { path: "wishList", element: <WishList /> },
         { path: "login", element: <Login /> },
@@ -236,6 +236,7 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["user", "vendor", "admin"]} />
           ),
           children: [
+            { path: "checkout", element: <Checkout /> },
             { path: "myProfile", element: <MyProfile /> },
             { path: "myOrders", element: <MyOrders /> },
             { path: "order/:id", element: <OrderDetails /> },

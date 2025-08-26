@@ -245,7 +245,7 @@ export default function TableDashboard({
                 }>
                 <LuSettings2 size={14} className='sm:w-4 sm:h-4' />
               </button> */}
-              <Dropdown
+              {/* <Dropdown
                 className=" z-50"
                 renderTrigger={() => (
                   <button
@@ -261,7 +261,7 @@ export default function TableDashboard({
                 <DropdownItem onClick={() => alert("Shipped!")}>Shipped</DropdownItem>
                 <DropdownItem onClick={() => alert("Completed!")}>Completed</DropdownItem>
                 <DropdownItem onClick={() => alert("cancel!")}>cancel</DropdownItem>
-              </Dropdown>
+              </Dropdown> */}
             </div>
           );
         }
@@ -451,8 +451,8 @@ export default function TableDashboard({
 
           </div>
 
-          <div className='flex flex-col sm:flex-row gap-3 w-full lg:w-auto'>
-            {/* Column Visibility Toggle */}
+          {/* <div className='flex flex-col sm:flex-row gap-3 w-full lg:w-auto'>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -483,7 +483,7 @@ export default function TableDashboard({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Advanced Filters */}
+
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -521,7 +521,7 @@ export default function TableDashboard({
                 </div>
               </PopoverContent>
             </Popover>
-          </div>
+          </div> */}
         </div>
       </div>
 

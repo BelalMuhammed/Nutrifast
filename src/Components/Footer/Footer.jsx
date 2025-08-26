@@ -13,6 +13,8 @@ import {
   FaHeart,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import NutriLogo from "../../../public/logo-dark.png"
+
 
 function Footer() {
   return (
@@ -93,7 +95,7 @@ function Footer() {
               {/* Logo */}
               <div className="flex items-center mb-4 sm:mb-6">
                 <img
-                  src="../../../public/logo-dark.png"
+                  src={NutriLogo}
                   alt="NutriFast Logo"
                   className="h-10 sm:h-12 w-auto"
                 />
