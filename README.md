@@ -6,16 +6,7 @@
 
 ---
 
-## Table of Contents
 
-- [About Nutrifast](#about-nutrifast)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Scripts](#scripts)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -56,7 +47,7 @@ $ cd Nutrifast
 # Install dependencies
 $ npm install
 # or
-$ yarn install
+
 ```
 
 ### Running the App
@@ -112,8 +103,6 @@ Nutrifast/
 ## Scripts
 
 - `npm run dev` — Start development server
-- `npm run build` — Build for production
-- `npm run lint` — Run ESLint
 
 ## Contributing
 
