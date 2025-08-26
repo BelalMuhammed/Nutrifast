@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar, SidebarCollapse, Checkbox } from "flowbite-react";
-import { FiX } from "react-icons/fi";
+import { FiX, FiRefreshCcw } from "react-icons/fi";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import Tooltip from "rc-tooltip";
@@ -15,6 +15,7 @@ function SideFilter({
   selectedAllergens = [],
   selectedCaloriesRange = [0, 1000],
   onClose,
+  onResetFilters,
 }) {
   // Filter groups (excluding CaloriesRange)
   const [filters, setFilters] = useState({
@@ -184,6 +185,17 @@ function SideFilter({
             </div>
           </div>
         </section>
+        {/* Reset Filters Button */}
+        <div className="w-full flex justify-center mt-6">
+          <button
+            type="button"
+            onClick={onResetFilters}
+            className="text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2 bg-app-primary hover:bg-app-secondary"
+          >
+            <FiRefreshCcw size={18} />
+            Reset filters
+          </button>
+        </div>
       </div>
     </Sidebar>
   );
