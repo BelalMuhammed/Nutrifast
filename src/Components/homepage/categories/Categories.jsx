@@ -1,20 +1,19 @@
 "use client";
 
 import React from "react";
-import Slider from "react-slick";
 import { useEffect, useState } from "react";
-// eslint-disable-next-line no-unused-vars
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-
 import HomeCard from "../../categoryCard/CategoryCard";
 import { getCategories } from "../../../Api/apiService";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
-  const sliderRef = React.useRef();
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   useEffect(() => {
     getCategories()
@@ -22,21 +21,21 @@ export default function Categories() {
       .catch((err) => console.error(err));
   }, []);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 600,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: false,
-    pauseOnHover: true,
-    arrows: false,
-    responsive: [
-      { breakpoint: 1280, settings: { slidesToShow: 3, slidesToScroll: 1 } },
-      { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-      { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-      { breakpoint: 640, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-    ],
+  // Swiper breakpoints
+  const breakpoints = {
+    1280: { slidesPerView: 4, spaceBetween: 24 },
+    1024: { slidesPerView: 3, spaceBetween: 20 },
+    768: { slidesPerView: 2, spaceBetween: 16 },
+    640: { slidesPerView: 1, spaceBetween: 8 },
+    0: { slidesPerView: 1, spaceBetween: 8 },
+  };
+
+  // Custom arrow handlers
+  const handlePrev = () => {
+    if (swiperInstance) swiperInstance.slidePrev();
+  };
+  const handleNext = () => {
+    if (swiperInstance) swiperInstance.slideNext();
   };
 
   return (
@@ -53,39 +52,77 @@ export default function Categories() {
             categories.
           </p>
         </div>
-        {/* Slider with custom arrows */}
-        <div className="relative app-slider flex items-center justify-center pb-8 sm:pb-10 md:pb-12">
+        {/* Swiper with custom arrows */}
+        <div className="relative app-slider min-h-[340px] sm:min-h-[360px] pb-16 sm:pb-10 md:pb-12 flex items-center justify-center">
+          <style>{`
+            .app-slider .swiper-pagination {
+              position: static;
+              margin-top: 2rem;
+              margin-bottom: 0.5rem;
+              width: 100%;
+              text-align: center;
+            }
+          `}</style>
           <button
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/30 backdrop-blur-md rounded-full p-2 shadow text-black hover:text-green-500 transition-all duration-300"
-            onClick={() => sliderRef.current?.slickPrev()}
+            className="hidden sm:flex items-center justify-center absolute left-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
+            onClick={handlePrev}
             aria-label="Previous"
-            style={{ transform: "translateY(-50%)" }}
+            style={{ boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)" }}
           >
-            <FiChevronLeft className="text-2xl" />
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
           <div className="w-full px-2 sm:px-1 md:px-0">
-            <Slider ref={sliderRef} {...settings}>
+            <Swiper
+              modules={[Navigation, Pagination]}
+              spaceBetween={16}
+              slidesPerView={4}
+              pagination={{ clickable: true }}
+              navigation={false}
+              breakpoints={breakpoints}
+              loop={true}
+              style={{ padding: "0 8px" }}
+              onSwiper={setSwiperInstance}
+            >
               {categories.map((category, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="px-1"
-                >
-                  <HomeCard category={category} />
-                </motion.div>
+                <SwiperSlide key={idx}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="px-1"
+                  >
+                    <HomeCard category={category} />
+                  </motion.div>
+                </SwiperSlide>
               ))}
-            </Slider>
+            </Swiper>
           </div>
           <button
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/30 backdrop-blur-md rounded-full p-2 shadow text-black hover:text-green-500 transition-all duration-300"
-            onClick={() => sliderRef.current?.slickNext()}
+            className="hidden sm:flex items-center justify-center absolute right-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
+            onClick={handleNext}
             aria-label="Next"
-            style={{ transform: "translateY(-50%)" }}
+            style={{ boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)" }}
           >
-            <FiChevronRight className="text-2xl" />
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
       </div>
