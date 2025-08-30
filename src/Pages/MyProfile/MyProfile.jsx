@@ -273,7 +273,7 @@ const MyProfile = () => {
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50'>
       <div className='container mx-auto px-4 py-5'>
         {/* Header Section */}
-        <div className='text-center mb-5'>
+        {/* <div className='text-center mb-5'>
           <div className='bg-gradient-to-br from-app-primary/10 to-app-secondary/10 rounded-full p-6 w-20 h-20 mx-auto flex items-center justify-center '>
             <FiUser className='text-app-primary' size={32} />
           </div>
@@ -283,7 +283,7 @@ const MyProfile = () => {
           <p className='text-gray-600 max-w-2xl mx-auto'>
             Manage your personal information and account settings
           </p>
-        </div>
+        </div> */}
 
         <div className='max-w-6xl mx-auto'>
           {/* Profile Section */}

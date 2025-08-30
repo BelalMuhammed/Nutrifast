@@ -145,8 +145,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Grid */}
-      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-       
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white shadow-md rounded-2xl p-6">
           <h2 className="text-lg font-semibold mb-4">Monthly Sales</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -169,7 +168,6 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </div>
 
-  
         <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center justify-center">
           <h2 className="text-lg font-semibold mb-2">Monthly Target</h2>
           <p className="text-gray-500 text-sm mb-4">
@@ -195,7 +193,6 @@ export default function DashboardPage() {
             </RadialBarChart>
           </ResponsiveContainer>
 
-         
           <p className="text-3xl font-bold -mt-10">75.55%</p>
           <p className="text-green-600 text-sm bg-green-50 px-2 py-0.5 rounded-full mt-2">
             +10%
@@ -206,7 +203,6 @@ export default function DashboardPage() {
             Keep up your good work!
           </p>
 
-     
           <div className="grid grid-cols-3 gap-4 w-full mt-6 text-center">
             <div>
               <p className="text-gray-500 text-sm">Target</p>
@@ -228,7 +224,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

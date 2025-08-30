@@ -111,13 +111,15 @@ export const useCart = () => {
 
   const decreaseQuantity = useCallback(
     async (productId) => {
+      const item = cartItems.find((item) => item.id === productId);
+      if (!item) return;
+      if (item.quantity === 1) {
+        return;
+      }
       if (isAuthenticated && isOnline) {
-        const item = cartItems.find((item) => item.id === productId);
-        if (item) {
-          return dispatch(
-            updateQuantityAsync({ id: productId, quantity: item.quantity - 1 })
-          );
-        }
+        return dispatch(
+          updateQuantityAsync({ id: productId, quantity: item.quantity - 1 })
+        );
       } else {
         return dispatch(decreaseQty(productId));
       }

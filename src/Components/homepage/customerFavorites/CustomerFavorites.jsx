@@ -1,19 +1,15 @@
 "use client";
-
-import React from "react";
-import Slider from "react-slick";
 import { useEffect, useState } from "react";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import CustomerFavCard from "../../customerFavCard/CustomerFavCard";
-
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+// import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { getCustomerFavorites } from "@/Api/apiService";
-
 
 export default function CustomerFavorites() {
   const [favorites, setFavorites] = useState([]);
@@ -24,23 +20,21 @@ export default function CustomerFavorites() {
       .catch((err) => console.error(err));
   }, []);
 
-  const sliderRef = React.useRef();
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: false,
-    pauseOnHover: true,
-    arrows: false,
-    responsive: [
-      { breakpoint: 1280, settings: { slidesToShow: 3, slidesToScroll: 1 } },
-      { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-      { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-      { breakpoint: 640, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-    ],
+  // إعدادات Swiper
+  const breakpoints = {
+    1280: { slidesPerView: 4, spaceBetween: 24 },
+    1024: { slidesPerView: 3, spaceBetween: 20 },
+    768: { slidesPerView: 2, spaceBetween: 16 },
+    0: { slidesPerView: 1, spaceBetween: 8 },
   };
+
+  // Custom arrow handlers
+  // const handlePrev = () => {
+  //   if (swiperInstance) swiperInstance.slidePrev();
+  // };
+  // const handleNext = () => {
+  //   if (swiperInstance) swiperInstance.slideNext();
+  // };
 
   return (
     <section className="app-container mx-auto py-8 sm:py-10 md:py-12">
@@ -56,40 +50,79 @@ export default function CustomerFavorites() {
         </p>
       </div>
 
-      {/* Slider with custom arrows */}
-      <div className="relative app-slider min-h-[340px] sm:min-h-[360px] pb-8 sm:pb-10 md:pb-12 flex items-center">
-        <button
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/30 backdrop-blur-md rounded-full p-2 shadow text-black hover:text-green-500 transition-all duration-300"
-          onClick={() => sliderRef.current?.slickPrev()}
+      {/* Swiper Slider */}
+      <div className="relative app-slider min-h-[340px] sm:min-h-[360px] pb-16 sm:pb-10 md:pb-12">
+        <style>{`
+          .app-slider .swiper-pagination {
+            position: static;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            text-align: center;
+          }
+        `}</style>
+        {/* Custom Arrows */}
+        {/* <button
+          className="hidden sm:flex items-center justify-center absolute left-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
+          onClick={handlePrev}
           aria-label="Previous"
-          style={{ transform: "translateY(-50%)" }}
+          style={{ boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)" }}
         >
-          <FiChevronLeft className="text-2xl" />
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M15 19l-7-7 7-7" />
+          </svg>
         </button>
-        <div className="w-full px-2">
-          <Slider ref={sliderRef} {...settings}>
-            {favorites.map((fav, idx) => (
+        <button
+          className="hidden sm:flex items-center justify-center absolute right-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
+          onClick={handleNext}
+          aria-label="Next"
+          style={{ boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)" }}
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </button> */}
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={16}
+          slidesPerView={4}
+          pagination={{ clickable: true }}
+          navigation={false}
+          breakpoints={breakpoints}
+          loop={true}
+          style={{ padding: "0 8px" }}
+          // onSwiper={setSwiperInstance}
+        >
+          {favorites.map((fav, idx) => (
+            <SwiperSlide key={idx}>
               <motion.div
-                key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="px-2 sm:px-3 md:px-4 flex justify-center"
+                className="flex justify-center min-w-0"
               >
-                <CustomerFavCard fav={fav} />
+                <div className="w-full max-w-full min-w-0">
+                  <CustomerFavCard fav={fav} />
+                </div>
               </motion.div>
-            ))}
-          </Slider>
-        </div>
-        <button
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/30 backdrop-blur-md rounded-full p-2 shadow text-black hover:text-green-500 transition-all duration-300"
-          onClick={() => sliderRef.current?.slickNext()}
-          aria-label="Next"
-          style={{ transform: "translateY(-50%)" }}
-        >
-          <FiChevronRight className="text-2xl" />
-        </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </section>
   );

@@ -123,8 +123,10 @@ const cartSlice = createSlice({
     },
     decreaseQtyLocal: (state, action) => {
       const item = state.cartItems.find((i) => i.id === action.payload);
-      if (item && item.quantity > 1) item.quantity -= 1;
-      saveCart(state.cartItems);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+        saveCart(state.cartItems);
+      }
     },
     updateQuantityLocal: (state, action) => {
       const { id, quantity } = action.payload;
