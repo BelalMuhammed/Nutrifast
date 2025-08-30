@@ -265,19 +265,6 @@ input[type="checkbox"] {
   animation: slideOutToTop 0.3s ease-out forwards;
 }
 
-/* Unified Slider Dots Styling */
-.app-slider .slick-dots {
-  bottom: -60px !important;
-}
-
-.app-slider .slick-dots li button:before {
-  font-size: 8px !important;
-}
-
-.app-slider .slick-dots li.slick-active button:before {
-  color: var(--color-primary) !important;
-}
-
 /* Order Confirmation Animations */
 @keyframes fadeIn {
   from {
