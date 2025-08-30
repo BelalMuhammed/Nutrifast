@@ -31,7 +31,7 @@ Nutrifast is a modern web application for nutrition-focused meal delivery. It of
 - **API**: Axios
 - **Routing**: React Router
 - **Linting**: ESLint
-- **Other**: Context API, Custom Hooks, Modern CSS
+- **Other**:  Custom Hooks, Modern CSS
 
 ## Getting Started
 
