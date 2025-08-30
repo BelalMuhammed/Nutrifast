@@ -78,7 +78,7 @@ const ContactUs = () => {
             </div>
 
             {/* Title */}
-            <div className='mb-4'>
+            <div className='mb-2'>
               <h2 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-app-secondary tracking-tight mb-2'>
                 Contact{" "}
                 <span className='text-app-primary bg-gradient-to-r from-app-primary to-app-secondary bg-clip-text text-transparent'>
@@ -89,8 +89,8 @@ const ContactUs = () => {
             </div>
 
             {/* Description */}
-            <div className='max-w-2xl mx-auto mb-6'>
-              <p className='text-base md:text-lg text-gray-700 leading-relaxed mb-2'>
+            <div className='max-w-2xl mx-auto mb-3'>
+              <p className='text-base md:text-lg text-gray-700 leading-relaxed'>
                 Have questions, feedback, or need support? We're here to help!
                 <span className='font-bold text-app-primary'>
                   {" "}
@@ -103,7 +103,7 @@ const ContactUs = () => {
         </div>
       </section>
       {/* Contact Form Section */}
-      <section className='flex items-center justify-center min-h-[60vh] py-5 text-base sm:text-lg'>
+      <section className='flex items-center justify-center min-h-[60vh] pb-6 text-base sm:text-lg'>
         <div className='w-full max-w-3xl flex justify-center'>
           <div className='w-full'>
             <div className='bg-white rounded-2xl shadow border border-gray-100 p-4 sm:p-6'>
