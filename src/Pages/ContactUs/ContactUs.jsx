@@ -70,7 +70,7 @@ const ContactUs = () => {
             {/* Icon */}
             <div className='mb-4'>
               <div className='relative inline-block'>
-                <div className='w-20 h-20 bg-gradient-to-br from-app-primary to-app-secondary rounded-2xl flex items-center justify-center mx-auto shadow-lg'>
+                <div className='bg-gradient-to-br from-app-primary to-app-secondary  flex items-center justify-center mx-auto '>
                   <FaEnvelope className='text-app-primary' size={32} />
                 </div>
                 <div className='absolute -inset-4 bg-gradient-to-r from-app-primary/20 to-app-secondary/20 rounded-2xl blur-lg -z-10'></div>
