@@ -33,7 +33,7 @@ function ProductDetails() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       {/* Main Content Container */}
-      <div className="container mx-auto px-4 py-8 lg:py-12">
+      <div className="container mx-auto px-4 py-8 lg:py-12 max-w-7xl">
         {/* Product Details Section */}
         <section className="mb-16">
           <ProductDetailsCard selectedProduct={selectedProduct} />
@@ -42,7 +42,7 @@ function ProductDetails() {
         {/* Reviews Section */}
         <section className="mb-16">
           <div className=" border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-app-primary/5 to-app-secondary/5 px-8 py-6 border-b border-gray-100">
+            <div className="bg-gradient-to-r from-app-primary/5 to-app-secondary/5  py-6 border-b border-gray-100">
               <h2 className="text-2xl lg:text-3xl font-bold text-app-tertiary mb-2">
                 <span className="text-lg lg:text-xl font-semibold text-app-tertiary">
                   Customer Reviews
@@ -52,7 +52,7 @@ function ProductDetails() {
                 See what our customers are saying about this product
               </p>
             </div>
-            <div className="p-8">
+            <div >
               <ProductReview
                 productId={selectedProduct.id}
                 reviews={selectedProduct.reviews || []}
@@ -64,7 +64,7 @@ function ProductDetails() {
         {/* Related Products Section */}
         <section>
           <div className="  border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-app-secondary/5 to-app-accent/5 px-8 py-6 border-b border-gray-100">
+            <div className="bg-gradient-to-r from-app-secondary/5 to-app-accent/5  py-6 border-b border-gray-100">
               <h2 className="text-2xl lg:text-3xl font-bold text-app-tertiary mb-2">
                 <span className="text-lg lg:text-xl font-semibold text-app-tertiary">
                   You Might Also Like
@@ -74,7 +74,7 @@ function ProductDetails() {
                 Discover similar products in the same category
               </p>
             </div>
-            <div className="p-8">
+            <div >
               <RelatedProducts
                 category={selectedProduct.category}
                 currentProductId={selectedProduct.id}
