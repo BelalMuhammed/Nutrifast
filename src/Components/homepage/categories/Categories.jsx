@@ -13,7 +13,7 @@ import "swiper/css/pagination";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
-  const [swiperInstance, setSwiperInstance] = useState(null);
+  // const [swiperInstance, setSwiperInstance] = useState(null);
 
   useEffect(() => {
     getCategories()
@@ -31,12 +31,12 @@ export default function Categories() {
   };
 
   // Custom arrow handlers
-  const handlePrev = () => {
-    if (swiperInstance) swiperInstance.slidePrev();
-  };
-  const handleNext = () => {
-    if (swiperInstance) swiperInstance.slideNext();
-  };
+  // const handlePrev = () => {
+  //   if (swiperInstance) swiperInstance.slidePrev();
+  // };
+  // const handleNext = () => {
+  //   if (swiperInstance) swiperInstance.slideNext();
+  // };
 
   return (
     <section className="mx-auto py-12 sm:py-16 md:py-20  ">
@@ -63,7 +63,7 @@ export default function Categories() {
               text-align: center;
             }
           `}</style>
-          <button
+          {/* <button
             className="hidden sm:flex items-center justify-center absolute left-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
             onClick={handlePrev}
             aria-label="Previous"
@@ -79,7 +79,7 @@ export default function Categories() {
             >
               <path d="M15 19l-7-7 7-7" />
             </svg>
-          </button>
+          </button> */}
           <div className="w-full px-2 sm:px-1 md:px-0">
             <Swiper
               modules={[Navigation, Pagination]}
@@ -90,7 +90,7 @@ export default function Categories() {
               breakpoints={breakpoints}
               loop={true}
               style={{ padding: "0 8px" }}
-              onSwiper={setSwiperInstance}
+              // onSwiper={setSwiperInstance}
             >
               {categories.map((category, idx) => (
                 <SwiperSlide key={idx}>
@@ -107,7 +107,7 @@ export default function Categories() {
               ))}
             </Swiper>
           </div>
-          <button
+          {/* <button
             className="hidden sm:flex items-center justify-center absolute right-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
             onClick={handleNext}
             aria-label="Next"
@@ -123,7 +123,7 @@ export default function Categories() {
             >
               <path d="M9 5l7 7-7 7" />
             </svg>
-          </button>
+          </button> */}
         </div>
       </div>
     </section>

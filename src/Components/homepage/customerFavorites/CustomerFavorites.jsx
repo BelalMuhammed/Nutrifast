@@ -13,7 +13,6 @@ import { getCustomerFavorites } from "@/Api/apiService";
 
 export default function CustomerFavorites() {
   const [favorites, setFavorites] = useState([]);
-  const [swiperInstance, setSwiperInstance] = useState(null);
 
   useEffect(() => {
     getCustomerFavorites()
@@ -30,12 +29,12 @@ export default function CustomerFavorites() {
   };
 
   // Custom arrow handlers
-  const handlePrev = () => {
-    if (swiperInstance) swiperInstance.slidePrev();
-  };
-  const handleNext = () => {
-    if (swiperInstance) swiperInstance.slideNext();
-  };
+  // const handlePrev = () => {
+  //   if (swiperInstance) swiperInstance.slidePrev();
+  // };
+  // const handleNext = () => {
+  //   if (swiperInstance) swiperInstance.slideNext();
+  // };
 
   return (
     <section className="app-container mx-auto py-8 sm:py-10 md:py-12">
@@ -63,7 +62,7 @@ export default function CustomerFavorites() {
           }
         `}</style>
         {/* Custom Arrows */}
-        <button
+        {/* <button
           className="hidden sm:flex items-center justify-center absolute left-2 top-[40%] -translate-y-1/2 z-20 bg-white/70 backdrop-blur-md rounded-full w-10 h-10 shadow text-black hover:text-green-500 transition-all duration-300 border border-gray-200"
           onClick={handlePrev}
           aria-label="Previous"
@@ -96,7 +95,7 @@ export default function CustomerFavorites() {
           >
             <path d="M9 5l7 7-7 7" />
           </svg>
-        </button>
+        </button> */}
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={16}
@@ -106,7 +105,7 @@ export default function CustomerFavorites() {
           breakpoints={breakpoints}
           loop={true}
           style={{ padding: "0 8px" }}
-          onSwiper={setSwiperInstance}
+          // onSwiper={setSwiperInstance}
         >
           {favorites.map((fav, idx) => (
             <SwiperSlide key={idx}>
