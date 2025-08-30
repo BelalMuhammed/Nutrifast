@@ -1,36 +1,35 @@
-import React, { useState, useEffect } from "react";
-import AddButton from "../../shared/Buttons/AddButton";
+import { useEffect, useState } from "react";
 import { CiWarning } from "react-icons/ci";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleWishlistItem } from "../../../Redux/slices/wishListSlice";
-import ToastNotification from "../../shared/ToastNotification";
-import { HiCheck, HiX } from "react-icons/hi";
+import AddButton from "../../shared/Buttons/AddButton";
+// import { useSelector } from "react-redux";
 import {
-  FiStar,
-  FiShield,
+  FiActivity,
+  FiAlertTriangle,
+  FiCheck,
   FiHeart,
   FiPackage,
-  FiActivity,
+  FiShield,
+  FiStar,
   FiTag,
-  FiCheck,
-  FiAlertTriangle,
 } from "react-icons/fi";
+import { useWishlist } from "../../../hooks/useWishlist";
+import ToastNotification from "../../shared/ToastNotification";
 
 const ProductDetailsCard = ({ selectedProduct }) => {
-  const dispatch = useDispatch();
+  const { items: wishlistItems, toggleItem: toggleWishlistItem } =
+    useWishlist();
   const [wishlistToast, setWishlistToast] = useState({
     show: false,
     type: "success",
     message: "",
   });
 
-  const wishlistItems = useSelector((state) => state.wishlist.items);
   const isInWishlist = wishlistItems.some(
     (item) => item.id === selectedProduct.id
   );
 
-  const handleWishlistToggle = () => {
-    dispatch(toggleWishlistItem(selectedProduct));
+  const handleWishlistToggle = async () => {
+    await toggleWishlistItem(selectedProduct);
     setWishlistToast({
       show: true,
       type: isInWishlist ? "removed" : "success",
