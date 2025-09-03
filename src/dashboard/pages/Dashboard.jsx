@@ -1,4 +1,3 @@
-// src/dashboard/pages/DashboardPage.jsx
 import LoaderSpinner from "@/Components/shared/Loaders/Loader";
 import { useEffect, useState } from "react";
 import {
@@ -20,32 +19,20 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  RadialBarChart,
-  RadialBar,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
+import CountUp from "react-countup";
 
 const API_BASE = "https://nutrifast-data.up.railway.app";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState([]);
-  const [salesData, setSalesData] = useState([
-    { name: "Jan", sales: 150 },
-    { name: "Feb", sales: 380 },
-    { name: "Mar", sales: 190 },
-    { name: "Apr", sales: 290 },
-    { name: "May", sales: 170 },
-    { name: "Jun", sales: 180 },
-    { name: "Jul", sales: 280 },
-    { name: "Aug", sales: 100 },
-    { name: "Sep", sales: 210 },
-    { name: "Oct", sales: 370 },
-    { name: "Nov", sales: 260 },
-    { name: "Dec", sales: 120 },
-  ]);
-
-  const [targetData] = useState([
-    { name: "Progress", value: 75.55, fill: "#6366f1" },
-  ]);
+  const [ordersByMonth, setOrdersByMonth] = useState([]);
+  const [productsByCategory, setProductsByCategory] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -54,6 +41,65 @@ export default function DashboardPage() {
         fetch(`${API_BASE}/users`).then((res) => res.json()),
         fetch(`${API_BASE}/products`).then((res) => res.json()),
       ]);
+
+      // Group orders by month
+      const ordersByMonthMap = {};
+      orders.forEach((order) => {
+        let date;
+        if (order.createdAt) {
+          date = new Date(order.createdAt);
+        } else if (order.date) {
+          date = new Date(order.date);
+        } else {
+          return;
+        }
+
+        if (!isNaN(date)) {
+          const month = date.toLocaleString("default", { month: "short" });
+          ordersByMonthMap[month] = (ordersByMonthMap[month] || 0) + 1;
+        }
+      });
+
+      const allMonths = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+
+      setOrdersByMonth(
+        allMonths.map((m) => ({
+          month: m,
+          orders: ordersByMonthMap[m] || 0,
+        }))
+      );
+
+      // Group products by category
+      const productsByCategoryMap = {};
+      products.forEach((p) => {
+        productsByCategoryMap[p.category] =
+          (productsByCategoryMap[p.category] || 0) + 1;
+      });
+      setProductsByCategory(
+        Object.entries(productsByCategoryMap).map(([category, count]) => ({
+          category,
+          count,
+        }))
+      );
+
+      // Total revenue
+      const totalRevenue = orders.reduce(
+        (acc, order) => acc + (order.totalPrice || 0),
+        0
+      );
 
       const fetchedStats = [
         {
@@ -65,21 +111,21 @@ export default function DashboardPage() {
         },
         {
           name: "Total Sales (per Month)",
-          value: 120, // Replace with API when available
+          value: ordersByMonth.length,
           icon: HiOutlineChartBar,
-          change: "-2%",
+          change: "0%",
           changeType: "decrease",
         },
         {
           name: "Total Customers",
           value: customers.length,
           icon: HiOutlineUsers,
-          change: "+10%",
+          change: "+1%",
           changeType: "increase",
         },
         {
           name: "Total Sellers",
-          value: 10, // Replace with API
+          value: 35,
           icon: HiOutlineUser,
           change: "+3%",
           changeType: "increase",
@@ -93,9 +139,9 @@ export default function DashboardPage() {
         },
         {
           name: "Total Revenue",
-          value: "$0", // Replace with API
+          value: totalRevenue,
           icon: HiOutlineCurrencyDollar,
-          change: "+12%",
+          change: "0%",
           changeType: "increase",
         },
       ];
@@ -105,37 +151,44 @@ export default function DashboardPage() {
 
     fetchData();
   }, []);
-  // if (loading) return <LoaderSpinner />;
+
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-4 space-y-6">
       {/* KPI CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {stats.map((item) => (
           <div
             key={item.name}
-            className="bg-white shadow-md rounded-2xl p-6 flex flex-col"
+            className="bg-white shadow-md rounded-xl px-4 py-6 flex flex-col"
           >
             {/* Icon */}
-            <div className="mb-4">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100">
-                <item.icon className="w-6 h-6 text-gray-500" />
+            <div className="mb-2">
+              <div className="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100">
+                <item.icon className="w-6 h-6 text-app-primary" />
               </div>
             </div>
 
             {/* Label */}
-            <p className="text-sm text-gray-500 mb-3">{item.name}</p>
+            <p className="text-sm text-gray-500 mb-1">{item.name}</p>
 
             {/* Number + Change */}
             <div className="flex items-center justify-between space-x-2">
-              <p className="text-2xl font-bold text-gray-900">{item.value}</p>
+              <p className="text-xl font-semibold text-gray-900">
+                <CountUp
+                  end={Number(item.value) || 0}
+                  duration={3}
+                  separator=","
+                  prefix={item.name === "Total Revenue" ? "$" : ""}
+                />
+              </p>
               {item.changeType === "increase" ? (
-                <span className="inline-flex items-center text-sm text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                  <HiArrowTrendingUp className="w-4 h-4 mr-1" />
+                <span className="inline-flex items-center text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                  <HiArrowTrendingUp className="w-3 h-3 mr-1" />
                   {item.change}
                 </span>
               ) : (
-                <span className="inline-flex items-center text-sm text-red-600 bg-red-50 px-2 py-0.5 rounded-full">
-                  <HiArrowTrendingDown className="w-4 h-4 mr-1" />
+                <span className="inline-flex items-center text-xs text-red-600 bg-red-50 px-2 py-0.5 rounded-full">
+                  <HiArrowTrendingDown className="w-3 h-3 mr-1" />
                   {item.change}
                 </span>
               )}
@@ -145,84 +198,80 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white shadow-md rounded-2xl p-6">
-          <h2 className="text-lg font-semibold mb-4">Monthly Sales</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              data={salesData}
-              margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
-              barCategoryGap="50%" // controls spacing between bars
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Orders Growth */}
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-base font-semibold mb-3">
+            Orders Growth (by Month)
+          </h2>
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart
+              data={ordersByMonth}
+              margin={{ top: 10, right: 20, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />
-              <Bar
-                dataKey="sales"
-                fill="#6366f1"
-                radius={[6, 6, 0, 0]}
-                barSize={20} // makes the bars thinner
+              <Line
+                type="monotone"
+                dataKey="orders"
+                stroke="#388e3c"
+                strokeWidth={2}
               />
-            </BarChart>
+            </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center justify-center">
-          <h2 className="text-lg font-semibold mb-2">Monthly Target</h2>
-          <p className="text-gray-500 text-sm mb-4">
-            Target you’ve set for each month
-          </p>
-
+        {/* Customers vs Sellers */}
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-base font-semibold mb-3">Users Distribution</h2>
           <ResponsiveContainer width="100%" height={220}>
-            <RadialBarChart
-              innerRadius="80%"
-              outerRadius="100%"
-              startAngle={180}
-              endAngle={0}
-              data={[{ name: "Progress", value: 75 }]}
-            >
-              <RadialBar
+            <PieChart>
+              <Pie
+                data={[
+                  {
+                    name: "Customers",
+                    value:
+                      stats.find((s) => s.name === "Total Customers")?.value ||
+                      0,
+                  },
+                  {
+                    name: "Sellers",
+                    value:
+                      stats.find((s) => s.name === "Total Sellers")?.value || 0,
+                  },
+                ]}
                 dataKey="value"
-                cornerRadius={10}
-                clockWise
-                minAngle={0}
-                background={{ fill: "#e5e7eb" }}
-                fill="#6366f1"
-              />
-            </RadialBarChart>
+                cx="50%"
+                cy="50%"
+                outerRadius={70}
+                fill="#388e3c"
+                label
+              >
+                <Cell fill="#388e3c" />
+                <Cell fill="#4caf50" />
+              </Pie>
+              <Tooltip />
+            </PieChart>
           </ResponsiveContainer>
+        </div>
 
-          <p className="text-3xl font-bold -mt-10">75.55%</p>
-          <p className="text-green-600 text-sm bg-green-50 px-2 py-0.5 rounded-full mt-2">
-            +10%
-          </p>
-          <p className="text-gray-500 text-sm mt-2 text-center">
-            You earn $3287 today, it’s higher than last month.
-            <br />
-            Keep up your good work!
-          </p>
-
-          <div className="grid grid-cols-3 gap-4 w-full mt-6 text-center">
-            <div>
-              <p className="text-gray-500 text-sm">Target</p>
-              <p className="font-semibold">
-                $20K <span className="text-red-500">↓</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Revenue</p>
-              <p className="font-semibold">
-                $20K <span className="text-green-500">↑</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Today</p>
-              <p className="font-semibold">
-                $20K <span className="text-green-500">↑</span>
-              </p>
-            </div>
-          </div>
+        {/* Products by Category */}
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-base font-semibold mb-3">Products by Category</h2>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart
+              data={productsByCategory}
+              margin={{ top: 10, right: 20, left: 0, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="category" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="count" fill="#388e3c" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>

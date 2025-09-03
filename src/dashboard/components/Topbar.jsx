@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearUserData as clearCartData } from "../../Redux/slices/cartSlice";
 import { clearUserData as clearWishlistData } from "../../Redux/slices/wishListSlice";
-export default function DashboardTopbar({ onMenuClick }) {
+export default function DashboardTopbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -37,46 +37,30 @@ export default function DashboardTopbar({ onMenuClick }) {
     navigate("/");
   };
 
-
   const handleOpenNewTab = () => {
     window.open("/", "_blank");
   };
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow-md z-40">
-      <div className="max-w-screen-xl ms-auto mx-auto flex items-center  px-4 py-3 md:ml-64">
-        {/* Left: Hamburger Menu */}
-        <button
-          onClick={onMenuClick}
-          className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all"
-        >
-          <FiMenu size={24} />
-        </button>
+    <header className="fixed top-0 left-0 w-full bg-gray-50 z-40">
+      <div className="flex justify-between items-center px-4 py-3 app-container mx-auto">
+        {/* Left: Logo */}
+        <img
+          src="/logo-dark.png" // ✅ use / for public folder
+          alt="Nutrifast Logo"
+          className="h-10 w-auto object-contain"
+        />
 
-        {/* Center: Search */}
-        {/* <div className="flex-1 px-4 min-w-0">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search or type command..."
-              className=" pl-10 pr-3 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all shadow-sm"
-            />
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          </div>
-        </div> */}
+        {/* Right: Menu + Icons + Profile */}
+        <div className="flex items-center gap-3 md:gap-4">
+          {/* Hamburger Menu (mobile only) */}
 
-        {/* Right: Icons + Profile */}
-        <div className="flex items-center gap-3 md:gap-4 ms-auto">
-          {/* <button className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
-            <HiMoon size={20} />
-          </button> */}
-
-          <button onClick={() => { handleOpenNewTab() }} className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110">
+          {/* Home button */}
+          <button
+            onClick={handleOpenNewTab}
+            className="p-2 rounded-full hover:bg-gray-100 transition-transform hover:scale-110"
+          >
             <IoMdHome size={20} />
           </button>
-          {/* <button className="p-2 rounded-full hover:bg-gray-100 relative transition-transform hover:scale-110">
-            <HiBell size={20} />
-            <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-          </button> */}
 
           {/* Profile Dropdown */}
           <div className="relative">
@@ -94,21 +78,15 @@ export default function DashboardTopbar({ onMenuClick }) {
 
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-xl py-2 z-50 animate-slide-fade">
-                <div className="px-4 py-3 ">
+                <div className="px-4 py-3">
                   <p className="font-semibold text-gray-800">Admin User</p>
                   <p className="text-sm text-gray-500">admin@nutrifast.com</p>
                 </div>
-
-                {/* <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <FiUser className="text-gray-500" />
-                  Profile
-                </button>
-                <button className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <FiSettings className="text-gray-500" />
-                  Settings
-                </button> */}
-                <div className=" my-1"></div>
-                <button onClick={() => { handleLogout() }} className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors text-red-500">
+                <div className="my-1"></div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors text-red-500"
+                >
                   <FiLogOut />
                   Sign Out
                 </button>
