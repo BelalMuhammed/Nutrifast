@@ -5,7 +5,6 @@ export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
   async (userId) => {
     const response = await axiosInstance.get(`/orders?userId=${userId}`);
-    console.log("Orders API response:", response.data);
     return response.data;
   }
 );
@@ -14,7 +13,6 @@ export const fetchAdminOrders = createAsyncThunk(
   "orders/fetchAdminOrders",
   async () => {
     const response = await axiosInstance.get(`/orders`);
-    console.log("Orders API response:", response.data);
     return response.data;
   }
 );
@@ -36,6 +34,17 @@ export const clearOrders = createAsyncThunk(
       userOrders.map((order) => axiosInstance.delete(`/orders/${order.id}`))
     );
     return userId;
+  }
+);
+
+// ✅ New Thunk to update order status
+export const updateOrderStatus = createAsyncThunk(
+  "orders/updateOrderStatus",
+  async ({ orderId, status }) => {
+    const response = await axiosInstance.patch(`/orders/${orderId}`, {
+      status,
+    });
+    return response.data; // updated order
   }
 );
 
@@ -81,6 +90,18 @@ const ordersSlice = createSlice({
       })
       .addCase(fetchAdminOrders.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message;
+      })
+
+      // ✅ Update order status
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        const updatedOrder = action.payload;
+        const index = state.list.findIndex((o) => o.id === updatedOrder.id);
+        if (index !== -1) {
+          state.list[index] = updatedOrder;
+        }
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },

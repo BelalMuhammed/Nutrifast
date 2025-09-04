@@ -151,7 +151,9 @@ export default function DashboardPage() {
 
     fetchData();
   }, []);
-
+  if (!stats.length || !ordersByMonth.length || !productsByCategory.length) {
+    return <LoaderSpinner />;
+  }
   return (
     <div className="p-4 space-y-6">
       {/* KPI CARDS */}

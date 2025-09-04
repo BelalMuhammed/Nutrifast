@@ -23,9 +23,8 @@ function Orders() {
         name: order.customer?.fullName || "N/A",
         numberOfItems: order.items?.length || 0,
         totalQuantity,
-        subtotal: order.subtotal,
-        shipping: order.shipping,
         total: order.total,
+        status: order.status
       };
     }) || [];
 
