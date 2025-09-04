@@ -37,9 +37,7 @@ const CartWishlistInitializer = () => {
       currentUserId &&
       !isProcessingPartialOrder
     ) {
-      console.log(
-        "Authentication change detected - fetching cart and wishlist data..."
-      );
+
       dispatch(fetchCart());
       dispatch(fetchWishlist());
     }
@@ -55,7 +53,7 @@ const CartWishlistInitializer = () => {
   useEffect(() => {
     const initialUser = getCurrentUser();
     if (initialUser?.id && !isProcessingPartialOrder) {
-      console.log("App start: User already logged in, fetching data...");
+
       dispatch(fetchCart());
       dispatch(fetchWishlist());
 
