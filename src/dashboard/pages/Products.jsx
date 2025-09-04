@@ -21,6 +21,7 @@ function Products() {
 
   const filteredProducts = products.map((p) => ({
     id: p.id,
+    image: p.image,
     name: p.name,
     category: p.category,
     price: p.price,

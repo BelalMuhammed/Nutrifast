@@ -85,7 +85,7 @@ import { DropdownItem, Dropdown } from "flowbite-react";
 import { acceptVendor, getAllVendorsApplications, removeVendorApplicationById, removeVendorById } from "@/Redux/slices/vendorDashboardSlice";
 import ConfirmDialog from "@/Components/shared/ConfirmDialog";
 
-import { deleteOrder } from "@/Redux/slices/ordersSlice";
+import { deleteOrder, updateOrderStatus } from "@/Redux/slices/ordersSlice";
 
 import { useDispatch } from "react-redux";
 
@@ -119,9 +119,21 @@ export default function TableDashboard({
   const navigate = useNavigate();
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
-  // const handlDeleteOrder = (id) => {
-  //   dispatch(deleteOrder(id));
-  // };
+  const getStatusClasses = (status) => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800 ";
+      case "shipped":
+        return "bg-blue-100 text-blue-800";
+      case "completed":
+        return "bg-green-100 text-green-800";
+      case "cancel":
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
   const columns = useMemo(() => {
     if (!data.length) return [];
 
@@ -129,24 +141,56 @@ export default function TableDashboard({
     const baseColumns = Object.keys(data[0]).map((key) => ({
       header: key.charAt(0).toUpperCase() + key.slice(1),
       accessorKey: key,
-      cell: ({ getValue, row }) => (
-        <div className='flex items-center gap-3'>
-          {key === "id" && (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(v) => row.toggleSelected(!!v)}
-              className='border-2 border-gray-300 data-[state=checked]:bg-app-primary data-[state=checked]:border-app-primary rounded'
-            />
-          )}
-          <span className='font-medium text-gray-800'>
-            {getValue()?.toString()}
-          </span>
-        </div>
-      ),
+      cell: ({ getValue, row }) => {
+        const value = getValue();
+
+        // ✅ Special handling for status
+        if (key === "status") {
+          return (
+            <span
+              className={`px-3 py-3 rounded-full text-xs font-semibold ${getStatusClasses(
+                value
+              )}`}
+            >
+              {value}
+            </span>
+          );
+        }
+
+        // Check if value looks like an image URL (ends with .jpg/.png/.gif or starts with http)
+        const isImage =
+          typeof value === "string" &&
+          (value.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i) ||
+            value.startsWith("http"));
+
+        return (
+          <div className="flex items-center gap-3">
+            {key === "id" && (
+              <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(v) => row.toggleSelected(!!v)}
+                className="border-2 border-gray-300 data-[state=checked]:bg-app-primary data-[state=checked]:border-app-primary rounded"
+              />
+            )}
+            {isImage ? (
+              <img
+                src={value}
+                alt={key}
+                className="w-20 h-15 object-cover rounded-md mx-auto"
+              />
+            ) : (
+              <span className="font-medium text-gray-800 truncate">
+                {value?.toString()}
+              </span>
+            )}
+          </div>
+        );
+      },
     }));
 
     //  add action column depending on type
     const actionColumn = {
+      id: "actions", // ✅ unique id added
       header: "Actions",
       cell: ({ row }) => {
         // Products
@@ -237,15 +281,8 @@ export default function TableDashboard({
                 }}>
                 <HiTrash size={14} className='sm:w-4 sm:h-4' />
               </button>
-              {/* <button
-                title='Change status'
-                className='p-1.5 sm:p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500  transition-all duration-300 shadow-sm'
-                onClick={() =>
-                  console.log("Change order status", row.original.id)
-                }>
-                <LuSettings2 size={14} className='sm:w-4 sm:h-4' />
-              </button> */}
-              {/* <Dropdown
+
+              <Dropdown
                 className=" z-50"
                 renderTrigger={() => (
                   <button
@@ -257,11 +294,11 @@ export default function TableDashboard({
                 )}
                 dropdownClassName="z-50"
               >
-                <DropdownItem onClick={() => alert("pending!")}>pending</DropdownItem>
-                <DropdownItem onClick={() => alert("Shipped!")}>Shipped</DropdownItem>
-                <DropdownItem onClick={() => alert("Completed!")}>Completed</DropdownItem>
-                <DropdownItem onClick={() => alert("cancel!")}>cancel</DropdownItem>
-              </Dropdown> */}
+                <DropdownItem onClick={() => dispatch(updateOrderStatus({ orderId: row.original.orderId, status: "pending" }))} >pending</DropdownItem>
+                <DropdownItem onClick={() => dispatch(updateOrderStatus({ orderId: row.original.orderId, status: "Shipped" }))}>Shipped</DropdownItem>
+                <DropdownItem onClick={() => dispatch(updateOrderStatus({ orderId: row.original.orderId, status: "Completed" }))}>Completed</DropdownItem>
+                <DropdownItem onClick={() => dispatch(updateOrderStatus({ orderId: row.original.orderId, status: "cancel" }))}>cancel</DropdownItem>
+              </Dropdown>
             </div>
           );
         }
