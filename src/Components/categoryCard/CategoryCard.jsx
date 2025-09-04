@@ -12,7 +12,7 @@ export function CategoryCard({ category }) {
 
   return (
     <div
-      className="relative w-full max-w-[320px] mx-auto rounded-2xl overflow-hidden transition-all duration-300 group cursor-pointer"
+      className="relative w-full  mx-auto rounded-2xl overflow-hidden transition-all duration-300 group cursor-pointer"
       onClick={handleClick}
       tabIndex={0}
       role="button"

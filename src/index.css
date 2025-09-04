@@ -308,8 +308,29 @@ input[type="checkbox"] {
 }
 
 /* Queries */
+@media (max-width: 1165px) {
+  .dashboard-layout {
+    margin-left: 2rem;
+  }
+}
+
+@media (max-width: 1039px) {
+  .dashboard-layout {
+    margin-left: 4rem;
+  }
+}
+
+@media (max-width: 884px) {
+  .dashboard-layout {
+    margin-left: 5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .mainNav nav {
     background-color: var(--color-dark);
+  }
+  .dashboard-layout {
+    margin-left: 0rem;
   }
 }
